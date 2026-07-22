@@ -14,15 +14,15 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full z-50 bg-[#1a1525]/95 backdrop-blur-xl border-b border-white/10 py-4 px-6 flex justify-between items-center shadow-2xl">
-        <div className="flex items-center gap-6">
-          <a href="/" className="flex items-center gap-3 relative z-50">
-            <div className="relative">
+      <nav className="fixed top-0 left-0 w-full max-w-full z-50 bg-[#1a1525]/95 backdrop-blur-xl border-b border-white/10 py-3 sm:py-4 px-4 sm:px-6 flex justify-between items-center shadow-2xl overflow-hidden">
+        <div className="flex items-center gap-2 sm:gap-6 shrink-0">
+          <a href="/" className="flex items-center gap-2 sm:gap-3 relative z-50">
+            <div className="relative shrink-0">
               <div className="absolute inset-0 bg-primary rounded-lg blur opacity-40"></div>
-              <img src="/sklogo.jpeg" alt="Logo" className="w-12 h-12 rounded-lg object-contain relative z-10 border border-white/10 shadow-lg bg-black" />
+              <img src="/sklogo.jpeg" alt="Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain relative z-10 border border-white/10 shadow-lg bg-black" />
             </div>
-            <div>
-              <h1 className="font-extrabold text-lg sm:text-xl md:text-2xl tracking-tight text-white leading-none">SK SURE <span className="text-primary">WINS</span></h1>
+            <div className="shrink-0">
+              <h1 className="font-extrabold text-base sm:text-xl md:text-2xl tracking-tight text-white leading-none">SK SURE <span className="text-primary">WINS</span></h1>
               <p className="text-[10px] text-primary uppercase tracking-widest font-bold hidden sm:block mt-1">Munakapapula</p>
             </div>
           </a>
@@ -47,9 +47,9 @@ export default function Navbar() {
           </a>
         </div>
 
-        <div className="md:hidden flex items-center gap-4">
+        <div className="md:hidden flex items-center gap-3 shrink-0">
           <a href="/login" className="text-primary text-xs font-bold border border-primary px-3 py-1.5 rounded-full relative z-50">VIP</a>
-          <button onClick={() => setIsOpen(!isOpen)} className="text-white relative z-50">
+          <button onClick={() => setIsOpen(!isOpen)} className="text-white relative z-50 p-1">
             {isOpen ? (
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
             ) : (

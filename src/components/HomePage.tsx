@@ -53,7 +53,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
       <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[128px] -z-10 mix-blend-screen" />
 
       {/* TOP BANNER */}
-      <div className="w-full bg-primary text-black font-bold text-sm py-2 overflow-hidden relative mt-[88px] whitespace-nowrap">
+      <div className="w-full max-w-full bg-primary text-black font-bold text-sm py-2 overflow-hidden relative mt-[80px] sm:mt-[88px] whitespace-nowrap">
         <div className="marquee-track flex gap-12">
           {[0, 1].map(copy => (
             <div key={copy} className="marquee-content flex gap-12 shrink-0">
