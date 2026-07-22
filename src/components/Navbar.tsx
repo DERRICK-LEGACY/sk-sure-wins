@@ -22,7 +22,7 @@ export default function Navbar() {
               <img src="/sklogo.jpeg" alt="Logo" className="w-12 h-12 rounded-lg object-contain relative z-10 border border-white/10 shadow-lg bg-black" />
             </div>
             <div>
-              <h1 className="font-extrabold text-xl md:text-2xl tracking-tight text-white leading-none">SK SURE <span className="text-primary">WINS</span></h1>
+              <h1 className="font-extrabold text-lg sm:text-xl md:text-2xl tracking-tight text-white leading-none">SK SURE <span className="text-primary">WINS</span></h1>
               <p className="text-[10px] text-primary uppercase tracking-widest font-bold hidden sm:block mt-1">Munakapapula</p>
             </div>
           </a>

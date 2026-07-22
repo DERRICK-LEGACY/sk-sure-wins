@@ -89,7 +89,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
               Uganda's Most Trusted Tipster
             </motion.div>
             
-            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight leading-tight text-white drop-shadow-2xl">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight leading-tight text-white drop-shadow-2xl">
               Pay Your Way, <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-300 to-primary-dark">We Deliver Wins.</span>
             </motion.h2>
@@ -109,7 +109,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
               <div className="bg-white p-2.5 rounded-full shadow-lg relative z-10 flex items-center justify-center">
                 <WhatsAppIcon className="w-8 h-8 text-[#25D366]" />
               </div>
-              <span className="text-xl tracking-tight relative z-10">Join Our Free WhatsApp</span>
+              <span className="text-lg sm:text-xl tracking-tight relative z-10">Join Our Free WhatsApp</span>
             </motion.a>
           </div>
         </section>
@@ -119,21 +119,21 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
 
         {/* STATS SECTION */}
         <section className="w-full max-w-5xl py-12 md:py-20">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 text-center">
             <div className="flex flex-col items-center">
-              <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={95} suffix="%" /></h3>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={95} suffix="%" /></h3>
               <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Win Rate</p>
             </div>
             <div className="flex flex-col items-center">
-              <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={50} suffix="k+" /></h3>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={50} suffix="k+" /></h3>
               <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Happy Subscribers</p>
             </div>
             <div className="flex flex-col items-center">
-              <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={5} suffix="+" /></h3>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={5} suffix="+" /></h3>
               <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Years Active</p>
             </div>
             <div className="flex flex-col items-center">
-              <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={100} suffix="%" /></h3>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={100} suffix="%" /></h3>
               <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Daily Winning Tickets</p>
             </div>
           </div>
@@ -230,14 +230,14 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
         </section>
         {/* PACKAGES SECTION HEADER */}
         <div id="packages" className="w-full text-center mb-12 flex flex-col items-center pt-20 mt-[-80px]">
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-4 uppercase tracking-tight text-white drop-shadow-md">MUNAKAPAPULA <br className="md:hidden" /><span className="text-primary-dark">MATCHDAY PACKAGES</span></h2>
-          <div className="inline-block bg-primary text-black font-extrabold px-8 py-2 rounded-full text-2xl shadow-[0_0_20px_rgba(234,179,8,0.5)] uppercase tracking-wide border-2 border-black/20 transform -rotate-2 hover:rotate-0 transition-transform">JOIN US TODAY</div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 uppercase tracking-tight text-white drop-shadow-md">MUNAKAPAPULA <br className="md:hidden" /><span className="text-primary-dark">MATCHDAY PACKAGES</span></h2>
+          <div className="inline-block bg-primary text-black font-extrabold px-8 py-2 rounded-full text-xl sm:text-2xl shadow-[0_0_20px_rgba(234,179,8,0.5)] uppercase tracking-wide border-2 border-black/20 transform -rotate-2 hover:rotate-0 transition-transform">JOIN US TODAY</div>
         </div>
 
         {/* PACKAGES GRID */}
         <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16">
           {/* BRONZE */}
-          <motion.div variants={itemVariants} className="glass-panel p-8 pt-12 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group hover:border-[#cd7f32]/50 transition-all duration-300 hover:shadow-[0_10px_40px_rgba(205,127,50,0.15)] bg-gradient-to-b from-[#cd7f32]/10 to-transparent">
+          <motion.div variants={itemVariants} className="glass-panel p-6 sm:p-8 pt-10 sm:pt-12 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group hover:border-[#cd7f32]/50 transition-all duration-300 hover:shadow-[0_10px_40px_rgba(205,127,50,0.15)] bg-gradient-to-b from-[#cd7f32]/10 to-transparent">
             {/* Bronze Medal */}
             <div className="absolute top-0 w-8 h-12 bg-gradient-to-b from-[#cd7f32] to-[#8c5622] flex justify-center shadow-lg"><div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#eeb98c] to-[#cd7f32] border-[6px] border-white/10 absolute -bottom-8 flex items-center justify-center shadow-[0_5px_15px_rgba(0,0,0,0.5)]"></div></div>
             <div className="mt-6 mb-4 w-full bg-[#cd7f32]/20 py-2 rounded-xl border border-[#cd7f32]/30"><h3 className="text-2xl font-black text-[#cd7f32] tracking-wider uppercase">BRONZE ODDS</h3></div>
@@ -262,7 +262,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
           </motion.div>
 
           {/* SILVER */}
-          <motion.div variants={itemVariants} className="glass-panel p-8 pt-12 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group hover:border-[#c0c0c0]/50 transition-all duration-300 hover:shadow-[0_10px_40px_rgba(192,192,192,0.15)] bg-gradient-to-b from-[#c0c0c0]/10 to-transparent">
+          <motion.div variants={itemVariants} className="glass-panel p-6 sm:p-8 pt-10 sm:pt-12 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group hover:border-[#c0c0c0]/50 transition-all duration-300 hover:shadow-[0_10px_40px_rgba(192,192,192,0.15)] bg-gradient-to-b from-[#c0c0c0]/10 to-transparent">
             {/* Silver Medal */}
             <div className="absolute top-0 w-8 h-12 bg-gradient-to-b from-[#c0c0c0] to-[#808080] flex justify-center shadow-lg"><div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#ffffff] to-[#c0c0c0] border-[6px] border-white/10 absolute -bottom-8 flex items-center justify-center shadow-[0_5px_15px_rgba(0,0,0,0.5)]"></div></div>
             <div className="mt-6 mb-4 w-full bg-[#c0c0c0]/20 py-2 rounded-xl border border-[#c0c0c0]/30"><h3 className="text-2xl font-black text-[#c0c0c0] tracking-wider uppercase">SILVER ODDS</h3></div>
@@ -284,7 +284,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
           </motion.div>
 
           {/* GOLD */}
-          <motion.div variants={itemVariants} className="glass-panel p-8 pt-12 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border-primary/40 shadow-[0_15px_50px_rgba(234,179,8,0.2)] hover:border-primary transition-all duration-300 scale-100 md:scale-105 z-10 bg-gradient-to-b from-primary/10 to-transparent">
+          <motion.div variants={itemVariants} className="glass-panel p-6 sm:p-8 pt-10 sm:pt-12 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border-primary/40 shadow-[0_15px_50px_rgba(234,179,8,0.2)] hover:border-primary transition-all duration-300 scale-100 md:scale-105 z-10 bg-gradient-to-b from-primary/10 to-transparent">
             {/* Gold Medal */}
             <div className="absolute top-0 w-10 h-14 bg-gradient-to-b from-primary to-[#d4af37] flex justify-center shadow-lg"><div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#ffef96] to-primary border-[6px] border-white/10 absolute -bottom-10 flex items-center justify-center shadow-[0_5px_15px_rgba(0,0,0,0.5)]"></div></div>
             <div className="mt-8 mb-4 w-full bg-primary/20 py-2 rounded-xl border border-primary/30"><h3 className="text-2xl font-black text-primary tracking-wider uppercase">GOLD ODDS</h3></div>
@@ -477,7 +477,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
             initial={{ opacity: 0, x: -50, y: 50 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
             exit={{ opacity: 0, x: -50, y: 50 }}
-            className="fixed bottom-6 left-6 z-50 bg-black/80 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-2xl flex items-center gap-4 w-72"
+            className="fixed bottom-6 left-6 z-50 bg-black/80 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-2xl flex items-center gap-4 w-72 max-w-[calc(100vw-3rem)]"
           >
             <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center border border-primary/30">
               <BellRing size={20} className="text-primary animate-pulse" />

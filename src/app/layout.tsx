@@ -41,7 +41,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${outfit.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-background text-foreground relative overflow-x-hidden">
+      <body className="w-full min-h-full flex flex-col font-sans bg-background text-foreground relative overflow-x-hidden">
         {children}
       </body>
     </html>
