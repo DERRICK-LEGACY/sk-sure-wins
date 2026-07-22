@@ -141,7 +141,7 @@ export default function AdminDashboard({ freeHooks, wonTickets, users, premiumTi
   );
 
   return (
-    <div className="min-h-screen bg-[#0f0a14] text-white flex">
+    <div className="min-h-screen bg-[#0f0a14] text-white flex flex-col md:flex-row">
 
       {/* CONFIRM DIALOG */}
       {confirmDelete && (
@@ -153,24 +153,29 @@ export default function AdminDashboard({ freeHooks, wonTickets, users, premiumTi
       )}
 
       {/* SIDEBAR */}
-      <aside className="w-64 bg-[#120d1d] border-r border-white/5 flex flex-col p-4 shrink-0 fixed h-full z-10">
-        <div className="flex items-center gap-3 mb-10 mt-4 px-2">
-          <img src="/sklogo.jpeg" alt="Logo" className="w-10 h-10 rounded-full object-cover border border-[#25D366]" />
-          <h1 className="text-xl font-black tracking-tight">SK Admin</h1>
+      <aside className="w-full md:w-64 bg-[#120d1d] border-b md:border-b-0 md:border-r border-white/5 flex flex-col p-4 shrink-0 relative md:fixed md:h-full z-20">
+        <div className="flex items-center justify-between md:justify-start gap-3 mb-4 md:mb-10 mt-0 md:mt-4 px-2">
+          <div className="flex items-center gap-3">
+            <img src="/sklogo.jpeg" alt="Logo" className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover border border-[#25D366]" />
+            <h1 className="text-lg md:text-xl font-black tracking-tight">SK Admin</h1>
+          </div>
+          <div className="md:hidden">
+            <button onClick={handleLogout} className="text-red-500 hover:text-red-400 p-2"><LogOut size={20} /></button>
+          </div>
         </div>
         
-        <nav className="flex flex-col gap-2">
-          <button onClick={() => setActiveTab("free")} className={`text-left px-4 py-3 rounded-lg font-bold transition-all ${activeTab === "free" ? "bg-[#25D366] text-black shadow-[0_0_15px_rgba(37,211,102,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>Free Tickets</button>
-          <button onClick={() => setActiveTab("wins")} className={`text-left px-4 py-3 rounded-lg font-bold transition-all ${activeTab === "wins" ? "bg-[#25D366] text-black shadow-[0_0_15px_rgba(37,211,102,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>News & Tickets</button>
-          <button onClick={() => setActiveTab("premium")} className={`text-left px-4 py-3 rounded-lg font-bold transition-all ${activeTab === "premium" ? "bg-primary text-black shadow-[0_0_15px_rgba(234,179,8,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>⭐ Premium Tickets</button>
-          <button onClick={() => setActiveTab("users")} className={`text-left px-4 py-3 rounded-lg font-bold transition-all ${activeTab === "users" ? "bg-[#25D366] text-black shadow-[0_0_15px_rgba(37,211,102,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>Manage VIPs</button>
-          <button onClick={() => setActiveTab("testimonials")} className={`text-left px-4 py-3 rounded-lg font-bold transition-all ${activeTab === "testimonials" ? "bg-blue-500 text-black shadow-[0_0_15px_rgba(59,130,246,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>💬 Testimonials</button>
-          <button onClick={() => setActiveTab("settings")} className={`text-left px-4 py-3 rounded-lg font-bold transition-all flex items-center gap-2 ${activeTab === "settings" ? "bg-gray-700 text-white shadow-[0_0_15px_rgba(55,65,81,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>
+        <nav className="flex md:flex-col gap-2 overflow-x-auto pb-2 md:pb-0 custom-scrollbar">
+          <button onClick={() => setActiveTab("free")} className={`shrink-0 whitespace-nowrap text-left px-4 py-3 rounded-lg font-bold transition-all ${activeTab === "free" ? "bg-[#25D366] text-black shadow-[0_0_15px_rgba(37,211,102,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>Free Tickets</button>
+          <button onClick={() => setActiveTab("wins")} className={`shrink-0 whitespace-nowrap text-left px-4 py-3 rounded-lg font-bold transition-all ${activeTab === "wins" ? "bg-[#25D366] text-black shadow-[0_0_15px_rgba(37,211,102,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>News & Tickets</button>
+          <button onClick={() => setActiveTab("premium")} className={`shrink-0 whitespace-nowrap text-left px-4 py-3 rounded-lg font-bold transition-all ${activeTab === "premium" ? "bg-primary text-black shadow-[0_0_15px_rgba(234,179,8,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>⭐ Premium</button>
+          <button onClick={() => setActiveTab("users")} className={`shrink-0 whitespace-nowrap text-left px-4 py-3 rounded-lg font-bold transition-all ${activeTab === "users" ? "bg-[#25D366] text-black shadow-[0_0_15px_rgba(37,211,102,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>Manage VIPs</button>
+          <button onClick={() => setActiveTab("testimonials")} className={`shrink-0 whitespace-nowrap text-left px-4 py-3 rounded-lg font-bold transition-all ${activeTab === "testimonials" ? "bg-blue-500 text-black shadow-[0_0_15px_rgba(59,130,246,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>💬 Reviews</button>
+          <button onClick={() => setActiveTab("settings")} className={`shrink-0 whitespace-nowrap text-left px-4 py-3 rounded-lg font-bold transition-all flex items-center gap-2 ${activeTab === "settings" ? "bg-gray-700 text-white shadow-[0_0_15px_rgba(55,65,81,0.3)]" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}>
             <Settings size={18} /> Settings
           </button>
         </nav>
         
-        <div className="mt-auto">
+        <div className="mt-auto hidden md:block">
           <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 border border-red-900/50 text-red-500 hover:bg-red-500/10 hover:border-red-500 px-4 py-3 rounded-lg font-bold transition-all">
             <LogOut size={18} /> Logout
           </button>
@@ -178,7 +183,7 @@ export default function AdminDashboard({ freeHooks, wonTickets, users, premiumTi
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 p-8 md:p-12 ml-64 min-h-screen">
+      <main className="flex-1 p-4 sm:p-8 md:p-12 md:ml-64 min-h-screen">
         
         {/* === FREE TICKETS === */}
         {activeTab === "free" && (
