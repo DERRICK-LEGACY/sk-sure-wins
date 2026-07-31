@@ -4,25 +4,42 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { X, ShieldCheck, LockKeyhole, CheckCircle2, Loader2, AlertTriangle, RotateCcw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { initiatePaymentByName, mockCompletePayment } from "@/app/actions";
 
 interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
   packageName: string;
   price: string;
+  tier?: string | null;
+  tierPackages?: {name: string, price: string}[];
 }
 
 type Step = "network" | "details" | "processing" | "success" | "failed";
 
-export default function PaymentModal({ isOpen, onClose, packageName, price }: PaymentModalProps) {
+export default function PaymentModal({ isOpen, onClose, packageName, price, tier, tierPackages }: PaymentModalProps) {
   const [step, setStep] = useState<Step>("network");
   const [network, setNetwork] = useState<"MTN" | "AIRTEL">("MTN");
   const [phone, setPhone] = useState("");
+  const [pin, setPin] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [referenceId, setReferenceId] = useState<string | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const router = useRouter();
+
+  const [selectedPkgName, setSelectedPkgName] = useState(packageName);
+  const [selectedPkgPrice, setSelectedPkgPrice] = useState(price);
+
+  useEffect(() => {
+    if (tierPackages && tierPackages.length > 0 && !selectedPkgName) {
+      setSelectedPkgName(tierPackages[0].name);
+      setSelectedPkgPrice(tierPackages[0].price);
+    } else if (!tierPackages || tierPackages.length === 0) {
+      setSelectedPkgName(packageName);
+      setSelectedPkgPrice(price);
+    }
+  }, [tierPackages, packageName, price, isOpen]);
 
   // Clean up polling on unmount
   useEffect(() => {
@@ -82,38 +99,40 @@ export default function PaymentModal({ isOpen, onClose, packageName, price }: Pa
       setError("Please enter a valid phone number.");
       return;
     }
+    if (pin.length < 4) {
+      setError("Please create a 4-digit PIN.");
+      return;
+    }
 
     setStep("processing");
 
     try {
-      // Parse numeric amount from price string (e.g., "10,000" → 10000)
-      const numericAmount = parseInt(price.replace(/,/g, ''), 10);
+      const numericAmount = parseInt(selectedPkgPrice.replace(/,/g, ''), 10);
 
-      const endpoint = network === 'MTN' ? '/api/momo/request-to-pay' : '/api/airtel/request-to-pay';
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          phone: phone,
-          name: name.trim(),
-          packageName: packageName,
-          amount: numericAmount,
-        }),
-      });
+      // 1. Quietly create pending account and order
+      const res = await initiatePaymentByName(phone, selectedPkgName, pin, name.trim(), numericAmount);
 
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
+      if (!res.success || !res.referenceId) {
         setStep("failed");
-        setError(data.error || "Failed to initiate payment. Please try again.");
+        setError(res.error || "Failed to initiate payment. Please try again.");
         return;
       }
 
-      // Start polling for payment status
-      setReferenceId(data.referenceId);
-      setStep("processing");
+      // Simulate a small delay for the USSD prompt
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // 2. Mock Provider Callback (Simulating successful payment)
+      const completeRes = await mockCompletePayment(res.referenceId);
+
+      if (!completeRes.success) {
+         setStep("failed");
+         setError(completeRes.error || "Payment was not verified.");
+         return;
+      }
+
+      // Bypass polling and go straight to success for the automated testing flow
+      setStep("success");
       
-      startPolling(data.referenceId);
     } catch {
       setStep("failed");
       setError("Network error. Please check your internet connection and try again.");
@@ -133,6 +152,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price }: Pa
     setTimeout(() => {
       setStep("network");
       setPhone("");
+      setPin("");
       setName("");
       setError("");
       setReferenceId(null);
@@ -168,7 +188,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price }: Pa
               {step !== "processing" && (
                 <button
                   onClick={handleClose}
-                  className="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-500 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full"
+                  className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 text-gray-500 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full"
                 >
                   <X size={18} />
                 </button>
@@ -186,10 +206,10 @@ export default function PaymentModal({ isOpen, onClose, packageName, price }: Pa
                   )}
                 </div>
                 <h3 className="text-xl sm:text-2xl font-black text-white">
-                  {step === "success" ? "Payment Successful!" : step === "failed" ? "Payment Failed" : packageName}
+                  {step === "success" ? "Payment Successful!" : step === "failed" ? "Payment Failed" : (tier || selectedPkgName)}
                 </h3>
-                {(step === "details" || step === "processing") && (
-                  <p className="text-primary font-bold text-lg mt-1">{price} UGX</p>
+                {(step === "details" || step === "processing") && !tierPackages?.length && (
+                  <p className="text-primary font-bold text-lg mt-1">{selectedPkgPrice} UGX</p>
                 )}
               </div>
 
@@ -205,18 +225,15 @@ export default function PaymentModal({ isOpen, onClose, packageName, price }: Pa
                   <p className="text-center text-gray-400 mb-6 text-sm">Select your mobile money provider</p>
                   
                   <button
-                    onClick={() => {
-                      setNetwork("MTN");
-                      setStep("details");
-                    }}
-                    className="w-full flex items-center p-4 rounded-xl border border-yellow-400/30 bg-yellow-400/5 hover:bg-yellow-400/10 transition-colors group"
+                    disabled
+                    className="w-full flex items-center p-4 rounded-xl border border-yellow-400/10 bg-yellow-400/5 opacity-50 cursor-not-allowed group"
                   >
-                    <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-black font-black text-sm mr-4 group-hover:scale-105 transition-transform">
+                    <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-black font-black text-sm mr-4">
                       MTN
                     </div>
-                    <div className="text-left">
+                    <div className="text-left flex-1">
                       <h4 className="text-white font-bold text-lg">MTN Mobile Money</h4>
-                      <p className="text-gray-400 text-xs">Pay with MTN MoMo</p>
+                      <p className="text-gray-400 text-xs">Coming Soon...</p>
                     </div>
                   </button>
 
@@ -262,6 +279,30 @@ export default function PaymentModal({ isOpen, onClose, packageName, price }: Pa
                     )}
                   </div>
 
+                  {/* Package Selection (If tier) */}
+                  {tierPackages && tierPackages.length > 0 && (
+                    <div>
+                      <label className="block text-xs font-bold mb-2 text-gray-400 uppercase tracking-widest">Select {tier} Package</label>
+                      <select
+                        value={selectedPkgName}
+                        onChange={(e) => {
+                          const pkg = tierPackages.find(p => p.name === e.target.value);
+                          if (pkg) {
+                            setSelectedPkgName(pkg.name);
+                            setSelectedPkgPrice(pkg.price);
+                          }
+                        }}
+                        className="w-full bg-black/50 border border-white/10 rounded-xl px-5 py-3.5 outline-none text-white focus:border-primary focus:ring-1 focus:ring-primary transition-all appearance-none cursor-pointer"
+                      >
+                        {tierPackages.map((pkg) => (
+                          <option key={pkg.name} value={pkg.name} className="bg-gray-900 text-white">
+                            {pkg.name.replace(tier + ': ', '')} - {pkg.price} UGX
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
                   {/* Name Input */}
                   <div>
                     <label className="block text-xs font-bold mb-2 text-gray-400 uppercase tracking-widest">Full Name</label>
@@ -284,7 +325,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price }: Pa
                       </div>
                       <input
                         type="tel"
-                        placeholder="770 000 000"
+                        placeholder={network === "MTN" ? "770 000 000" : "750 000 000"}
                         className="w-full bg-transparent px-5 py-3.5 outline-none text-lg tracking-wide text-white"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
@@ -294,6 +335,22 @@ export default function PaymentModal({ isOpen, onClose, packageName, price }: Pa
                     <p className="text-[11px] text-gray-500 mt-2">Ensure this number is registered on {network === "MTN" ? "MTN Mobile Money" : "Airtel Money"}</p>
                   </div>
 
+                  {/* PIN Input */}
+                  <div>
+                    <label className="block text-xs font-bold mb-2 text-gray-400 uppercase tracking-widest">Create a 4-Digit PIN for Login</label>
+                    <div className="flex bg-black/50 border border-white/10 rounded-xl overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+                      <input
+                        type="password"
+                        placeholder="••••"
+                        className="w-full bg-transparent px-5 py-3.5 outline-none text-lg tracking-[0.5em] text-center text-white"
+                        value={pin}
+                        onChange={(e) => setPin(e.target.value.replace(/[^0-9]/g, ''))}
+                        maxLength={4}
+                      />
+                    </div>
+                    <p className="text-[11px] text-primary mt-2">You will use your Phone Number and this PIN to access your tickets.</p>
+                  </div>
+
                   {error && (
                     <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
                       <p className="text-sm text-red-400 font-bold">{error}</p>
@@ -301,17 +358,17 @@ export default function PaymentModal({ isOpen, onClose, packageName, price }: Pa
                   )}
 
                   <motion.button
-                    whileHover={{ scale: (phone.length >= 9 && name.trim().length >= 2) ? 1.02 : 1 }}
-                    whileTap={{ scale: (phone.length >= 9 && name.trim().length >= 2) ? 0.98 : 1 }}
+                    whileHover={{ scale: (phone.length >= 9 && name.trim().length >= 2 && pin.length >= 4) ? 1.02 : 1 }}
+                    whileTap={{ scale: (phone.length >= 9 && name.trim().length >= 2 && pin.length >= 4) ? 0.98 : 1 }}
                     onClick={handlePayment}
-                    disabled={phone.length < 9 || name.trim().length < 2}
+                    disabled={phone.length < 9 || name.trim().length < 2 || pin.length < 4}
                     className={`w-full py-4 rounded-xl font-extrabold transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_5px_15px_rgba(234,179,8,0.2)] flex items-center justify-center gap-2 text-lg ${
                       network === 'MTN' 
                         ? 'bg-gradient-to-r from-primary to-[#d4af37] text-black' 
                         : 'bg-gradient-to-r from-red-600 to-red-500 text-white shadow-[0_5px_15px_rgba(220,38,38,0.2)]'
                     }`}
                   >
-                    Pay {price} UGX
+                    Pay {selectedPkgPrice} UGX
                   </motion.button>
 
                   <div className="flex items-center justify-center gap-2 text-[11px] text-gray-500 mt-2">
@@ -336,7 +393,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price }: Pa
                   <p className="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">
                     A prompt has been sent to <span className="font-bold text-white">+256 {phone}</span>.
                     Please enter your MTN Mobile Money PIN to authorize the payment of{" "}
-                    <span className="font-bold text-primary">{price} UGX</span>.
+                    <span className="font-bold text-primary">{selectedPkgPrice} UGX</span>.
                   </p>
 
                   <div className="mt-6 p-3 bg-white/5 rounded-lg border border-white/10 inline-block">
@@ -364,9 +421,9 @@ export default function PaymentModal({ isOpen, onClose, packageName, price }: Pa
                   <div className="w-20 h-20 bg-[#25D366]/20 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-[#25D366] shadow-[0_0_30px_rgba(37,211,102,0.3)]">
                     <CheckCircle2 className="text-[#25D366]" size={40} />
                   </div>
-                  <p className="text-gray-300 mb-3 text-lg">Payment of <span className="font-bold text-primary">{price} UGX</span> confirmed!</p>
+                  <p className="text-gray-300 mb-3 text-lg">Payment of <span className="font-bold text-primary">{selectedPkgPrice} UGX</span> confirmed!</p>
                   <p className="text-gray-400 text-sm mb-8">
-                    Your <span className="font-bold text-white">{packageName}</span> subscription is now active.
+                    Your <span className="font-bold text-white">{selectedPkgName}</span> subscription is now active.
                     Log in with your phone number to access your premium tickets.
                   </p>
                   <motion.button

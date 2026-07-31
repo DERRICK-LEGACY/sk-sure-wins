@@ -20,21 +20,27 @@ export default async function FreeTicketsPage() {
           {hooks.map((hook: any) => (
             <div key={hook.id} className="bg-gradient-to-br from-[#1a1525] to-[#0f0a14] p-6 rounded-2xl border border-white/10 flex flex-col items-center gap-6 shadow-xl">
               <div className="w-full flex justify-between items-center mb-2">
-                {hook.is_active ? (
+                {hook.isActive ? (
                    <span className="bg-[#25D366] text-black text-xs font-bold px-3 py-1 rounded-md uppercase">Active Today</span>
                 ) : (
-                   <span className="bg-white/10 text-gray-400 text-xs font-bold px-3 py-1 rounded-md uppercase">Past Ticket</span>
+                   <span className="bg-[#25D366] text-black text-xs font-bold px-3 py-1 rounded-md uppercase">Active Today</span>
                 )}
-                <span className="text-gray-500 text-sm">{new Date(hook.created_at).toLocaleDateString()}</span>
+                <span className="text-gray-500 text-sm">{new Date(hook.createdAt).toLocaleDateString()}</span>
               </div>
               
-              {hook.image_url && (
-                <img src={hook.image_url} alt="Free Ticket" className="w-full h-auto object-cover rounded-xl border border-white/5 max-h-[500px]" />
+              {hook.imageUrl && (
+                <img src={hook.imageUrl} alt="Free Ticket" className="w-full h-auto object-cover rounded-xl border border-white/5 max-h-[500px]" />
               )}
               
               {hook.description && (
-                <div className="w-full mt-4 text-white text-xl font-bold bg-black/30 p-6 rounded-xl border border-white/5">
-                  {hook.description}
+                <div className="w-full mt-4 text-white text-xl font-bold bg-black/30 p-6 rounded-xl border border-white/5 text-center">
+                  {(hook.description.startsWith('http://') || hook.description.startsWith('https://')) ? (
+                    <a href={hook.description} target="_blank" rel="noopener noreferrer" className="block w-full py-3 bg-[#25D366] text-black text-center rounded-xl font-black hover:bg-green-500 transition-colors shadow-[0_0_15px_rgba(37,211,102,0.4)]">
+                      Click to access matches
+                    </a>
+                  ) : (
+                    hook.description
+                  )}
                 </div>
               )}
             </div>

@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  phone         String         @unique
+  name          String?
+  pin           String?
+  sessionToken  String?
+  role          String         @default("CLIENT") // CLIENT, ADMIN, PUBLISHER
+  status        String         @default("PENDING") // PENDING, ACTIVE, SUSPENDED
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subscriptions Subscription[]
+  orders        Order[]
+}
+
+model Package {
+  id            String         @id @default(uuid())
+  name          String         @unique
+  price         Int
+  durationDays  Int
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subscriptions Subscription[]
+  tickets       TicketAudience[]
+  orders        Order[]
+}
+
+model Order {
+  id            String   @id @default(uuid())
+  referenceId   String   @unique
+  amount        Int
+  phone         String
+  status        String   @default("PENDING") // PENDING, COMPLETED, FAILED, REVERSED
+  packageId     String?
+  userId        String?
+  package       Package? @relation(fields: [packageId], references: [id])
+  user          User?    @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Subscription {
+  id        String   @id @default(uuid())
+  userId    String
+  packageId String
+  status    String   @default("ACTIVE") // ACTIVE, EXPIRED, CANCELLED
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  package   Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status, expiresAt])
+}
+
+model Ticket {
+  id          String           @id @default(uuid())
+  imageUrl    String
+  oddsTotal   Float?
+  bookingCode String?
+  matchTime   DateTime?
+  status      String           @default("PENDING") // PENDING, WON, LOST, VOID
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  audiences   TicketAudience[]
+}
+
+model TicketAudience {
+  id        String   @id @default(uuid())
+  ticketId  String
+  packageId String
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  package   Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@unique([ticketId, packageId])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  adminId   String
+  action    String
+  details   String // JSON string
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
+
+model FreeHook {
+  id          String   @id @default(uuid())
+  imageUrl    String
+  description String?
+  isActive    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  content   String
+  rating    Int      @default(5)
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

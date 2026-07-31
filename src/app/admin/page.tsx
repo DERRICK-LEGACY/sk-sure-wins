@@ -1,5 +1,5 @@
 import { checkAdminAuth } from '../actions';
-import { getAllFreeHooks, getWonTickets, getUsers, getPremiumTickets, getAllTestimonials } from '../actions';
+import { getAllFreeHooks, getWonTickets, getClientsWithSubscriptions, getTickets, getAllTestimonials, getPackages } from '../actions';
 import AdminDashboard from '@/components/AdminDashboard';
 import AdminLogin from '@/components/AdminLogin';
 
@@ -12,9 +12,17 @@ export default async function AdminPage() {
 
   const freeHooks = await getAllFreeHooks();
   const wonTickets = await getWonTickets();
-  const users = await getUsers();
-  const premiumTickets = await getPremiumTickets();
+  const clients = await getClientsWithSubscriptions();
+  const premiumTickets = await getTickets();
   const testimonials = await getAllTestimonials();
+  const packages = await getPackages();
 
-  return <AdminDashboard freeHooks={freeHooks} wonTickets={wonTickets} users={users} premiumTickets={premiumTickets} testimonials={testimonials} />;
+  return <AdminDashboard 
+    freeHooks={freeHooks} 
+    wonTickets={wonTickets} 
+    clients={clients} 
+    premiumTickets={premiumTickets} 
+    testimonials={testimonials} 
+    packages={packages} 
+  />;
 }

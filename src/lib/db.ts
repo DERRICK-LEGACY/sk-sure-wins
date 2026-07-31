@@ -1,13 +1,15 @@
-/**
- * Database module — Supabase PostgreSQL
- * 
- * This project uses Supabase as its database.
- * All database operations go through the Supabase clients in:
- *   - src/lib/supabase/server.ts (SSR client with cookies)
- *   - src/lib/supabase/admin.ts  (Service role client, bypasses RLS)
- * 
- * The old SQLite implementation has been removed.
- * See actions.ts for all database operations.
- */
+import { PrismaClient } from '@prisma/client'
 
-export {};
+const prismaClientSingleton = () => {
+  return new PrismaClient()
+}
+
+declare global {
+  var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>
+}
+
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+
+export default prisma
+
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma

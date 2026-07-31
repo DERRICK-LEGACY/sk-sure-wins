@@ -1,0 +1,258 @@
+Created At: 2026-07-31T02:10:43Z
+Completed At: 2026-07-31T02:10:43Z
+File Path: `file:///c:/Users/LEGACIES/.gemini/antigravity-ide/scratch/sk-sure-wins/src/components/HomePage_initial.tsx`
+Total Lines: 596
+Total Bytes: 45821
+Showing lines 1 to 250
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: "use client";
+2: 
+3: import { useState, useEffect } from "react";
+4: import { motion, AnimatePresence, Variants } from "framer-motion";
+5: import { MessageCircle, Clock, Lock, CheckCircle, Trophy, Send, BellRing, X } from "lucide-react";
+6: import PaymentModal from "@/components/PaymentModal";
+7: import Navbar from "@/components/Navbar";
+8: import { submitTestimonial } from "@/app/actions";
+9: 
+10: // Animation Variants
+11: const containerVariants: Variants = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.15 } } };
+12: const itemVariants: Variants = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 70, damping: 15 } } };
+13: 
+14: const fakeNames = ["Denis from Kampala", "Kato from Mukono", "Mukasa from Entebbe", "Ivan from Jinja", "Ssebagala from Masaka", "Ouma from Mbale"];
+15: const fakePackages = ["Gold VIP", "Silver Odds", "Bronze Package", "Premium Offer"];
+16: 
+17: const WhatsAppIcon = ({ className }: { className?: string }) => (
+18:   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+19:     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51h-.57c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+20:   </svg>
+21: );
+22: 
+23: export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: { freeHooks: any[], wonTickets: any[], testimonials?: any[] }) {
+24:   const [modalOpen, setModalOpen] = useState(false);
+25:   const [testModalOpen, setTestModalOpen] = useState(false);
+26:   const [selectedPackage, setSelectedPackage] = useState({ name: "", price: "" });
+27:   const [toast, setToast] = useState<{name: string, pkg: string} | null>(null);
+28:   // Toast logic (Social Proof)
+29:   useEffect(() => {
+30:     const toastTimer = setInterval(() => {
+31:       const randomName = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+32:       const randomPkg = fakePackages[Math.floor(Math.random() * fakePackages.length)];
+33:       setToast({ name: randomName, pkg: randomPkg });
+34:       
+35:       setTimeout(() => {
+36:         setToast(null);
+37:       }, 5000); // Hide after 5 seconds
+38:     }, 14000); // Pop up every 14 seconds
+39:     return () => clearInterval(toastTimer);
+40:   }, []);
+41: 
+42:   const openModal = (name: string, price: string) => {
+43:     setSelectedPackage({ name, price });
+44:     setModalOpen(true);
+45:   };
+46: 
+47:   return (
+48:     <div className="min-h-screen flex flex-col relative">
+49:       <Navbar />
+50: 
+51:       {/* BACKGROUND EFFECTS */}
+52:       <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] -z-10 mix-blend-screen" />
+53:       <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[128px] -z-10 mix-blend-screen" />
+54: 
+55:       {/* TOP BANNER */}
+56:       <div className="w-full bg-primary text-black font-bold text-sm py-2 overflow-hidden relative mt-[88px] whitespace-nowrap">
+57:         <div className="marquee-track flex gap-12">
+58:           {[0, 1].map(copy => (
+59:             <div key={copy} className="marquee-content flex gap-12 shrink-0">
+60:               {wonTickets.length > 0 ? (
+61:                 wonTickets.map((ticket: any, i: number) => (
+62:                   <span key={i}>🔥 {ticket.description} 🔥</span>
+63:                 ))
+64:               ) : (
+65:                 <>
+66:                   <span>🔥 YESTERDAY'S VIP TICKET WON: 4.5M UGX PAID OUT! 🔥</span>
+67:                   <span>✅ BRONZE TICKET WON ✅</span>
+68:                   <span>💸 JOIN THE WINNING TEAM TODAY 💸</span>
+69:                 </>
+70:               )}
+71:             </div>
+72:           ))}
+73:         </div>
+74:       </div>
+75: 
+76:       <main className="flex-1 w-full flex flex-col items-center pb-16">
+77:         
+78:         {/* HERO SECTION WITH VIDEO BACKGROUND */}
+79:         <section className="relative w-full flex flex-col items-center justify-center py-28 px-6 text-center overflow-hidden min-h-[85vh]">
+80:           {/* VIDEO BACKGROUND */}
+81:           <video autoPlay loop muted playsInline className="absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
+82:             <source src="/hero-video.mp4" type="video/mp4" />
+83:           </video>
+84:           {/* LIGHT OVERLAY */}
+85:           <div className="absolute inset-0 bg-black/70 z-0"></div>
+86: 
+87:           <div className="relative z-10 flex flex-col items-center w-full max-w-6xl mx-auto mt-8">
+88:             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="inline-block px-4 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-accent text-xs font-bold tracking-widest mb-8 uppercase shadow-lg shadow-accent/10">
+89:               Uganda's Most Trusted Tipster
+90:             </motion.div>
+91:             
+92:             <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight leading-tight text-white drop-shadow-2xl">
+93:               Pay Your Way, <br />
+94:               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-300 to-primary-dark">We Deliver Wins.</span>
+95:             </motion.h2>
+96: 
+97:             {/* JOIN WHATSAPP FUNNEL */}
+98:             <motion.a 
+99:               href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h" 
+100:               target="_blank"
+101:               initial={{ opacity: 0, y: 20 }} 
+102:               animate={{ opacity: 1, y: 0 }} 
+103:               transition={{ delay: 0.15 }}
+104:               whileHover={{ scale: 1.05 }}
+105:               whileTap={{ scale: 0.95 }}
+106:               className="mt-6 mb-8 w-full max-w-md flex items-center justify-center gap-4 bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-extrabold py-5 px-6 rounded-full shadow-[0_0_30px_rgba(37,211,102,0.6)] border border-white/20 transition-all relative overflow-hidden group"
+107:             >
+108:               <div className="absolute inset-0 bg-white/20 blur-md group-hover:opacity-100 opacity-0 transition-opacity"></div>
+109:               <div className="bg-white p-2.5 rounded-full shadow-lg relative z-10 flex items-center justify-center">
+110:                 <WhatsAppIcon className="w-8 h-8 text-[#25D366]" />
+111:               </div>
+112:               <span className="text-xl tracking-tight relative z-10">Join Our Free WhatsApp</span>
+113:             </motion.a>
+114:           </div>
+115:         </section>
+116: 
+117:         {/* PAGE CONTENT CONTAINER */}
+118:         <div className="w-full max-w-6xl mx-auto flex flex-col items-center px-6">
+119: 
+120:         {/* STATS SECTION */}
+121:         <section className="w-full max-w-5xl py-12 md:py-20">
+122:           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+123:             <div className="flex flex-col items-center">
+124:               <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={95} suffix="%" /></h3>
+125:               <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Win Rate</p>
+126:             </div>
+127:             <div className="flex flex-col items-center">
+128:               <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={50} suffix="k+" /></h3>
+129:               <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Happy Subscribers</p>
+130:             </div>
+131:             <div className="flex flex-col items-center">
+132:               <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={5} suffix="+" /></h3>
+133:               <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Years Active</p>
+134:             </div>
+135:             <div className="flex flex-col items-center">
+136:               <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={100} suffix="%" /></h3>
+137:               <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Daily Winning Tickets</p>
+138:             </div>
+139:           </div>
+140:         </section>
+141: 
+142:         {/* MEET THE EXPERT */}
+143:         <section className="w-full max-w-5xl py-12 md:py-20 flex flex-col md:flex-row items-center gap-12 text-left">
+144:           <div className="w-full md:w-1/2 relative group">
+145:             <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent opacity-50 blur-lg rounded-3xl group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+146:             <img 
+147:               src="/skpic.jpeg" 
+148:               alt="SK Sure Wins Expert" 
+149:               className="relative w-full h-auto max-h-[500px] object-contain rounded-3xl border border-white/20 shadow-2xl bg-black/50"
+150:             />
+151:           </div>
+152:           <div className="w-full md:w-1/2">
+153:             <h4 className="text-primary font-bold tracking-[0.2em] uppercase text-sm mb-4">Meet The Expert</h4>
+154:             <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">SK Sure <span className="text-primary">Wins</span></h2>
+155:             <p className="text-gray-300 text-lg leading-relaxed mb-6">
+156:               Known in the streets and online as the most reliable betting guide in Uganda. I deliver precision tips day-in and day-out. By studying team performance, market movements, and strict risk analytics, we ensure a steady win rate.
+157:             </p>
+158:             <p className="text-gray-300 text-lg leading-relaxed mb-8">
+159:               Whether you are looking for free tips or want to lock in VIP status, you are joining a family of winners. Join today and start getting receipts!
+160:             </p>
+161:             <a href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-gradient-to-r from-[#25D366] to-[#1da851] hover:from-[#1da851] hover:to-[#168940] text-black font-extrabold px-8 py-4 rounded-full text-lg transition-all hover:scale-105 shadow-[0_0_30px_rgba(37,211,102,0.5)] border border-white/20">
+162:               <div className="bg-white p-2 rounded-full shadow-md">
+163:                 <WhatsAppIcon className="w-6 h-6 text-[#25D366]" />
+164:               </div>
+165:               Join VIP on WhatsApp
+166:             </a>
+167:           </div>
+168:         </section>
+169: 
+170:         {/* RECENT TICKETS (FREE & VIP WINS) */}
+171:         <section className="w-full max-w-6xl py-12 flex flex-col md:flex-row gap-8 text-left items-stretch">
+172:           
+173:           {/* FREE TIP SECTION */}
+174:           <div className="flex-1 bg-gradient-to-br from-[#1a1525] to-[#0f0a14] rounded-3xl border border-white/10 p-8 shadow-2xl relative overflow-hidden flex flex-col">
+175:             <div className="absolute top-0 right-0 bg-[#25D366] text-black text-xs font-bold px-4 py-2 rounded-bl-xl uppercase tracking-wider">Free Tip of the Day</div>
+176:             <h3 className="text-3xl font-black mb-6 text-white tracking-tight">Recent <span className="text-[#25D366]">Free Tips</span></h3>
+177:             
+178:             <div className="flex flex-col gap-4 flex-1">
+179:               {freeHooks.slice(0, 2).map((hook: any) => (
+180:                 <div key={hook.id} className="bg-black/50 p-4 rounded-2xl border border-white/5 backdrop-blur flex flex-col gap-4">
+181:                   {hook.image_url && (
+182:                     <img src={hook.image_url} alt="Free Ticket" className="w-full h-auto rounded-xl border border-white/10 object-cover" />
+183:                   )}
+184:                   {hook.description && (
+185:                     <div className="text-white text-lg font-bold">
+186:                       {hook.description}
+187:                     </div>
+188:                   )}
+189:                 </div>
+190:               ))}
+191:               {freeHooks.length === 0 && (
+192:                 <div className="bg-black/50 p-6 rounded-2xl border border-white/5 backdrop-blur flex items-center justify-center text-gray-500 font-bold flex-1">
+193:                   No free tips posted yet.
+194:                 </div>
+195:               )}
+196:             </div>
+197:             
+198:             <a href="/free-tickets" className="mt-6 block text-center bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-3 rounded-xl transition-colors">
+199:               View All Free Tickets
+200:             </a>
+201:           </div>
+202: 
+203:           {/* RECENT VIP WINS PREVIEW */}
+204:           <div className="flex-1 bg-gradient-to-br from-[#2a133d] to-[#12071a] rounded-3xl border border-primary/20 p-8 shadow-[0_15px_40px_rgba(234,179,8,0.15)] flex flex-col">
+205:             <h3 className="text-3xl font-black mb-6 text-white tracking-tight">Recent <span className="text-primary">VIP Wins</span></h3>
+206:             
+207:             <div className="flex flex-col gap-4 flex-1">
+208:               {wonTickets.slice(-2).reverse().map((ticket: any) => (
+209:                 <div key={ticket.id} className="bg-black/60 p-4 rounded-xl border border-primary/10 flex flex-col sm:flex-row gap-4">
+210:                   {ticket.image_url && (
+211:                     <img src={ticket.image_url} alt="Receipt" className="w-full sm:w-24 h-24 object-cover rounded-lg border border-white/10 shrink-0" />
+212:                   )}
+213:                   <div className="flex-1 flex flex-col justify-center">
+214:                     <div className="text-white font-bold">{ticket.description}</div>
+215:                   </div>
+216:                 </div>
+217:               ))}
+218:               {wonTickets.length === 0 && (
+219:                 <div className="text-gray-400 font-bold text-center p-8 bg-black/30 rounded-xl border border-white/5">
+220:                   No winning receipts uploaded yet.
+221:                 </div>
+222:               )}
+223:             </div>
+224: 
+225:             <a href="/won-tickets" className="mt-6 block text-center bg-primary hover:bg-[#d4af37] text-black font-extrabold py-3 rounded-xl transition-colors shadow-[0_5px_15px_rgba(234,179,8,0.3)]">
+226:               View All Winning Receipts
+227:             </a>
+228:           </div>
+229:           
+230:         </section>
+231:         {/* PACKAGES SECTION HEADER */}
+232:         <div id="packages" className="w-full text-center mb-12 flex flex-col items-center pt-20 mt-[-80px]">
+233:           <h2 className="text-4xl md:text-5xl font-extrabold mb-4 uppercase tracking-tight text-white drop-shadow-md">MUNAKAPAPULA <br className="md:hidden" /><span className="text-primary-dark">MATCHDAY PACKAGES</span></h2>
+234:           <div className="inline-block bg-primary text-black font-extrabold px-8 py-2 rounded-full text-2xl shadow-[0_0_20px_rgba(234,179,8,0.5)] uppercase tracking-wide border-2 border-black/20 transform -rotate-2 hover:rotate-0 transition-transform">JOIN US TODAY</div>
+235:         </div>
+236: 
+237:         {/* PACKAGES GRID */}
+238:         <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16">
+239:           {/* BRONZE */}
+240:           <motion.div variants={itemVariants} className="glass-panel p-8 pt-12 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group hover:border-[#cd7f32]/50 transition-all duration-300 hover:shadow-[0_10px_40px_rgba(205,127,50,0.15)] bg-gradient-to-b from-[#cd7f32]/10 to-transparent">
+241:             {/* Bronze Medal */}
+242:             <div className="absolute top-0 w-8 h-12 bg-gradient-to-b from-[#cd7f32] to-[#8c5622] flex justify-center shadow-lg"><div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#eeb98c] to-[#cd7f32] border-[6px] border-white/10 absolute -bottom-8 flex items-center justify-center shadow-[0_5px_15px_rgba(0,0,0,0.5)]"></div></div>
+243:             <div className="mt-6 mb-4 w-full bg-[#cd7f32]/20 py-2 rounded-xl border border-[#cd7f32]/30"><h3 className="text-2xl font-black text-[#cd7f32] tracking-wider uppercase">BRONZE ODDS</h3></div>
+244:             <p className="text-sm text-gray-300 mb-6 font-bold uppercase tracking-wider">1 Week Subscription</p>
+245:             <div className="w-full bg-black/40 rounded-2xl p-3 mb-4 text-left border border-white/5 backdrop-blur-md flex-1">
+246:               <button onClick={() => openModal("Bronze: ODD 1.5 Normal", "10,000")} className="w-full flex justify-between items-center mb-1 p-3 rounded-xl hover:bg-white/10 transition-colors group/btn">
+247:                 <span className="text-sm font-bold text-gray-300 uppercase flex items-center gap-2 group-hover/btn:text-white"><Send size={14} className="text-[#cd7f32] opacity-0 group-hover/btn:opacity-100 transition-opacity" /> ODD 1.5 Normal</span><span className="font-black text-white text-lg">10k</span>
+248:               </button>
+249:               <button onClick={() => openModal("Bronze: ODD 1.2", "20,000")} className="w-full flex justify-between items-center mb-1 p-3 rounded-xl hover:bg-white/10 transition-colors group/btn">
+250:                 <span className="text-sm font-bold text-gray-300 uppercase flex items-center gap-2 group-hover/btn:text-white"><Send size={14} className="text-[#cd7f32] opacity-0 group-hover/btn:opacity-100 transition-opacity" /> ODD 1.2</span><span className="font-black text-white text-lg">20k</span>
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
