@@ -4,19 +4,20 @@
   "description": "Premium Sports Betting VIP Membership",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#0f0a14",
+  "theme_color": "#0f0a14",
   "icons": [
     {
-      "src": "/favicon.ico",
+      "src": "/sklogo.jpeg",
       "sizes": "192x192",
-      "type": "image/x-icon",
+      "type": "image/jpeg",
       "purpose": "maskable"
     },
     {
-      "src": "/favicon.ico",
+      "src": "/sklogo.jpeg",
       "sizes": "512x512",
-      "type": "image/x-icon"
+      "type": "image/jpeg",
+      "purpose": "any"
     }
   ]
 }
