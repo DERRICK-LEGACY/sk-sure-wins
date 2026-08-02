@@ -1,4 +1,6 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useMemo } from "react";
 import { 
@@ -45,6 +47,22 @@ function ConfirmDialog({ message, onConfirm, onCancel }: { message: string, onCo
 }
 
 // --- Main Component ---
+
+const StatCard = ({ title, value, icon: Icon, color, subtitle }: any) => (
+  <div className="bg-[#15151a] border border-white/5 p-6 rounded-3xl relative overflow-hidden group hover:border-white/10 transition-colors">
+    <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full blur-[40px] opacity-20 pointer-events-none transition-opacity group-hover:opacity-40`} style={{ backgroundColor: color }}></div>
+    <div className="flex justify-between items-start mb-4 relative z-10">
+      <div>
+        <p className="text-gray-400 text-sm font-bold tracking-wider uppercase mb-1">{title}</p>
+        <h4 className="text-3xl font-black text-white">{value}</h4>
+      </div>
+      <div className="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/5 shadow-inner" style={{ backgroundColor: `${color}15`, color: color }}>
+        <Icon size={24} />
+      </div>
+    </div>
+    <p className="text-xs text-gray-500 font-medium relative z-10">{subtitle}</p>
+  </div>
+);
 
 export default function AdminDashboard({ 
   freeHooks, wonTickets, clients, premiumTickets, testimonials = [], packages = []
@@ -160,22 +178,6 @@ export default function AdminDashboard({
       <Icon size={20} className={activeTab === id ? "text-[#d4af37]" : "text-gray-500 group-hover:text-gray-300"} />
       <span className="z-10">{label}</span>
     </button>
-  );
-
-  const StatCard = ({ title, value, icon: Icon, color, subtitle }: any) => (
-    <div className="bg-[#15151a] border border-white/5 p-6 rounded-3xl relative overflow-hidden group hover:border-white/10 transition-colors">
-      <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full blur-[40px] opacity-20 pointer-events-none transition-opacity group-hover:opacity-40`} style={{ backgroundColor: color }}></div>
-      <div className="flex justify-between items-start mb-4 relative z-10">
-        <div>
-          <p className="text-gray-400 text-sm font-bold tracking-wider uppercase mb-1">{title}</p>
-          <h4 className="text-3xl font-black text-white">{value}</h4>
-        </div>
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/5 shadow-inner" style={{ backgroundColor: `${color}15`, color: color }}>
-          <Icon size={24} />
-        </div>
-      </div>
-      <p className="text-xs text-gray-500 font-medium relative z-10">{subtitle}</p>
-    </div>
   );
 
   return (

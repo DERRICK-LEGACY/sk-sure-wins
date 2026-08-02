@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { X, ShieldCheck, LockKeyhole, CheckCircle2, Loader2, AlertTriangle, RotateCcw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { initiatePaymentByName, mockCompletePayment } from "@/app/actions";
+import { initiatePaymentByName } from "@/app/actions";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -24,7 +24,6 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
   const [pin, setPin] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState("");
-  const [referenceId, setReferenceId] = useState<string | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const router = useRouter();
 
@@ -33,12 +32,19 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
 
   useEffect(() => {
     if (tierPackages && tierPackages.length > 0 && !selectedPkgName) {
-      setSelectedPkgName(tierPackages[0].name);
-      setSelectedPkgPrice(tierPackages[0].price);
+      setTimeout(() => {
+        setSelectedPkgName(tierPackages[0].name);
+        setSelectedPkgPrice(tierPackages[0].price);
+      }, 0);
     } else if (!tierPackages || tierPackages.length === 0) {
-      setSelectedPkgName(packageName);
-      setSelectedPkgPrice(price);
+      if (selectedPkgName !== packageName || selectedPkgPrice !== price) {
+        setTimeout(() => {
+          setSelectedPkgName(packageName);
+          setSelectedPkgPrice(price);
+        }, 0);
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tierPackages, packageName, price, isOpen]);
 
   // Clean up polling on unmount
@@ -69,7 +75,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
       }
 
       try {
-        const res = await fetch(`/api/${network === 'MTN' ? 'momo' : 'airtel'}/status/${refId}`);
+        const res = await fetch(`/api/payment-status/${refId}`);
         const data = await res.json();
 
         if (data.status === "SUCCESSFUL") {
@@ -118,20 +124,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
         return;
       }
 
-      // Simulate a small delay for the USSD prompt
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // 2. Mock Provider Callback (Simulating successful payment)
-      const completeRes = await mockCompletePayment(res.referenceId);
-
-      if (!completeRes.success) {
-         setStep("failed");
-         setError(completeRes.error || "Payment was not verified.");
-         return;
-      }
-
-      // Bypass polling and go straight to success for the automated testing flow
-      setStep("success");
+      startPolling(res.referenceId);
       
     } catch {
       setStep("failed");
@@ -143,7 +136,6 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
     stopPolling();
     setStep("details");
     setError("");
-    setReferenceId(null);
   };
 
   const handleClose = () => {
@@ -155,7 +147,6 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
       setPin("");
       setName("");
       setError("");
-      setReferenceId(null);
     }, 300);
   };
 

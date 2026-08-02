@@ -4,6 +4,7 @@ import { useState } from "react";
 import { LockKeyhole, ArrowRight } from "lucide-react";
 import { loginAdmin } from "@/app/actions";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function AdminLogin() {
   const [password, setPassword] = useState("");
@@ -69,7 +70,7 @@ export default function AdminLogin() {
         </form>
 
         <div className="mt-8 text-center relative z-10">
-          <a href="/" className="text-gray-500 hover:text-gray-400 text-sm">Return to Homepage</a>
+          <Link href="/" className="text-gray-500 hover:text-gray-400 text-sm">Return to Homepage</Link>
         </div>
       </div>
     </div>

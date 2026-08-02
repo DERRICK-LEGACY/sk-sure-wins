@@ -9,7 +9,7 @@ import crypto from 'crypto';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import bcrypt from 'bcryptjs';
-
+import { sendTelegramNotification } from '@/lib/notifications';
 const VIP_COOKIE = "sk_vip_session";
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
@@ -75,9 +75,10 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
   }
 
   // 2. Create the pending Order (Transaction)
+  const referenceId = crypto.randomUUID();
   const order = await prisma.order.create({
     data: {
-      referenceId: `TXN_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+      referenceId,
       amount: pkg.price,
       phone: normalized,
       status: 'PENDING',
@@ -85,6 +86,36 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
       userId: user.id
     }
   });
+
+  // 3. Call MarzPay to initiate collection
+  const auth = Buffer.from(`${process.env.MARZPAY_API_KEY}:${process.env.MARZPAY_API_SECRET}`).toString('base64');
+  
+  try {
+    const res = await fetch(`${process.env.MARZPAY_API_BASE}/collect-money`, {
+      method: 'POST',
+      headers: { 
+        'Authorization': `Basic ${auth}`, 
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify({
+        amount: pkg.price,
+        phone_number: normalized,
+        reference: referenceId,
+        country: 'UG',
+        description: `SK Sure Wins VIP - ${pkg.name}`,
+        callback_url: process.env.MARZPAY_CALLBACK_URL,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      console.error('MarzPay Error:', err);
+      return { success: false, error: "Failed to initiate payment. Please try again." };
+    }
+  } catch (error) {
+    console.error('MarzPay Request Failed:', error);
+    return { success: false, error: "Payment gateway error. Please try again." };
+  }
 
   return { success: true, referenceId: order.referenceId };
 }
@@ -485,6 +516,11 @@ export async function addTicket(formData: FormData) {
   });
 
   await logAudit('ADD_TICKET', { ticketId: ticket.id });
+
+  if (pkg) {
+    await sendTelegramNotification(`🚨 <b>New VIP Ticket Added!</b>\n\nPackage: ${pkg.name}\nOdds: ${oddsTotal || 'TBA'}\nCheck your dashboard now!`);
+  }
+
   revalidatePath('/admin');
   revalidatePath('/vip-dashboard');
   return { success: true };

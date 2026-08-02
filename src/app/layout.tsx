@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
+import { Preloader } from "@/components/Preloader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -16,6 +17,13 @@ export const metadata: Metadata = {
   title: "SK Sure Wins | Uganda's #1 Premium Betting Tips",
   description: "Join 50,000+ happy subscribers winning daily with SK Sure Wins. Get verified Bronze, Silver, Gold & Premium VIP betting tips delivered straight to your phone. 95% win rate. Munakapapula!",
   keywords: ["betting tips", "Uganda betting", "VIP tips", "SK Sure Wins", "football predictions", "sure wins", "Munakapapula", "sports betting Uganda"],
+  manifest: "/manifest.json",
+  themeColor: "#000000",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "SK Sure Wins",
+  },
   openGraph: {
     title: "SK Sure Wins — Munakapapula 🏆",
     description: "Uganda's Most Trusted Tipster. 95% Win Rate. Join the winning team today!",
@@ -42,6 +50,7 @@ export default function RootLayout({
       className={`${inter.variable} ${outfit.variable} h-full antialiased overflow-x-hidden`}
     >
       <body className="w-full max-w-[100vw] min-h-full flex flex-col font-sans bg-background text-foreground relative overflow-x-hidden">
+        <Preloader />
         {children}
       </body>
     </html>

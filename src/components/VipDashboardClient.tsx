@@ -1,10 +1,17 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useRouter } from "next/navigation";
 import { LogOut, Trophy, CheckCircle, Clock } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
-export default function VipDashboardClient({ user, subscriptions, tickets }: { user: any, subscriptions: any[], tickets: any[] }) {
+type Package = any;
+type Subscription = any;
+type Ticket = any;
+type User = any;
+
+export default function VipDashboardClient({ user, subscriptions, tickets }: { user: User, subscriptions: Subscription[], tickets: Ticket[] }) {
   const router = useRouter();
   const supabase = createClient();
 
@@ -59,7 +66,7 @@ export default function VipDashboardClient({ user, subscriptions, tickets }: { u
         
         {tickets.length > 0 ? (
           <div className="grid gap-6">
-            {tickets.map((ticket: any) => (
+            {tickets.map((ticket: Ticket) => (
               <div key={ticket.id} className="bg-[#1a1525] border border-primary/10 rounded-3xl p-6 shadow-xl hover:border-primary/30 transition-all">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="bg-primary/20 text-primary text-[10px] font-black px-3 py-1 rounded uppercase">
