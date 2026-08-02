@@ -3,6 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { Preloader } from "@/components/Preloader";
 import { PWA } from "@/components/PWA";
+import { InstallPWA } from "@/components/InstallPWA";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -52,6 +53,7 @@ export default function RootLayout({
     >
       <body className="w-full max-w-[100vw] min-h-full flex flex-col font-sans bg-background text-foreground relative overflow-x-hidden">
         <PWA />
+        <InstallPWA />
         <Preloader />
         {children}
       </body>
