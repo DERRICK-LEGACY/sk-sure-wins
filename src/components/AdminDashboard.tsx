@@ -2,12 +2,12 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { 
   updateFreeHook, addWonTicket, deleteWonTicket, addClientWithSubscription, deleteClient, completelyDeleteClient,
   editFreeHook, editWonTicket, deleteFreeHook, addTicket, 
   editTicket, deleteTicket, logoutAdmin, approveTestimonial, 
-  deleteTestimonial, updateAdminCredentials 
+  deleteTestimonial, updateAdminCredentials, extendAdminSession
 } from "@/app/actions";
 import { 
   Search, UserCheck, UserX, Edit2, Trash2, X, Plus, 
@@ -73,6 +73,32 @@ export default function AdminDashboard({
   const [activeTab, setActiveTab] = useState("dashboard");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
+
+  // Session Keep-Alive
+  const lastActivity = useRef(Date.now());
+  
+  useEffect(() => {
+    const updateActivity = () => { lastActivity.current = Date.now(); };
+    window.addEventListener("mousemove", updateActivity);
+    window.addEventListener("keydown", updateActivity);
+    window.addEventListener("touchstart", updateActivity);
+    window.addEventListener("scroll", updateActivity);
+
+    const interval = setInterval(() => {
+      // If active in the last 5 minutes, extend the session
+      if (Date.now() - lastActivity.current < 5 * 60 * 1000) {
+        extendAdminSession().catch(console.error);
+      }
+    }, 4 * 60 * 1000); // Check every 4 minutes
+
+    return () => {
+      window.removeEventListener("mousemove", updateActivity);
+      window.removeEventListener("keydown", updateActivity);
+      window.removeEventListener("touchstart", updateActivity);
+      window.removeEventListener("scroll", updateActivity);
+      clearInterval(interval);
+    };
+  }, []);
 
   // Search & Edit States
   const [userSearch, setUserSearch] = useState("");
