@@ -88,9 +88,20 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
   });
 
   // 3. Call MarzPay to initiate collection
-  const auth = Buffer.from(`${process.env.MARZPAY_API_KEY}:${process.env.MARZPAY_API_SECRET}`).toString('base64');
-  const apiBase = process.env.MARZPAY_API_BASE || 'https://wallet.wearemarz.com/api/v1';
-  const callbackUrl = process.env.MARZPAY_CALLBACK_URL || 'https://sk-sure-wins.vercel.app/api/webhooks/marzpay';
+  const apiKey = (process.env.MARZPAY_API_KEY || '').trim();
+  const apiSecret = (process.env.MARZPAY_API_SECRET || '').trim();
+  
+  if (!apiKey || !apiSecret) {
+    return { success: false, error: "MarzPay API Keys are missing in Vercel Production environment." };
+  }
+
+  if (pkg.price < 500) {
+    return { success: false, error: "Minimum amount for mobile money is 500 UGX." };
+  }
+
+  const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
+  const apiBase = (process.env.MARZPAY_API_BASE || 'https://wallet.wearemarz.com/api/v1').trim();
+  const callbackUrl = (process.env.MARZPAY_CALLBACK_URL || 'https://sk-sure-wins.vercel.app/api/webhooks/marzpay').trim();
   
   try {
     const res = await fetch(`${apiBase}/collect-money`, {
@@ -104,19 +115,24 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
         phone_number: normalized.replace('+', ''),
         reference: referenceId,
         country: 'UG',
-        description: `SK Sure Wins VIP - ${pkg.name}`,
+        description: `SK Sure Wins VIP - ${pkg.name.substring(0, 20)}`,
         callback_url: callbackUrl,
       }),
     });
 
     if (!res.ok) {
-      const err = await res.text();
-      console.error('MarzPay Error:', err);
-      return { success: false, error: "Failed to initiate payment. Please try again." };
+      const errText = await res.text();
+      console.error('MarzPay Error:', errText);
+      try {
+        const errJson = JSON.parse(errText);
+        return { success: false, error: errJson.message || "Payment rejected by gateway." };
+      } catch (e) {
+        return { success: false, error: "Failed to initiate payment." };
+      }
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('MarzPay Request Failed:', error);
-    return { success: false, error: "Payment gateway error. Please try again." };
+    return { success: false, error: "Payment gateway connection error." };
   }
 
   return { success: true, referenceId: order.referenceId };
