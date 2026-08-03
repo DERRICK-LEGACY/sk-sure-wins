@@ -89,9 +89,11 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
 
   // 3. Call MarzPay to initiate collection
   const auth = Buffer.from(`${process.env.MARZPAY_API_KEY}:${process.env.MARZPAY_API_SECRET}`).toString('base64');
+  const apiBase = process.env.MARZPAY_API_BASE || 'https://wallet.wearemarz.com/api/v1';
+  const callbackUrl = process.env.MARZPAY_CALLBACK_URL || 'https://sk-sure-wins.vercel.app/api/webhooks/marzpay';
   
   try {
-    const res = await fetch(`${process.env.MARZPAY_API_BASE}/collect-money`, {
+    const res = await fetch(`${apiBase}/collect-money`, {
       method: 'POST',
       headers: { 
         'Authorization': `Basic ${auth}`, 
@@ -103,7 +105,7 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
         reference: referenceId,
         country: 'UG',
         description: `SK Sure Wins VIP - ${pkg.name}`,
-        callback_url: process.env.MARZPAY_CALLBACK_URL,
+        callback_url: callbackUrl,
       }),
     });
 
