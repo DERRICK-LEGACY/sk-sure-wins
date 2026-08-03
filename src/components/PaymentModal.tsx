@@ -216,15 +216,18 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   <p className="text-center text-gray-400 mb-6 text-sm">Select your mobile money provider</p>
                   
                   <button
-                    disabled
-                    className="w-full flex items-center p-4 rounded-xl border border-yellow-400/10 bg-yellow-400/5 opacity-50 cursor-not-allowed group"
+                    onClick={() => {
+                      setNetwork("MTN");
+                      setStep("details");
+                    }}
+                    className="w-full flex items-center p-4 rounded-xl border border-yellow-400/30 bg-yellow-400/5 hover:bg-yellow-400/10 transition-colors group"
                   >
-                    <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-black font-black text-sm mr-4">
+                    <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-black font-black text-sm mr-4 group-hover:scale-105 transition-transform">
                       MTN
                     </div>
                     <div className="text-left flex-1">
                       <h4 className="text-white font-bold text-lg">MTN Mobile Money</h4>
-                      <p className="text-gray-400 text-xs">Coming Soon...</p>
+                      <p className="text-gray-400 text-xs">Pay with MTN Mobile Money</p>
                     </div>
                   </button>
 
