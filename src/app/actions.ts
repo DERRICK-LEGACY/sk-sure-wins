@@ -47,6 +47,11 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
         durationDays: 14 // Default to 14 days
       }
     });
+  } else if (pkg && priceAmount && pkg.price !== priceAmount) {
+    pkg = await prisma.package.update({
+      where: { id: pkg.id },
+      data: { price: priceAmount }
+    });
   }
 
   if (!pkg) return { success: false, error: "Invalid package selected." };
