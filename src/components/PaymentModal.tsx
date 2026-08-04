@@ -63,14 +63,14 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
 
   const startPolling = useCallback((refId: string) => {
     let attempts = 0;
-    const maxAttempts = 60; // Poll for max 5 minutes (5s interval)
+    const maxAttempts = 12; // Poll for max 60 seconds (5s interval)
 
     pollRef.current = setInterval(async () => {
       attempts++;
       if (attempts > maxAttempts) {
         stopPolling();
         setStep("failed");
-        setError("Payment timed out. If money was deducted, please contact support.");
+        setError("Payment timed out. This often happens if you have insufficient funds or didn't enter your PIN. Please check your balance and try again.");
         return;
       }
 
