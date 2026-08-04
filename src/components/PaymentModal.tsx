@@ -228,8 +228,8 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     }}
                     className="w-full flex items-center p-4 rounded-xl border border-yellow-400/30 bg-yellow-400/5 hover:bg-yellow-400/10 transition-colors group"
                   >
-                    <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-black font-black text-sm mr-4 group-hover:scale-105 transition-transform">
-                      MTN
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-white">
+                      <img src="/mtn.png" alt="MTN" className="w-full h-full object-contain p-1" />
                     </div>
                     <div className="text-left flex-1">
                       <h4 className="text-white font-bold text-lg">MTN Mobile Money</h4>
@@ -244,8 +244,8 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     }}
                     className="w-full flex items-center p-4 rounded-xl border border-red-500/30 bg-red-500/5 hover:bg-red-500/10 transition-colors group"
                   >
-                    <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-black text-sm mr-4 group-hover:scale-105 transition-transform">
-                      AIRTEL
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-white">
+                      <img src="/airtel.png" alt="Airtel" className="w-full h-full object-contain p-1" />
                     </div>
                     <div className="text-left">
                       <h4 className="text-white font-bold text-lg">Airtel Money</h4>
@@ -268,12 +268,16 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   <div className="flex items-center justify-center gap-3 mb-2">
                     {network === "MTN" ? (
                       <div className="flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 px-4 py-2 rounded-xl">
-                        <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-black font-black text-[10px]">MTN</div>
+                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-white">
+                          <img src="/mtn.png" alt="MTN" className="w-full h-full object-contain p-0.5" />
+                        </div>
                         <span className="text-yellow-400 font-bold text-sm">MTN Mobile Money</span>
                       </div>
                     ) : (
                       <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 px-4 py-2 rounded-xl">
-                        <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white font-black text-[10px]">AIRTEL</div>
+                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-white">
+                          <img src="/airtel.png" alt="Airtel" className="w-full h-full object-contain p-0.5" />
+                        </div>
                         <span className="text-red-500 font-bold text-sm">Airtel Money</span>
                       </div>
                     )}

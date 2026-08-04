@@ -651,7 +651,7 @@ export async function getClientsWithSubscriptions() {
   if (!isAuthed) return [];
   
   return await prisma.user.findMany({
-    where: { role: 'CLIENT' },
+    where: { role: 'CLIENT', status: 'ACTIVE' },
     include: {
       subscriptions: {
         include: { package: true }
