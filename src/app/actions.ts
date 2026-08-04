@@ -213,11 +213,6 @@ export async function logoutVip() {
   return { success: true };
 }
 
-export async function logoutVip() {
-  const cookieStore = await cookies();
-  cookieStore.delete(VIP_COOKIE);
-  return { success: true };
-}
 
 // ========== STRICT ENTITLEMENT TICKET FETCHING ==========
 
