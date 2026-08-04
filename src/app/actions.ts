@@ -116,7 +116,7 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
       },
       body: JSON.stringify({
         amount: pkg.price,
-        phone_number: normalized.replace('+', ''),
+        phone_number: normalized,
         reference: referenceId,
         country: 'UG',
         description: `SK Sure Wins VIP - ${pkg.name.substring(0, 20)}`,
@@ -129,7 +129,12 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
       console.error('MarzPay Error:', errText);
       try {
         const errJson = JSON.parse(errText);
-        return { success: false, error: errJson.message || "Payment rejected by gateway." };
+        let errorMessage = errJson.message || "Payment rejected by gateway.";
+        if (errJson.errors) {
+          const details = Object.values(errJson.errors).flat().join(" ");
+          errorMessage += " " + details;
+        }
+        return { success: false, error: errorMessage };
       } catch (e) {
         return { success: false, error: "Failed to initiate payment." };
       }
