@@ -81,6 +81,17 @@ export async function POST(req: Request) {
       
       // Notify Admin
       await sendTelegramNotification(`💰 <b>New VIP Payment!</b>\n\nPackage: ${order.package?.name}\nAmount: ${order.amount} UGX\nPhone: ${order.phone}`);
+    } else if (payload.event_type === 'collection.failed' || payload.transaction?.status === 'failed') {
+      const referenceId = payload.transaction?.reference;
+      if (referenceId) {
+        const order = await prisma.order.findUnique({ where: { referenceId } });
+        if (order && order.status !== 'COMPLETED') {
+          await prisma.order.update({
+            where: { id: order.id },
+            data: { status: 'FAILED' }
+          });
+        }
+      }
     }
 
     return NextResponse.json({ success: true }, { status: 200 });

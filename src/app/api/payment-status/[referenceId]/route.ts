@@ -16,7 +16,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ referenc
     if (order.status === 'COMPLETED') {
       return NextResponse.json({ status: 'SUCCESSFUL' });
     } else if (order.status === 'FAILED') {
-      return NextResponse.json({ status: 'FAILED', reason: 'Payment failed' });
+      return NextResponse.json({ status: 'FAILED', reason: 'Payment failed due to insufficient funds or cancelled prompt. Please verify your balance and try again.' });
     } else {
       return NextResponse.json({ status: 'PENDING' });
     }
