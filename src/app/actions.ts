@@ -6,8 +6,7 @@ import { cookies } from 'next/headers';
 import { normalizePhone, sanitizeText, validatePhone } from '@/lib/validation';
 import { SignJWT, jwtVerify } from 'jose';
 import crypto from 'crypto';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { put } from '@vercel/blob';
 import bcrypt from 'bcryptjs';
 import { sendTelegramNotification } from '@/lib/notifications';
 const VIP_COOKIE = "sk_vip_session";
@@ -143,50 +142,6 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
   return { success: true, referenceId: order.referenceId };
 }
 
-export async function mockCompletePayment(referenceId: string) {
-  const order = await prisma.order.findUnique({ where: { referenceId }, include: { package: true } });
-  if (!order || order.status !== 'PENDING') return { success: false, error: "Invalid or already processed order." };
-
-  // 1. Mark order as COMPLETED
-  await prisma.order.update({
-    where: { id: order.id },
-    data: { status: 'COMPLETED' }
-  });
-
-  // 2. Activate Subscription for 14 days
-  const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + (order.package?.durationDays || 14));
-
-  // Upsert subscription so they don't get duplicates of the same package
-  const existingSub = await prisma.subscription.findFirst({
-    where: { userId: order.userId!, packageId: order.packageId! }
-  });
-
-  if (existingSub) {
-    await prisma.subscription.update({
-      where: { id: existingSub.id },
-      data: { status: 'ACTIVE', expiresAt }
-    });
-  } else {
-    await prisma.subscription.create({
-      data: {
-        userId: order.userId!,
-        packageId: order.packageId!,
-        status: 'ACTIVE',
-        expiresAt
-      }
-    });
-  }
-
-  // 3. Update User status to ACTIVE
-  await prisma.user.update({
-    where: { id: order.userId! },
-    data: { status: 'ACTIVE' }
-  });
-
-  return { success: true };
-}
-
 // ========== VIP AUTHENTICATION & SESSION MANAGEMENT ==========
 
 export async function verifyVipLogin(phone: string, pin: string) {
@@ -250,6 +205,12 @@ export async function getVipSession() {
   } catch {
     return null;
   }
+}
+
+export async function logoutVip() {
+  const cookieStore = await cookies();
+  cookieStore.delete(VIP_COOKIE);
+  return { success: true };
 }
 
 export async function logoutVip() {
@@ -514,16 +475,10 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
   }
   
   try {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-    const uploadDir = join(process.cwd(), 'public', 'uploads');
-    
-    await mkdir(uploadDir, { recursive: true });
-    await writeFile(join(uploadDir, filename), buffer);
-    
-    return `/uploads/${filename}`;
+    const blob = await put(file.name, file, { access: 'public' });
+    return blob.url;
   } catch (error) {
-    console.error("Error saving image", error);
+    console.error("Vercel Blob upload error", error);
     return "https://via.placeholder.com/600x400?text=Upload+Failed";
   }
 }

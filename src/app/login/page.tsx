@@ -212,104 +212,20 @@ export default function LoginPage() {
                 <X size={20} />
               </button>
 
-              <h2 className="text-xl font-bold text-white mb-6 text-center">Reset PIN</h2>
-
-              {forgotStep === "phone" && (
-                <div className="space-y-4">
-                  <div className="flex justify-center mb-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Phone className="text-primary" size={24} />
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-400 text-center mb-4">Enter your registered phone number to receive a verification code.</p>
-                  <div>
-                    <div className="flex bg-black/50 border border-white/10 rounded-xl overflow-hidden focus-within:border-primary">
-                      <input
-                        type="tel"
-                        placeholder="07XX XXX XXX"
-                        className="w-full bg-transparent px-4 py-3 outline-none text-white text-center"
-                        value={resetPhone}
-                        onChange={(e) => setResetPhone(e.target.value.replace(/[^0-9]/g, ''))}
-                        maxLength={10}
-                      />
-                    </div>
-                  </div>
-                  {forgotError && <p className="text-xs text-red-400 text-center">{forgotError}</p>}
-                  <button 
-                    onClick={handleSendCode}
-                    disabled={forgotLoading || resetPhone.length < 10}
-                    className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold disabled:opacity-50 flex justify-center items-center"
-                  >
-                    {forgotLoading ? <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div> : "Send Code"}
-                  </button>
-                </div>
-              )}
-
-              {forgotStep === "code" && (
-                <div className="space-y-4">
-                  <div className="flex justify-center mb-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <ShieldCheck className="text-primary" size={24} />
-                    </div>
-                  </div>
-                  <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg mb-4">
-                    <p className="text-xs text-yellow-400 text-center">
-                      (Mock Mode: Since real SMS costs money, please just enter <strong>1234</strong> to simulate verifying your phone.)
-                    </p>
-                  </div>
-                  <p className="text-sm text-gray-400 text-center mb-4">Enter the 4-digit code sent to {resetPhone}</p>
-                  <div>
-                    <div className="flex bg-black/50 border border-white/10 rounded-xl overflow-hidden focus-within:border-primary">
-                      <input
-                        type="text"
-                        placeholder="••••"
-                        className="w-full bg-transparent px-4 py-3 outline-none text-white text-center tracking-widest text-lg"
-                        value={resetCode}
-                        onChange={(e) => setResetCode(e.target.value.replace(/[^0-9]/g, ''))}
-                        maxLength={4}
-                      />
-                    </div>
-                  </div>
-                  {forgotError && <p className="text-xs text-red-400 text-center">{forgotError}</p>}
-                  <button 
-                    onClick={handleVerifyCode}
-                    className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold flex justify-center items-center"
-                  >
-                    Verify Code
-                  </button>
-                </div>
-              )}
-
-              {forgotStep === "new_pin" && (
-                <div className="space-y-4">
-                  <div className="flex justify-center mb-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <KeyRound className="text-primary" size={24} />
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-400 text-center mb-4">Create your new 4-digit login PIN.</p>
-                  <div>
-                    <div className="flex bg-black/50 border border-white/10 rounded-xl overflow-hidden focus-within:border-primary">
-                      <input
-                        type="password"
-                        placeholder="••••"
-                        className="w-full bg-transparent px-4 py-3 outline-none text-white text-center tracking-widest text-lg"
-                        value={newPin}
-                        onChange={(e) => setNewPin(e.target.value.replace(/[^0-9]/g, ''))}
-                        maxLength={4}
-                      />
-                    </div>
-                  </div>
-                  {forgotError && <p className="text-xs text-red-400 text-center">{forgotError}</p>}
-                  <button 
-                    onClick={handleSaveNewPin}
-                    disabled={forgotLoading || newPin.length < 4}
-                    className="w-full py-3 mt-2 rounded-xl bg-primary text-black font-bold disabled:opacity-50 flex justify-center items-center"
-                  >
-                    {forgotLoading ? <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div> : "Save New PIN"}
-                  </button>
-                </div>
-              )}
+              <div className="text-center mt-6">
+                <p className="text-gray-400 mb-6">
+                  To ensure account security, PIN resets are handled manually by our support team.
+                </p>
+                <p className="text-white font-bold mb-6">
+                  Please contact support on Telegram to reset your PIN.
+                </p>
+                <button
+                  onClick={() => setShowForgotModal(false)}
+                  className="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-xl font-bold transition-colors"
+                >
+                  Close
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}

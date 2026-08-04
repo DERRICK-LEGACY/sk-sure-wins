@@ -4,7 +4,7 @@
 
 import { useRouter } from "next/navigation";
 import { LogOut, Trophy, CheckCircle, Clock } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { logoutVip } from "@/app/actions";
 
 type Package = any;
 type Subscription = any;
@@ -13,10 +13,8 @@ type User = any;
 
 export default function VipDashboardClient({ user, subscriptions, tickets }: { user: User, subscriptions: Subscription[], tickets: Ticket[] }) {
   const router = useRouter();
-  const supabase = createClient();
-
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await logoutVip();
     router.push("/login");
     router.refresh();
   };
