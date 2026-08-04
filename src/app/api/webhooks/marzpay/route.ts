@@ -1,10 +1,30 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 import { sendTelegramNotification } from '@/lib/notifications';
+import crypto from 'crypto';
 
 export async function POST(req: Request) {
   try {
-    const payload = await req.json();
+    const rawBody = await req.text();
+    const payload = JSON.parse(rawBody);
+
+    const secret = process.env.MARZPAY_WEBHOOK_SECRET;
+    if (secret) {
+      const signatureHeader = req.headers.get('X-MarzPay-Signature');
+      if (!signatureHeader) {
+        return NextResponse.json({ error: "Missing signature header" }, { status: 401 });
+      }
+
+      const expectedSignature = crypto
+        .createHmac('sha256', secret)
+        .update(rawBody)
+        .digest('hex');
+
+      if (signatureHeader !== expectedSignature) {
+        console.error('Webhook signature mismatch!', { expected: expectedSignature, received: signatureHeader });
+        return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+      }
+    }
 
     if (payload.event_type === 'collection.completed' && payload.transaction?.status === 'completed') {
       const referenceId = payload.transaction.reference;
