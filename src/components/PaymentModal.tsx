@@ -113,7 +113,13 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
     setStep("processing");
 
     try {
-      const numericAmount = parseInt(selectedPkgPrice.replace(/,/g, ''), 10);
+      let numericAmount = 0;
+      const cleanPrice = selectedPkgPrice.replace(/,/g, '').toLowerCase().trim();
+      if (cleanPrice.endsWith('k')) {
+        numericAmount = parseFloat(cleanPrice.replace('k', '')) * 1000;
+      } else {
+        numericAmount = parseInt(cleanPrice, 10);
+      }
 
       // 1. Quietly create pending account and order
       const res = await initiatePaymentByName(phone, selectedPkgName, pin, name.trim(), numericAmount);
