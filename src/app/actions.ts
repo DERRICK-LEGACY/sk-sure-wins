@@ -319,9 +319,21 @@ export async function getAdminPassword() {
   return admin?.pin || process.env.ADMIN_PASSWORD || "SK2026!";
 }
 
+const loginAttempts = new Map<string, { count: number, lockedUntil: number }>();
+
 export async function loginAdmin(password: string) {
+  const ip = "admin-login"; // In server actions, getting IP is tricky without passing headers, using global key for now
+  const now = Date.now();
+  const attempt = loginAttempts.get(ip) || { count: 0, lockedUntil: 0 };
+
+  if (now < attempt.lockedUntil) {
+    const waitTime = Math.ceil((attempt.lockedUntil - now) / 1000 / 60);
+    return { success: false, error: `Too many attempts. Try again in ${waitTime} minutes.` };
+  }
+
   const currentPassword = await getAdminPassword();
   if (password === currentPassword) {
+    loginAttempts.delete(ip);
     const token = await new SignJWT({ role: 'admin' })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
@@ -336,6 +348,15 @@ export async function loginAdmin(password: string) {
     await logAudit('LOGIN', { status: 'SUCCESS' });
     return { success: true };
   }
+
+  // Failed attempt
+  attempt.count += 1;
+  if (attempt.count >= 5) {
+    attempt.lockedUntil = now + 15 * 60 * 1000; // Lock for 15 mins
+    attempt.count = 0; // Reset count for next time
+  }
+  loginAttempts.set(ip, attempt);
+
   await logAudit('LOGIN', { status: 'FAILED' });
   return { success: false, error: "Incorrect password." };
 }
