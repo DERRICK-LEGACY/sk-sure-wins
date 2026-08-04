@@ -320,13 +320,14 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   <div>
                     <label className="block text-xs font-bold mb-2 text-gray-400 uppercase tracking-widest">{network} Phone Number</label>
                     <div className="flex bg-black/50 border border-white/10 rounded-xl overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+                      <span className="flex items-center pl-5 pr-2 text-gray-400 font-bold text-lg border-r border-white/10 bg-white/5">+256</span>
                       <input
                         type="tel"
-                        placeholder={network === "MTN" ? "+256 770 000 000" : "+256 750 000 000"}
-                        className="w-full bg-transparent px-5 py-3.5 outline-none text-lg tracking-wide text-white"
+                        placeholder={network === "MTN" ? "770 000 000" : "750 000 000"}
+                        className="w-full bg-transparent px-4 py-3.5 outline-none text-lg tracking-wide text-white"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value.replace(/[^0-9+ ]/g, ''))}
-                        maxLength={16}
+                        onChange={(e) => setPhone(e.target.value.replace(/[^0-9 ]/g, ''))}
+                        maxLength={12}
                       />
                     </div>
                     <p className="text-[11px] text-gray-500 mt-2">Ensure this number is registered on {network === "MTN" ? "MTN Mobile Money" : "Airtel Money"}</p>
