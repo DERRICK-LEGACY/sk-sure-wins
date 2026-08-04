@@ -116,7 +116,7 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
       },
       body: JSON.stringify({
         amount: pkg.price,
-        phone_number: normalized,
+        phone_number: normalized.replace('+', ''),
         reference: referenceId,
         country: 'UG',
         description: `SK Sure Wins VIP - ${pkg.name.substring(0, 20)}`,
