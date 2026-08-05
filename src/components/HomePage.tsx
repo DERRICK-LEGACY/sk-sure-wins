@@ -198,10 +198,13 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
 
               <div className="mt-8 w-full text-center">
                 <h3 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#ffef96] to-[#d4af37] tracking-widest uppercase mb-1">GOLD VIP</h3>
-                <p className="text-gray-400 text-sm font-medium mb-6">1 Month Subscription</p>
+                <p className="text-gray-400 text-sm font-medium mb-6">Monthly Subscription</p>
               </div>
 
               <div className="w-full bg-black/40 rounded-2xl p-3 mb-4 text-left border border-white/5 backdrop-blur-md flex-1">
+                {renderPackageBtn("Gold: Akatafa/Akatemu", "50k", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: SK Counter Attack", "350k", "SK Counter Attack", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: Account Management", "500k", "Account Management", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: FAMILY", "80k", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: BIG STAKERS", "100k", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: ALL PACKAGES", "300k", "ALL PACKAGES", "text-accent", "bg-accent")}
