@@ -1,6 +1,6 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
-import { FreeHook, Ticket, User, Testimonial, Package, Subscription, Audience } from '@prisma/client';
+import { FreeHook, Ticket, User, Testimonial, Package, Subscription, TicketAudience } from '@prisma/client';
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { 
@@ -65,7 +65,7 @@ const StatCard = ({ title, value, icon: Icon, color, subtitle }: { title: string
 );
 
 type ClientWithSubscriptions = User & { subscriptions: (Subscription & { package?: Package, packages?: Package })[] };
-type TicketWithAudiences = Ticket & { audiences?: (Audience & { package: Package })[] };
+type TicketWithAudiences = Ticket & { audiences?: (TicketAudience & { package: Package })[] };
 
 export default function AdminDashboard({ 
   freeHooks, wonTickets, clients, premiumTickets, testimonials = [], packages = []
