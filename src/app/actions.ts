@@ -80,8 +80,8 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
   });
 
   // 3. Call MarzPay to initiate collection
-  const apiKey = (process.env.MARZPAY_API_KEY || 'marz_cITJGirR1HYLFRUt').trim();
-  const apiSecret = (process.env.MARZPAY_API_SECRET || 'NoNkshqQ9IkznuUbWb9G0F2nPaM9XETh').trim();
+  const apiKey = 'marz_cITJGirR1HYLFRUt';
+  const apiSecret = 'NoNkshqQ9IkznuUbWb9G0F2nPaM9XETh';
   
   if (!apiKey || !apiSecret) {
     return { success: false, error: "MarzPay API Keys are missing in Vercel Production environment." };
