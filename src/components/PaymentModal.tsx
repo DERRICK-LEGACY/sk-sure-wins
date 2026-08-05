@@ -123,7 +123,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
       }
 
       // 1. Quietly create pending account and order
-      const res = await initiatePaymentByName(phone, selectedPkgName, pin, name.trim(), numericAmount);
+      const res = await initiatePaymentByName(phone, selectedPkgName, pin, name.trim());
 
       if (!res.success || !res.referenceId) {
         setStep("failed");

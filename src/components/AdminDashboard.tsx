@@ -473,11 +473,11 @@ export default function AdminDashboard({
                       </div>
                       <div>
                          <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Booking Code (Optional)</label>
-                         <input name="booking_code" type="text" defaultValue={editingPremium?.bookingCode} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none" />
+                         <input name="booking_code" type="text" defaultValue={editingPremium?.bookingCode || ""} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none" />
                       </div>
                       <div>
                          <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Total Odds (Optional)</label>
-                         <input name="odds_total" type="number" step="0.01" defaultValue={editingPremium?.oddsTotal} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none" />
+                         <input name="odds_total" type="number" step="0.01" defaultValue={editingPremium?.oddsTotal || ""} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none" />
                       </div>
                       <div>
                          <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Match Time (Optional)</label>
@@ -512,7 +512,7 @@ export default function AdminDashboard({
                       {t.imageUrl && <img src={t.imageUrl} alt="Slip" className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
-                          <span className="inline-block bg-[#d4af37]/10 text-[#d4af37] text-xs font-black px-3 py-1 rounded mb-3 uppercase tracking-wider">{t.packages?.name || t.audiences?.[0]?.package?.name}</span>
+                          <span className="inline-block bg-[#d4af37]/10 text-[#d4af37] text-xs font-black px-3 py-1 rounded mb-3 uppercase tracking-wider">{t.audiences?.[0]?.package?.name}</span>
                           <p className="text-gray-400 text-sm mb-4">Uploaded: {new Date(t.createdAt).toLocaleDateString()}</p>
                           {t.bookingCode && <p className="font-mono text-white mb-1">Code: {t.bookingCode}</p>}
                           {t.oddsTotal && <p className="text-green-400 font-bold mb-1">Odds: {t.oddsTotal}</p>}
@@ -579,13 +579,13 @@ export default function AdminDashboard({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                          <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Description (Optional)</label>
-                         <input name="description" type="text" defaultValue={editingFree?.description} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none" placeholder="e.g., Today's Free Treble" />
+                         <input name="description" type="text" defaultValue={editingFree?.description || ""} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none" placeholder="e.g., Today's Free Treble" />
                       </div>
                       <div>
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Ticket Image</label>
                         {editingFree && editingFree.imageUrl && (
                           <div className="mb-3 relative rounded-xl overflow-hidden border border-white/10 w-fit">
-                            <img src={editingFree.imageUrl || editingFree.image_url} alt="Current Slip" className="h-24 w-auto object-cover opacity-70" />
+                            <img src={editingFree.imageUrl} alt="Current Slip" className="h-24 w-auto object-cover opacity-70" />
                           </div>
                         )}
                         <input name="image" type="file" accept="image/*" required={!editingFree} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-[#d4af37]/10 file:text-[#d4af37] hover:file:bg-[#d4af37]/20" />
@@ -603,7 +603,7 @@ export default function AdminDashboard({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {freeHooks.map((t) => (
                     <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl overflow-hidden shadow-xl flex flex-col">
-                      {(t.imageUrl || t.image_url) && <img src={t.imageUrl || t.image_url} alt="Slip" className="w-full h-48 object-cover border-b border-white/5" />}
+                      {t.imageUrl && <img src={t.imageUrl} alt="Slip" className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
                           <p className="text-gray-400 text-sm mb-4">Uploaded: {new Date(t.createdAt).toLocaleDateString()}</p>
@@ -638,13 +638,13 @@ export default function AdminDashboard({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                          <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Description (Optional)</label>
-                         <input name="description" type="text" defaultValue={editingWon?.bookingCode || editingWon?.description} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none" placeholder="e.g., Massive WIN!" />
+                         <input name="description" type="text" defaultValue={editingWon?.bookingCode || ""} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none" placeholder="e.g., Massive WIN!" />
                       </div>
                       <div>
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Ticket Image</label>
                         {editingWon && editingWon.imageUrl && (
                           <div className="mb-3 relative rounded-xl overflow-hidden border border-white/10 w-fit">
-                            <img src={editingWon.imageUrl || editingWon.image_url} alt="Current Slip" className="h-24 w-auto object-cover opacity-70" />
+                            <img src={editingWon.imageUrl} alt="Current Slip" className="h-24 w-auto object-cover opacity-70" />
                           </div>
                         )}
                         <input name="image" type="file" accept="image/*" required={!editingWon} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-[#d4af37]/10 file:text-[#d4af37] hover:file:bg-[#d4af37]/20" />
@@ -662,11 +662,11 @@ export default function AdminDashboard({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {wonTickets.map((t) => (
                     <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl overflow-hidden shadow-xl flex flex-col">
-                      {(t.imageUrl || t.image_url) && <img src={t.imageUrl || t.image_url} alt="Slip" className="w-full h-48 object-cover border-b border-white/5" />}
+                      {t.imageUrl && <img src={t.imageUrl} alt="Slip" className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
                           <p className="text-gray-400 text-sm mb-4">Uploaded: {new Date(t.createdAt).toLocaleDateString()}</p>
-                          <p className="font-mono text-white mb-1">{t.bookingCode || t.description}</p>
+                          <p className="font-mono text-white mb-1">{t.bookingCode}</p>
                         </div>
                         <div className="flex gap-2 mt-4 pt-4 border-t border-white/5">
                           <button onClick={() => setEditingWon(t)} className="flex-1 bg-white/5 py-2 rounded-lg text-sm font-bold hover:bg-white/10 flex justify-center items-center gap-2">

@@ -61,7 +61,7 @@ export default function VipDashboardClient({ user, subscriptions, tickets }: { u
         
         {tickets.length > 0 ? (
           <div className="grid gap-6">
-            {tickets.map((ticket: Ticket) => (
+            {tickets.map((ticket: TicketWithPackage) => (
               <div key={ticket.id} className="bg-[#1a1525] border border-primary/10 rounded-3xl p-6 shadow-xl hover:border-primary/30 transition-all">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="bg-primary/20 text-primary text-[10px] font-black px-3 py-1 rounded uppercase">

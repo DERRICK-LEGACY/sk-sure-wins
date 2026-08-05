@@ -79,7 +79,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
             <div key={copy} className="marquee-content flex gap-12 shrink-0">
               {wonTickets.length > 0 ? (
                 wonTickets.map((ticket: WonTicket, i: number) => (
-                  <span key={i}>🔥 {ticket.description} 🔥</span>
+                  <span key={i}>🔥 {ticket.bookingCode || "MASSIVE WIN"} 🔥</span>
                 ))
               ) : (
                 <>
@@ -290,8 +290,8 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
           <div className="flex flex-col gap-4 flex-1">
             {freeHooks.slice(0, 2).map((hook: FreeHook) => (
               <div key={hook.id} className="bg-black/50 p-4 rounded-2xl border border-white/5 backdrop-blur flex flex-col gap-4">
-                {hook.image_url && (
-                  <Image src={hook.image_url} alt="Free Ticket" width={500} height={500} className="w-full h-auto rounded-xl border border-white/10 object-cover" />
+                {hook.imageUrl && (
+                  <Image src={hook.imageUrl} alt="Free Ticket" width={500} height={500} className="w-full h-auto rounded-xl border border-white/10 object-cover" />
                 )}
                 {hook.description && (
                   <div className="text-white text-lg font-bold">
@@ -319,11 +319,11 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
           <div className="flex flex-col gap-4 flex-1">
             {wonTickets.slice(-2).reverse().map((ticket: WonTicket) => (
               <div key={ticket.id} className="bg-black/60 p-4 rounded-xl border border-primary/10 flex flex-col sm:flex-row gap-4">
-                {ticket.image_url && (
-                  <Image src={ticket.image_url} alt="Receipt" width={500} height={500} className="w-full sm:w-24 h-24 object-cover rounded-lg border border-white/10 shrink-0" />
+                {ticket.imageUrl && (
+                  <Image src={ticket.imageUrl} alt="Receipt" width={500} height={500} className="w-full sm:w-24 h-24 object-cover rounded-lg border border-white/10 shrink-0" />
                 )}
                 <div className="flex-1 flex flex-col justify-center">
-                  <div className="text-white font-bold">{ticket.description}</div>
+                  <div className="text-white font-bold">{ticket.bookingCode || "WON"}</div>
                 </div>
               </div>
             ))}
