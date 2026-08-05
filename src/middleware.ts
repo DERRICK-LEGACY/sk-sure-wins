@@ -26,5 +26,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/vip-dashboard/:path*'],
+  matcher: ['/sk-admin-portal/:path*', '/vip-dashboard/:path*'],
 };
