@@ -178,8 +178,8 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
               </div>
 
               <div className="w-full bg-black/40 rounded-2xl p-3 mb-4 text-left border border-white/5 backdrop-blur-md flex-1">
+                {renderPackageBtn("Silver: VIP", "50k", "VIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
                 {renderPackageBtn("Silver: ODD 8-10", "60k", "ODD 8-10", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
-                {renderPackageBtn("Silver: PROBLEM SOLVER", "70k", "PROBLEM SOLVER", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
                 {renderPackageBtn("Silver: ODD 20", "100k", "ODD 20", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
                 {renderPackageBtn("Silver: AKATAMBULA", "50k", "AKATAMBULA", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black", "(1 Month)")}
               </div>
@@ -201,7 +201,6 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
               </div>
 
               <div className="w-full bg-black/40 rounded-2xl p-3 mb-4 text-left border border-white/5 backdrop-blur-md flex-1">
-                {renderPackageBtn("Gold: VIP", "50k", "VIP", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: VVIP", "60k", "VVIP", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: FAMILY", "80k", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: BIG STAKERS", "100k", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
