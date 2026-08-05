@@ -197,7 +197,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
 
               <div className="mt-8 w-full text-center">
                 <h3 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#ffef96] to-[#d4af37] tracking-widest uppercase mb-1">GOLD VIP</h3>
-                <p className="text-gray-400 text-sm font-medium mb-6">Royal Experience</p>
+                <p className="text-gray-400 text-sm font-medium mb-6">2 Weeks Subscription</p>
               </div>
 
               <div className="w-full bg-black/40 rounded-2xl p-3 mb-4 text-left border border-white/5 backdrop-blur-md flex-1">
