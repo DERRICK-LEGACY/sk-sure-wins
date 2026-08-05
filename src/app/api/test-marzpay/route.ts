@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const apiKey = (process.env.MARZPAY_API_KEY || 'marz_clTJGirR1HYLFRUt').trim();
-  const apiSecret = (process.env.MARZPAY_API_SECRET || 'NoNkshqQ9IkznuUbWb9G0F2nPaM9XETh').trim();
+  const apiKey = 'marz_clTJGirR1HYLFRUt';
+  const apiSecret = 'NoNkshqQ9IkznuUbWb9G0F2nPaM9XETh';
   const apiBase = (process.env.MARZPAY_API_BASE || 'https://wallet.wearemarz.com/api/v1').trim();
   const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
 
