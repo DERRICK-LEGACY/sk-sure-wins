@@ -197,7 +197,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
 
               <div className="mt-8 w-full text-center">
                 <h3 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#ffef96] to-[#d4af37] tracking-widest uppercase mb-1">GOLD VIP</h3>
-                <p className="text-gray-400 text-sm font-medium mb-6">2 Weeks Subscription</p>
+                <p className="text-gray-400 text-sm font-medium mb-6">1 Month Subscription</p>
               </div>
 
               <div className="w-full bg-black/40 rounded-2xl p-3 mb-4 text-left border border-white/5 backdrop-blur-md flex-1">
@@ -222,7 +222,8 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
             <div className="bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] p-8 md:p-12 flex flex-col relative overflow-hidden group">
               <div className="absolute inset-0 bg-black/10 transition-opacity group-hover:bg-transparent"></div>
               <div className="z-10 mb-8 flex-1">
-                <h3 className="text-white text-3xl font-black uppercase tracking-widest border-b border-white/20 pb-4 mb-6 text-center md:text-left">PREMIUM OFFER</h3>
+                <h3 className="text-white text-3xl font-black uppercase tracking-widest border-b border-white/20 pb-4 mb-2 text-center md:text-left">PREMIUM OFFER</h3>
+                <p className="text-gray-400 text-sm font-black mb-6 text-center md:text-left">3 Weeks Subscription</p>
                 <div className="space-y-2 text-base font-bold text-gray-200">
                   <button onClick={() => openModal("Premium: Rent Project", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group/btn text-left">
                     <span className="flex items-center gap-2 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Rent Project</span></span>
@@ -252,7 +253,8 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
             <div className="bg-gradient-to-br from-primary via-[#eab308] to-[#d4af37] p-8 md:p-12 flex flex-col relative overflow-hidden group">
               <div className="absolute inset-0 bg-black/5 transition-opacity group-hover:bg-transparent"></div>
               <div className="z-10 mb-8 flex-1">
-                <h3 className="text-black text-3xl font-black uppercase tracking-widest border-b border-black/20 pb-4 mb-6 text-center md:text-left">LIFE CHANGER</h3>
+                <h3 className="text-black text-3xl font-black uppercase tracking-widest border-b border-black/20 pb-4 mb-2 text-center md:text-left">LIFE CHANGER</h3>
+                <p className="text-black/70 text-sm font-black mb-6 text-center md:text-left">2 Weeks Subscription</p>
                 <div className="space-y-2 text-base font-black text-black/80 md:pl-6">
                   <button onClick={() => openModal("Life Changer: ODD 1.20", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-black/10 hover:bg-black/20 border border-black/10 transition-colors group/btn text-left">
                     <span className="flex items-center gap-2 text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-black shadow-[0_0_10px_rgba(0,0,0,0.5)] shrink-0"></div> <span className="truncate">ODD 1.20</span></span>
