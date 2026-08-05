@@ -412,7 +412,8 @@ export async function resetVipPin(phone: string, newPin: string) {
   const user = await prisma.user.findUnique({ where: { phone: normalized } });
   if (!user) return { success: false, error: "Phone number not found." };
   
-  await prisma.user.update({ where: { id: user.id }, data: { pin: newPin } });
+  const hashedPin = await bcrypt.hash(newPin, 10);
+  await prisma.user.update({ where: { id: user.id }, data: { pin: hashedPin } });
   await logAudit('RESET_PIN', { targetPhone: phone });
   return { success: true };
 }
@@ -429,11 +430,17 @@ export async function addClientWithSubscription(data: { phone: string; name: str
   if (!pkg) return { error: "Package not found." };
 
   let user = await prisma.user.findUnique({ where: { phone: normalized } });
+  
+  let hashedPin = null;
+  if (data.pin) {
+    hashedPin = await bcrypt.hash(data.pin, 10);
+  }
+
   if (!user) {
-    user = await prisma.user.create({ data: { phone: normalized, name: data.name, status: 'ACTIVE', pin: data.pin || null } });
+    user = await prisma.user.create({ data: { phone: normalized, name: data.name, status: 'ACTIVE', pin: hashedPin } });
   } else {
     const updateData: any = { name: data.name, status: 'ACTIVE' };
-    if (data.pin) updateData.pin = data.pin;
+    if (hashedPin) updateData.pin = hashedPin;
     await prisma.user.update({ where: { id: user.id }, data: updateData });
   }
 
