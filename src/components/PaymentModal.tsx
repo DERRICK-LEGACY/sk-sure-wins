@@ -51,13 +51,13 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
   // Clean up polling on unmount
   useEffect(() => {
     return () => {
-      if (pollRef.current) clearInterval(pollRef.current);
+      if (pollRef.current) clearTimeout(pollRef.current);
     };
   }, []);
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) {
-      clearInterval(pollRef.current);
+      clearTimeout(pollRef.current);
       pollRef.current = null;
     }
   }, []);
@@ -66,12 +66,12 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
     let attempts = 0;
     const maxAttempts = 12; // Poll for max 60 seconds (5s interval)
 
-    pollRef.current = setInterval(async () => {
+    const poll = async () => {
       attempts++;
       if (attempts > maxAttempts) {
         stopPolling();
         setStep("failed");
-        setError("Payment timed out. This often happens if you have insufficient funds or didn't enter your PIN. Please check your balance and try again.");
+        setError("Payment timed out. This usually happens if you have insufficient funds or didn't enter your PIN. Please check your balance and try again.");
         return;
       }
 
@@ -82,16 +82,22 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
         if (data.status === "SUCCESSFUL") {
           stopPolling();
           setStep("success");
+          return;
         } else if (data.status === "FAILED") {
           stopPolling();
           setStep("failed");
           setError(data.reason || "Payment was declined or cancelled by the user.");
+          return;
         }
         // If PENDING, keep polling
       } catch {
         // Network error — keep polling
       }
-    }, 5000);
+      
+      pollRef.current = setTimeout(poll, 5000);
+    };
+
+    pollRef.current = setTimeout(poll, 5000);
   }, [stopPolling]);
 
   const handlePayment = async () => {

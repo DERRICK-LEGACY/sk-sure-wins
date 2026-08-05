@@ -201,10 +201,10 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
               </div>
 
               <div className="w-full bg-black/40 rounded-2xl p-3 mb-4 text-left border border-white/5 backdrop-blur-md flex-1">
-                {renderPackageBtn("Gold: VIP", "50k", "VIP", "text-[#d4af37]", "bg-[#d4af37]", "text-black", "(2 Weeks)")}
-                {renderPackageBtn("Gold: VVIP", "60k", "VVIP", "text-[#d4af37]", "bg-[#d4af37]", "text-black", "(2 Weeks)")}
-                {renderPackageBtn("Gold: FAMILY", "80k", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black", "(2 Weeks)")}
-                {renderPackageBtn("Gold: BIG STAKERS", "100k", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black", "(2 Weeks)")}
+                {renderPackageBtn("Gold: VIP", "50k", "VIP", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: VVIP", "60k", "VVIP", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: FAMILY", "80k", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: BIG STAKERS", "100k", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: ALL PACKAGES", "300k", "ALL PACKAGES", "text-accent", "bg-accent")}
               </div>
             </motion.div>
