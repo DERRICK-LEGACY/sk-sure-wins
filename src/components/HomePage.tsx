@@ -29,6 +29,52 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
   const [testModalOpen, setTestModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState({ name: "", price: "" });
   const [toast, setToast] = useState<{ name: string, pkg: string } | null>(null);
+
+  const hardcodedReviews: Testimonial[] = [
+    {
+      id: "hc-1",
+      name: "Ssebagala from Masaka",
+      content: "Man, I was tired of losing my money to these betting companies. SK gave me that VIP odd and it actually landed without sweat. You guys are the real deal!",
+      rating: 5,
+      approved: true,
+      createdAt: new Date(),
+    },
+    {
+      id: "hc-2",
+      name: "Kato from Mukono",
+      content: "At first I thought it was just another scam because of how people steal online, but I risked with the Bronze lifechanger and recovered my rent money. Big up SK Sure Wins!",
+      rating: 5,
+      approved: true,
+      createdAt: new Date(),
+    },
+    {
+      id: "hc-3",
+      name: "Ouma from Mbale",
+      content: "I have been buying odds from many people but SK you're different. Three days straight of winning... this is crazy. God bless your hustle.",
+      rating: 5,
+      approved: true,
+      createdAt: new Date(),
+    },
+    {
+      id: "hc-4",
+      name: "Denis from Kampala",
+      content: "The SK counter attack is no joke! I paid the 350k painfully but the slip we won yesterday made me forget all the pain. Thanks boss.",
+      rating: 5,
+      approved: true,
+      createdAt: new Date(),
+    },
+    {
+      id: "hc-5",
+      name: "Mutebi from Wakiso",
+      content: "If you are doubting, just try the Silver subscription. These guys do real analysis, no guessing. I just bought a boda boda because of your tips!",
+      rating: 5,
+      approved: true,
+      createdAt: new Date(),
+    }
+  ];
+
+  const allTestimonials = [...hardcodedReviews, ...testimonials];
+
   // Toast logic (Social Proof)
   useEffect(() => {
     const toastTimer = setInterval(() => {
@@ -50,9 +96,9 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
 
   const renderPackageBtn = (name: string, price: string, label: string, colorClass: string, badgeBgClass: string, textColorClass: string = 'text-black', subtext?: string) => (
     <button onClick={() => openModal(name, price)} className="w-full flex justify-between items-center mb-2 px-3 py-2 rounded-xl bg-gradient-to-r from-black/60 to-black/40 hover:from-white/10 hover:to-white/5 border border-white/10 transition-colors group">
-      <div className="flex flex-col text-left overflow-hidden pr-2">
-        <span className="text-xs xl:text-sm font-black text-white uppercase flex items-center gap-1.5 truncate">
-          <Send size={12} className={`shrink-0 ${colorClass}`} /> <span className="truncate">{label}</span>
+      <div className="flex flex-col text-left pr-2">
+        <span className="text-xs xl:text-sm font-black text-white uppercase flex items-start gap-1.5 leading-tight mb-0.5">
+          <Send size={12} className={`shrink-0 mt-[2px] ${colorClass}`} /> <span>{label}</span>
         </span>
         <span className={`font-bold ${colorClass} text-sm xl:text-base flex items-center gap-1`}>
           {price} {subtext && <span className="text-[9px] text-gray-400 font-normal normal-case">{subtext}</span>}
@@ -409,12 +455,12 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
         </div>
 
         <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.length === 0 ? (
+          {allTestimonials.length === 0 ? (
             <div className="col-span-full text-center py-12 bg-[#1a1525] rounded-3xl border border-white/5">
               <p className="text-gray-400">No testimonials yet. Be the first to share your winning story!</p>
             </div>
           ) : (
-            testimonials.map((t, i) => (
+            allTestimonials.map((t, i) => (
               <motion.div variants={itemVariants} key={t.id || i} className="bg-gradient-to-b from-[#1a1525] to-[#0f0a14] p-8 rounded-3xl border border-white/5 shadow-xl relative group">
                 <div className="absolute top-0 right-8 w-16 h-16 bg-primary blur-[50px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
                 <div className="flex text-primary mb-4 text-xl">{"★".repeat(t.rating)}{"☆".repeat(5 - t.rating)}</div>
