@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const sharp = require('sharp');
 const path = require('path');
+
 
 const inputPath = path.join(__dirname, 'public', 'sklogo.jpeg');
 const output192 = path.join(__dirname, 'public', 'icon-192x192.png');

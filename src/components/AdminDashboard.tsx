@@ -1,18 +1,18 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FreeHook, Ticket, User, Testimonial, Package, Subscription, Audience } from '@prisma/client';
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { 
   updateFreeHook, addWonTicket, deleteWonTicket, addClientWithSubscription, deleteClient, completelyDeleteClient,
   editFreeHook, editWonTicket, deleteFreeHook, addTicket, 
   editTicket, deleteTicket, logoutAdmin, approveTestimonial, 
-  deleteTestimonial, updateAdminCredentials, extendAdminSession
+  deleteTestimonial, extendAdminSession
 } from "@/app/actions";
 import { 
-  Search, UserCheck, UserX, Edit2, Trash2, X, Plus, 
+  Search, UserX, Edit2, Trash2, X, Plus, 
   Image as ImageIcon, LogOut, Trophy, AlertTriangle, 
-  Settings, Users, Activity, Star, ShieldCheck, Clock, Menu
+  Settings, Users, Activity, Star, ShieldCheck, Menu
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -48,7 +48,7 @@ function ConfirmDialog({ message, onConfirm, onCancel }: { message: string, onCo
 
 // --- Main Component ---
 
-const StatCard = ({ title, value, icon: Icon, color, subtitle }: any) => (
+const StatCard = ({ title, value, icon: Icon, color, subtitle }: { title: string, value: number, icon: React.ElementType, color: string, subtitle: string }) => (
   <div className="bg-[#15151a] border border-white/5 p-6 rounded-3xl relative overflow-hidden group hover:border-white/10 transition-colors">
     <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full blur-[40px] opacity-20 pointer-events-none transition-opacity group-hover:opacity-40`} style={{ backgroundColor: color }}></div>
     <div className="flex justify-between items-start mb-4 relative z-10">
@@ -64,10 +64,13 @@ const StatCard = ({ title, value, icon: Icon, color, subtitle }: any) => (
   </div>
 );
 
+type ClientWithSubscriptions = User & { subscriptions: (Subscription & { package?: Package, packages?: Package })[] };
+type TicketWithAudiences = Ticket & { audiences?: (Audience & { package: Package })[] };
+
 export default function AdminDashboard({ 
   freeHooks, wonTickets, clients, premiumTickets, testimonials = [], packages = []
 }: { 
-  freeHooks: any[], wonTickets: any[], clients: any[], premiumTickets: any[], testimonials?: any[], packages?: any[] 
+  freeHooks: FreeHook[], wonTickets: Ticket[], clients: ClientWithSubscriptions[], premiumTickets: TicketWithAudiences[], testimonials?: Testimonial[], packages?: Package[] 
 }) {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -76,7 +79,8 @@ export default function AdminDashboard({
 
   // Strict Security: Logout on any page leave, tab change, or back button
   // Plus Keep-Alive: Renew session while actively working on the page
-  const lastActivity = useRef(Date.now());
+  const lastActivity = useRef<number>(0);
+  useEffect(() => { lastActivity.current = Date.now(); }, []);
 
   useEffect(() => {
     let hasLoggedOut = false;
@@ -129,9 +133,9 @@ export default function AdminDashboard({
 
   // Search & Edit States
   const [userSearch, setUserSearch] = useState("");
-  const [editingFree, setEditingFree] = useState<any>(null);
-  const [editingWon, setEditingWon] = useState<any>(null);
-  const [editingPremium, setEditingPremium] = useState<any>(null);
+  const [editingFree, setEditingFree] = useState<FreeHook | null>(null);
+  const [editingWon, setEditingWon] = useState<Ticket | null>(null);
+  const [editingPremium, setEditingPremium] = useState<TicketWithAudiences | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<{ message: string, action: () => void } | null>(null);
   const [toast, setToast] = useState<{ message: string, type: "success" | "error" } | null>(null);
 
@@ -146,7 +150,7 @@ export default function AdminDashboard({
   // Calculated Stats
   const stats = useMemo(() => {
     const activeUsers = clients.filter(c => 
-      c.subscriptions?.some((s: any) => s.status === 'ACTIVE' && new Date(s.expiresAt) >= new Date(new Date().setHours(0,0,0,0)))
+      c.subscriptions?.some((s) => s.status === 'ACTIVE' && new Date(s.expiresAt) >= new Date(new Date().setHours(0,0,0,0)))
     );
     return {
       totalUsers: clients.length,
@@ -157,7 +161,7 @@ export default function AdminDashboard({
   }, [clients, premiumTickets, testimonials]);
 
   // Handlers
-  const wrapAction = async (action: () => Promise<{ error?: string } | any>, successMsg: string) => {
+  const wrapAction = async (action: () => Promise<{ error?: string } | unknown>, successMsg: string) => {
     setLoading(true);
     try { 
       const res = await action();
@@ -220,7 +224,7 @@ export default function AdminDashboard({
 
   // --- Subcomponents ---
   
-  const SidebarItem = ({ id, icon: Icon, label }: { id: string, icon: any, label: string }) => (
+  const renderSidebarItem = (id: string, Icon: React.ElementType, label: string) => (
     <button 
       onClick={() => { setActiveTab(id); setMobileMenuOpen(false); }} 
       className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 relative group overflow-hidden ${activeTab === id ? "bg-white/10 text-white font-bold" : "text-gray-400 hover:bg-white/5 hover:text-white font-medium"}`}
@@ -278,17 +282,17 @@ export default function AdminDashboard({
 
         <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2 custom-scrollbar">
           <p className="px-4 text-xs font-bold text-gray-600 uppercase tracking-widest mb-2">Overview</p>
-          <SidebarItem id="dashboard" icon={Activity} label="Dashboard" />
+          {renderSidebarItem("dashboard", Activity, "Dashboard")}
           
           <p className="px-4 text-xs font-bold text-gray-600 uppercase tracking-widest mt-6 mb-2">Ticket Management</p>
-          <SidebarItem id="premium" icon={Trophy} label="Premium Slips" />
-          <SidebarItem id="free" icon={ImageIcon} label="Free Tickets" />
-          <SidebarItem id="wins" icon={Star} label="Won Tickets" />
+          {renderSidebarItem("premium", Trophy, "Premium Slips")}
+          {renderSidebarItem("free", ImageIcon, "Free Tickets")}
+          {renderSidebarItem("wins", Star, "Won Tickets")}
           
           <p className="px-4 text-xs font-bold text-gray-600 uppercase tracking-widest mt-6 mb-2">Clients & Settings</p>
-          <SidebarItem id="users" icon={Users} label="VIP Subscribers" />
-          <SidebarItem id="testimonials" icon={MessageSquare} label="Reviews" />
-          <SidebarItem id="settings" icon={Settings} label="Settings" />
+          {renderSidebarItem("users", Users, "VIP Subscribers")}
+          {renderSidebarItem("testimonials", MessageSquare, "Reviews")}
+          {renderSidebarItem("settings", Settings, "Settings")}
         </div>
 
         <div className="p-4 border-t border-white/5">
@@ -317,7 +321,7 @@ export default function AdminDashboard({
               <motion.div key="dashboard" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-8">
                 <div>
                   <h2 className="text-3xl font-black mb-2">Welcome Back, Admin.</h2>
-                  <p className="text-gray-400 font-medium">Here's what's happening with your platform today.</p>
+                  <p className="text-gray-400 font-medium">Here&apos;s what&apos;s happening with your platform today.</p>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -394,7 +398,7 @@ export default function AdminDashboard({
                       </thead>
                       <tbody className="divide-y divide-white/5">
                         {filteredClients.map((client) => {
-                          const activeSubs = client.subscriptions?.filter((s: any) => s.status === 'ACTIVE' && new Date(s.expiresAt) >= new Date(new Date().setHours(0,0,0,0))) || [];
+                          const activeSubs = client.subscriptions?.filter((s) => s.status === 'ACTIVE' && new Date(s.expiresAt) >= new Date(new Date().setHours(0,0,0,0))) || [];
                           const isFullyActive = activeSubs.length > 0;
                           
                           return (
@@ -408,7 +412,7 @@ export default function AdminDashboard({
                               <td className="p-4">
                                 {activeSubs.length > 0 ? (
                                   <div className="flex flex-col gap-1">
-                                    {activeSubs.map((sub: any) => (
+                                    {activeSubs.map((sub) => (
                                       <span key={sub.id} className="bg-green-500/10 text-green-400 text-xs px-2 py-1 rounded inline-block font-bold">
                                         {sub.packages?.name || sub.package?.name} (Exp: {new Date(sub.expiresAt).toLocaleDateString()})
                                       </span>
@@ -499,7 +503,7 @@ export default function AdminDashboard({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {premiumTickets.map((t: any) => (
+                  {premiumTickets.map((t) => (
                     <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl overflow-hidden shadow-xl flex flex-col">
                       {t.imageUrl && <img src={t.imageUrl} alt="Slip" className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
@@ -532,7 +536,7 @@ export default function AdminDashboard({
                   <p className="text-gray-400">Approve or delete user reviews.</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {testimonials.map((t: any) => (
+                  {testimonials.map((t) => (
                     <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl p-6 shadow-xl relative">
                       {!t.approved && <div className="absolute top-4 right-4 bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded">Pending</div>}
                       <h4 className="font-bold text-lg mb-1">{t.name}</h4>
@@ -593,7 +597,7 @@ export default function AdminDashboard({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {freeHooks.map((t: any) => (
+                  {freeHooks.map((t) => (
                     <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl overflow-hidden shadow-xl flex flex-col">
                       {(t.imageUrl || t.image_url) && <img src={t.imageUrl || t.image_url} alt="Slip" className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
@@ -652,7 +656,7 @@ export default function AdminDashboard({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {wonTickets.map((t: any) => (
+                  {wonTickets.map((t) => (
                     <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl overflow-hidden shadow-xl flex flex-col">
                       {(t.imageUrl || t.image_url) && <img src={t.imageUrl || t.image_url} alt="Slip" className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">

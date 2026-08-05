@@ -4,34 +4,51 @@ import { useEffect, useState } from "react";
 import { Download, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: "accepted" | "dismissed";
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
 export function InstallPWA() {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
   const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
     // Check if it's already installed (standalone mode)
-    const isAppStandalone = window.matchMedia("(display-mode: standalone)").matches || (window.navigator as any).standalone;
-    setIsStandalone(isAppStandalone);
+    const nav = window.navigator as Navigator & { standalone?: boolean };
+    const isAppStandalone = window.matchMedia("(display-mode: standalone)").matches || !!nav.standalone;
+
+    setTimeout(() => setIsStandalone(isAppStandalone), 0);
 
     if (isAppStandalone) return;
 
     // Detect iOS
     const userAgent = window.navigator.userAgent.toLowerCase();
     const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
-    setIsIOS(isIosDevice);
-
-    if (isIosDevice) {
-      // For iOS, just show our custom prompt after a few seconds
-      const timer = setTimeout(() => setShowPrompt(true), 3000);
-      return () => clearTimeout(timer);
-    }
+    
+    // Defer state updates to avoid cascading renders
+    setTimeout(() => {
+      setIsIOS(isIosDevice);
+      
+      if (isIosDevice) {
+        // For iOS, just show our custom prompt after a few seconds
+        setTimeout(() => {
+          setShowPrompt(true);
+        }, 3000);
+      }
+    }, 0);
 
     // For Android / Chrome Desktop
-    const handleBeforeInstallPrompt = (e: any) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
+    const handleBeforeInstallPrompt = (e: Event) => {
+      const promptEvent = e as BeforeInstallPromptEvent;
+      promptEvent.preventDefault();
+      setDeferredPrompt(promptEvent);
       setShowPrompt(true);
     };
 

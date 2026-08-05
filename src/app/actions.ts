@@ -2,8 +2,8 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath, unstable_cache } from 'next/cache';
-import { cookies } from 'next/headers';
-import { normalizePhone, sanitizeText, validatePhone } from '@/lib/validation';
+import { cookies, headers } from 'next/headers';
+import { normalizePhone, sanitizeText } from '@/lib/validation';
 import { SignJWT, jwtVerify } from 'jose';
 import crypto from 'crypto';
 import { put } from '@vercel/blob';
@@ -11,6 +11,7 @@ import bcrypt from 'bcryptjs';
 import { sendTelegramNotification } from '@/lib/notifications';
 const VIP_COOKIE = "sk_vip_session";
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'sk-sure-wins-super-secret-key-2026');
 
 // Basic In-Memory Rate Limiter
 const rateLimitMap = new Map<string, { count: number, resetTime: number }>();
@@ -34,26 +35,13 @@ function checkRateLimit(ipOrPhone: string, limit: number = 5, windowMs: number =
 
 // ========== PAYMENT & SUBSCRIPTION FLOW (USER FLOWCHART) ==========
 
-export async function initiatePaymentByName(phone: string, packageName: string, pin: string, name: string, priceAmount?: number) {
+export async function initiatePaymentByName(phone: string, packageName: string, pin: string, name: string) {
   const normalized = normalizePhone(phone);
-  let pkg = await prisma.package.findUnique({ where: { name: packageName } });
+  const pkg = await prisma.package.findUnique({ where: { name: packageName } });
   
-  if (!pkg && priceAmount) {
-    pkg = await prisma.package.create({
-      data: {
-        name: packageName,
-        price: priceAmount,
-        durationDays: 14 // Default to 14 days
-      }
-    });
-  } else if (pkg && priceAmount && pkg.price !== priceAmount) {
-    pkg = await prisma.package.update({
-      where: { id: pkg.id },
-      data: { price: priceAmount }
-    });
+  if (!pkg) {
+    return { success: false, error: "Invalid package selected. Please refresh the page and try again." };
   }
-
-  if (!pkg) return { success: false, error: "Invalid package selected." };
 
   // 1. Quietly create pending account if it doesn't exist
   let user = await prisma.user.findUnique({ where: { phone: normalized } });
@@ -92,8 +80,8 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
   });
 
   // 3. Call MarzPay to initiate collection
-  const apiKey = (process.env.MARZPAY_API_KEY || '').trim();
-  const apiSecret = (process.env.MARZPAY_API_SECRET || '').trim();
+  const apiKey = (process.env.MARZPAY_API_KEY || 'marz_cITJGirR1HYLFRUt').trim();
+  const apiSecret = (process.env.MARZPAY_API_SECRET || 'NoNkshqQ9IkznuUbWb9G0F2nPaM9XETh').trim();
   
   if (!apiKey || !apiSecret) {
     return { success: false, error: "MarzPay API Keys are missing in Vercel Production environment." };
@@ -105,7 +93,7 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
 
   const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
   const apiBase = (process.env.MARZPAY_API_BASE || 'https://wallet.wearemarz.com/api/v1').trim();
-  const callbackUrl = (process.env.MARZPAY_CALLBACK_URL || 'https://sk-sure-wins.vercel.app/api/webhooks/marzpay').trim();
+  const callbackUrl = (process.env.MARZPAY_CALLBACK_URL || 'https://sksurewinspredictions.com/api/webhooks/marzpay').trim();
   
   try {
     const res = await fetch(`${apiBase}/collect-money`, {
@@ -125,6 +113,7 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
     });
 
     if (!res.ok) {
+      await prisma.order.delete({ where: { id: order.id } });
       const errText = await res.text();
       console.error('MarzPay Error:', errText);
       try {
@@ -135,12 +124,13 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
           errorMessage += " " + details;
         }
         return { success: false, error: errorMessage };
-      } catch (e) {
+      } catch {
         return { success: false, error: "Failed to initiate payment." };
       }
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('MarzPay Request Failed:', error);
+    await prisma.order.delete({ where: { id: order.id } });
     return { success: false, error: "Payment gateway connection error." };
   }
 
@@ -176,12 +166,14 @@ export async function verifyVipLogin(phone: string, pin: string) {
   const sessionToken = crypto.randomUUID();
   await prisma.user.update({ where: { id: user.id }, data: { sessionToken } });
 
+  const token = await new SignJWT({ id: user.id, phone: user.phone, sessionToken })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('30d')
+    .sign(JWT_SECRET);
+
   const cookieStore = await cookies();
-  cookieStore.set(VIP_COOKIE, JSON.stringify({
-    id: user.id,
-    phone: user.phone,
-    sessionToken
-  }), { httpOnly: true, secure: IS_PRODUCTION, sameSite: "strict", maxAge: 60 * 60 * 24 * 30, path: "/" });
+  cookieStore.set(VIP_COOKIE, token, { httpOnly: true, secure: IS_PRODUCTION, sameSite: "strict", maxAge: 60 * 60 * 24 * 30, path: "/" });
 
   return { success: true };
 }
@@ -192,7 +184,8 @@ export async function getVipSession() {
   if (!session?.value) return null;
   
   try {
-    const parsed = JSON.parse(session.value);
+    const { payload } = await jwtVerify(session.value, JWT_SECRET);
+    const parsed = payload as { id: string, phone: string, sessionToken: string };
     
     const user = await prisma.user.findUnique({
       where: { id: parsed.id },
@@ -302,9 +295,8 @@ export async function submitTestimonial(formData: FormData) {
 
 // ========== ADMIN AUTH & CONFIG ==========
 const ADMIN_COOKIE = "sk_admin_session";
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'sk-sure-wins-super-secret-key-2026');
 
-async function logAudit(action: string, details: any) {
+async function logAudit(action: string, details: Record<string, unknown>) {
   await prisma.auditLog.create({
     data: {
       adminId: 'ADMIN',
@@ -316,13 +308,16 @@ async function logAudit(action: string, details: any) {
 
 export async function getAdminPassword() {
   const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
-  return admin?.pin || process.env.ADMIN_PASSWORD || "SK2026!";
+  if (admin?.pin) return admin.pin;
+  if (process.env.ADMIN_PASSWORD) return process.env.ADMIN_PASSWORD;
+  throw new Error("Admin password not configured in production or database.");
 }
 
 const loginAttempts = new Map<string, { count: number, lockedUntil: number }>();
 
 export async function loginAdmin(password: string) {
-  const ip = "admin-login"; // In server actions, getting IP is tricky without passing headers, using global key for now
+  const headersList = await headers();
+  const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown-ip';
   const now = Date.now();
   const attempt = loginAttempts.get(ip) || { count: 0, lockedUntil: 0 };
 
@@ -401,7 +396,7 @@ export async function updateAdminCredentials(newPassword: string) {
   const isAuthed = await checkAdminAuth();
   if (!isAuthed) return { error: "Unauthorized" };
   
-  let admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
+  const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
   if (admin) {
     await prisma.user.update({ where: { id: admin.id }, data: { pin: newPassword } });
   } else {
@@ -553,7 +548,7 @@ export async function editTicket(id: string, formData: FormData) {
   const matchTimeStr = formData.get('match_time') as string;
   const matchTime = matchTimeStr ? new Date(matchTimeStr) : null;
   
-  const updateData: any = { bookingCode, oddsTotal, matchTime };
+  const updateData: Record<string, unknown> = { bookingCode, oddsTotal, matchTime };
   
   const imageFile = formData.get('image') as File | null;
   if (imageFile && imageFile.size > 0) {

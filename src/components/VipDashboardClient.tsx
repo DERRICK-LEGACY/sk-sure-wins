@@ -1,17 +1,14 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
+import { User, Ticket, Subscription, Package } from '@prisma/client';
 import { useRouter } from "next/navigation";
 import { LogOut, Trophy, CheckCircle, Clock } from "lucide-react";
 import { logoutVip } from "@/app/actions";
 
-type Package = any;
-type Subscription = any;
-type Ticket = any;
-type User = any;
+type SubWithPackage = Subscription & { packages: Package };
+type TicketWithPackage = Ticket & { packages: Package };
 
-export default function VipDashboardClient({ user, subscriptions, tickets }: { user: User, subscriptions: Subscription[], tickets: Ticket[] }) {
+export default function VipDashboardClient({ user, subscriptions, tickets }: { user: User, subscriptions: SubWithPackage[], tickets: TicketWithPackage[] }) {
   const router = useRouter();
   const handleLogout = async () => {
     await logoutVip();

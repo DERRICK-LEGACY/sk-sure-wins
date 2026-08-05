@@ -1,8 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const dynamic = 'force-dynamic';
 
 import { getAllFreeHooks } from '@/app/actions';
 import Navbar from '@/components/Navbar';
-import { Clock } from 'lucide-react';
 
 export default async function FreeTicketsPage() {
   const hooks = await getAllFreeHooks();

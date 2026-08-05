@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { MessageCircle, Clock, Lock, CheckCircle, Trophy, Send, BellRing, X } from "lucide-react";
+import { MessageCircle, CheckCircle, Send, BellRing, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import PaymentModal from "@/components/PaymentModal";
 import Navbar from "@/components/Navbar";
 import { submitTestimonial } from "@/app/actions";
+import { FreeHook, Ticket as WonTicket, Testimonial } from '@prisma/client';
 
 // Animation Variants
 const containerVariants: Variants = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.15 } } };
@@ -22,13 +23,6 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-type FreeHook = any;
-type WonTicket = any;
-type Testimonial = any;
 
 export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: { freeHooks: FreeHook[], wonTickets: WonTicket[], testimonials?: Testimonial[] }) {
   const [modalOpen, setModalOpen] = useState(false);

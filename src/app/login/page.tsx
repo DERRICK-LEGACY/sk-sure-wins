@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { LockKeyhole, ArrowRight, X, Phone, ShieldCheck, KeyRound } from "lucide-react";
+import { LockKeyhole, ArrowRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { verifyVipLogin, resetVipPin } from "@/app/actions";
+import { verifyVipLogin } from "@/app/actions";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [phone, setPhone] = useState("");
@@ -15,12 +16,6 @@ export default function LoginPage() {
 
   // Forgot PIN state
   const [showForgotModal, setShowForgotModal] = useState(false);
-  const [forgotStep, setForgotStep] = useState<"phone" | "code" | "new_pin">("phone");
-  const [resetPhone, setResetPhone] = useState("");
-  const [resetCode, setResetCode] = useState("");
-  const [newPin, setNewPin] = useState("");
-  const [forgotError, setForgotError] = useState("");
-  const [forgotLoading, setForgotLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,68 +32,13 @@ export default function LoginPage() {
       }
 
       router.push("/vip-dashboard");
-    } catch (err: any) {
-      setError(err.message || "Login failed.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Login failed.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSendCode = async () => {
-    setForgotLoading(true);
-    setForgotError("");
-    
-    if (resetPhone.length < 10) {
-      setForgotError("Please enter a valid 10-digit phone number.");
-      setForgotLoading(false);
-      return;
-    }
-
-    // Simulate sending an SMS
-    setTimeout(() => {
-      setForgotStep("code");
-      setForgotLoading(false);
-    }, 1500);
-  };
-
-  const handleVerifyCode = () => {
-    setForgotError("");
-    if (resetCode.length < 4) {
-      setForgotError("Please enter the 4-digit code.");
-      return;
-    }
-    // Mock verification - any 4 digits work for now in this demo
-    setForgotStep("new_pin");
-  };
-
-  const handleSaveNewPin = async () => {
-    setForgotLoading(true);
-    setForgotError("");
-    
-    if (newPin.length < 4) {
-      setForgotError("Please enter a 4-digit PIN.");
-      setForgotLoading(false);
-      return;
-    }
-
-    const res = await resetVipPin(resetPhone, newPin);
-    if (!res.success) {
-      setForgotError(res.error || "Failed to reset PIN.");
-      setForgotLoading(false);
-      return;
-    }
-
-    // Success!
-    setPhone(resetPhone);
-    setPin(newPin);
-    setShowForgotModal(false);
-    setForgotStep("phone");
-    setResetPhone("");
-    setResetCode("");
-    setNewPin("");
-    setForgotLoading(false);
-    setError("PIN reset successfully. You can now login.");
-  };
 
   return (
     <div className="min-h-[100dvh] bg-[#0f0a14] text-foreground flex items-center justify-center p-4">
@@ -141,8 +81,6 @@ export default function LoginPage() {
                 type="button" 
                 onClick={() => {
                   setShowForgotModal(true);
-                  setForgotStep("phone");
-                  setForgotError("");
                 }}
                 className="text-primary text-xs font-bold hover:underline"
               >
@@ -186,7 +124,7 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-8 text-center relative z-10">
-          <a href="/" className="text-gray-500 hover:text-primary transition-colors text-sm font-bold">Return to Homepage</a>
+          <Link href="/" className="text-gray-500 hover:text-primary transition-colors text-sm font-bold">Return to Homepage</Link>
         </div>
       </motion.div>
 

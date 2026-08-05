@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const apiKey = (process.env.MARZPAY_API_KEY || '').trim();
-  const apiSecret = (process.env.MARZPAY_API_SECRET || '').trim();
+  const apiKey = (process.env.MARZPAY_API_KEY || 'marz_cITJGirR1HYLFRUt').trim();
+  const apiSecret = (process.env.MARZPAY_API_SECRET || 'NoNkshqQ9IkznuUbWb9G0F2nPaM9XETh').trim();
   const apiBase = (process.env.MARZPAY_API_BASE || 'https://wallet.wearemarz.com/api/v1').trim();
   const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
 
@@ -15,7 +15,7 @@ export async function GET() {
     "+256 781 360 275"
   ];
 
-  const results: any = {};
+  const results: Record<string, unknown> = {};
 
   for (const num of testNumbers) {
     try {
@@ -31,7 +31,7 @@ export async function GET() {
           reference: crypto.randomUUID(),
           country: 'UG',
           description: `Test Number ${num}`,
-          callback_url: 'https://sk-sure-wins.vercel.app/api/webhooks/marzpay',
+          callback_url: 'https://sksurewinspredictions.com/api/webhooks/marzpay',
         }),
       });
 
@@ -46,8 +46,8 @@ export async function GET() {
         status: res.status,
         response: parsed
       };
-    } catch (e: any) {
-      results[num] = { error: e.message };
+    } catch (e: unknown) {
+      results[num] = { error: e instanceof Error ? e.message : String(e) };
     }
   }
 
