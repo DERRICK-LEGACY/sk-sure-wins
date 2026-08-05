@@ -454,7 +454,7 @@ export async function addClientWithSubscription(data: { phone: string; name: str
   });
 
   await logAudit('ADD_CLIENT_SUB', { phone: normalized, packageId: pkg.id });
-  revalidatePath('/sk-admin-portal');
+  revalidatePath('/admin');
   revalidatePath('/vip-dashboard');
   return { success: true };
 }
@@ -468,7 +468,7 @@ export async function deleteClient(id: string) {
   await prisma.subscription.updateMany({ where: { userId: id }, data: { status: 'CANCELLED' } });
   
   await logAudit('SUSPEND_CLIENT', { userId: id });
-  revalidatePath('/sk-admin-portal');
+  revalidatePath('/admin');
   revalidatePath('/vip-dashboard');
   return { success: true };
 }
@@ -483,7 +483,7 @@ export async function completelyDeleteClient(id: string) {
   await prisma.user.delete({ where: { id } });
   
   await logAudit('DELETE_CLIENT', { userId: id });
-  revalidatePath('/sk-admin-portal');
+  revalidatePath('/admin');
   revalidatePath('/vip-dashboard');
   return { success: true };
 }
@@ -542,7 +542,7 @@ export async function addTicket(formData: FormData) {
     await sendTelegramNotification(`🚨 <b>New VIP Ticket Added!</b>\n\nPackage: ${pkg.name}\nOdds: ${oddsTotal || 'TBA'}\nCheck your dashboard now!`);
   }
 
-  revalidatePath('/sk-admin-portal');
+  revalidatePath('/admin');
   revalidatePath('/vip-dashboard');
   return { success: true };
 }
@@ -575,7 +575,7 @@ export async function editTicket(id: string, formData: FormData) {
   }
 
   await logAudit('EDIT_TICKET', { ticketId: id });
-  revalidatePath('/sk-admin-portal');
+  revalidatePath('/admin');
   revalidatePath('/vip-dashboard');
   return { success: true };
 }
@@ -587,7 +587,7 @@ export async function deleteTicket(id: string) {
   // Soft Delete
   await prisma.ticket.update({ where: { id }, data: { status: 'VOID' } });
   await logAudit('VOID_TICKET', { ticketId: id });
-  revalidatePath('/sk-admin-portal');
+  revalidatePath('/admin');
   revalidatePath('/vip-dashboard');
   return { success: true };
 }

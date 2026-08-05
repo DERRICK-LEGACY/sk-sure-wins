@@ -94,7 +94,7 @@ export default function AdminDashboard({
     const handleVisibilityChange = () => {
       if (document.hidden) {
         triggerLogout();
-        router.push("/sk-admin-portal"); // Push to login screen
+        router.push("/admin"); // Push to login screen
       }
     };
 

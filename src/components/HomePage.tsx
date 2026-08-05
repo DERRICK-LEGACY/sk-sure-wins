@@ -453,6 +453,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
                 <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
                 <li><Link href="/vip-dashboard" className="hover:text-primary transition-colors">VIP Dashboard</Link></li>
                 <li><a href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h" target="_blank" rel="noreferrer" className="hover:text-[#25D366] transition-colors">WhatsApp Channel</a></li>
+                <li><Link href="/admin" className="hover:text-white transition-colors">Admin Portal</Link></li>
               </ul>
             </div>
 
