@@ -145,7 +145,7 @@ export default function AdminDashboard({
   };
 
   // Forms
-  const [userForm, setUserForm] = useState({ phone: "", name: "", pkg: packages[0]?.id || "", expiry_date: "" });
+  const [userForm, setUserForm] = useState({ phone: "", name: "", pkg: packages[0]?.id || "", expiry_date: "", pin: "" });
 
   // Calculated Stats
   const stats = useMemo(() => {
@@ -202,7 +202,7 @@ export default function AdminDashboard({
     wrapAction(async () => {
       const res = await addClientWithSubscription(userForm);
       if (!res?.error) {
-        setUserForm({ phone: "", name: "", pkg: packages[0]?.id || "", expiry_date: "" });
+        setUserForm({ phone: "", name: "", pkg: packages[0]?.id || "", expiry_date: "", pin: "" });
       }
       return res;
     }, "Client subscription successfully updated!");
@@ -345,7 +345,7 @@ export default function AdminDashboard({
 
                 <div className="bg-[#15151a] border border-white/5 rounded-3xl p-6 shadow-xl">
                   <h3 className="text-xl font-bold mb-6">Add/Renew VIP Client</h3>
-                  <form onSubmit={handleClientSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+                  <form onSubmit={handleClientSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
                     <div>
                       <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Phone Number</label>
                       <input required type="text" placeholder="e.g. 0774000000" value={userForm.phone} onChange={e => setUserForm({...userForm, phone: e.target.value})} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none" />
@@ -366,7 +366,11 @@ export default function AdminDashboard({
                       <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Expiry Date</label>
                       <input required type="date" value={userForm.expiry_date} onChange={e => setUserForm({...userForm, expiry_date: e.target.value})} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none [color-scheme:dark]" />
                     </div>
-                    <div className="lg:col-span-4 flex justify-end">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-400 uppercase mb-2">VIP PIN (Optional)</label>
+                      <input type="text" placeholder="Assign PIN" value={userForm.pin} onChange={e => setUserForm({...userForm, pin: e.target.value})} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none" />
+                    </div>
+                    <div className="lg:col-span-5 flex justify-end">
                       <button disabled={loading} type="submit" className="bg-[#3b82f6] text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-600">
                         {loading ? "Processing..." : (
                           <><Plus size={18} /> Grant Access</>

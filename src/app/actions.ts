@@ -419,7 +419,7 @@ export async function resetVipPin(phone: string, newPin: string) {
 
 // ========== ADMIN USERS & SUBSCRIPTIONS ==========
 
-export async function addClientWithSubscription(data: { phone: string; name: string; pkg: string; expiry_date: string }) {
+export async function addClientWithSubscription(data: { phone: string; name: string; pkg: string; expiry_date: string; pin?: string }) {
   const isAuthed = await checkAdminAuth();
   if (!isAuthed) return { error: "Unauthorized" };
   
@@ -430,9 +430,11 @@ export async function addClientWithSubscription(data: { phone: string; name: str
 
   let user = await prisma.user.findUnique({ where: { phone: normalized } });
   if (!user) {
-    user = await prisma.user.create({ data: { phone: normalized, name: data.name, status: 'ACTIVE' } });
+    user = await prisma.user.create({ data: { phone: normalized, name: data.name, status: 'ACTIVE', pin: data.pin || null } });
   } else {
-    await prisma.user.update({ where: { id: user.id }, data: { name: data.name, status: 'ACTIVE' } });
+    const updateData: any = { name: data.name, status: 'ACTIVE' };
+    if (data.pin) updateData.pin = data.pin;
+    await prisma.user.update({ where: { id: user.id }, data: updateData });
   }
 
   await prisma.subscription.create({
