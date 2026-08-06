@@ -141,6 +141,34 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
 
 // ========== VIP AUTHENTICATION & SESSION MANAGEMENT ==========
 
+export async function autoLoginAfterPayment(phone: string) {
+  const normalized = normalizePhone(phone);
+  if (!normalized) return { success: false, error: "Invalid phone number format." };
+
+  const user = await prisma.user.findUnique({ 
+    where: { phone: normalized, status: 'ACTIVE' },
+    include: { subscriptions: { where: { status: 'ACTIVE', expiresAt: { gt: new Date() } } } }
+  });
+
+  if (!user || user.subscriptions.length === 0) {
+    return { success: false, error: "Account not active or no active subscriptions." };
+  }
+
+  const sessionToken = crypto.randomUUID();
+  await prisma.user.update({ where: { id: user.id }, data: { sessionToken } });
+
+  const token = await new SignJWT({ id: user.id, phone: user.phone, sessionToken })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('30d')
+    .sign(JWT_SECRET);
+
+  const cookieStore = await cookies();
+  cookieStore.set(VIP_COOKIE, token, { httpOnly: true, secure: IS_PRODUCTION, sameSite: "strict", maxAge: 60 * 60 * 24 * 30, path: "/" });
+
+  return { success: true };
+}
+
 export async function verifyVipLogin(phone: string, pin: string) {
   const normalized = normalizePhone(phone);
   if (!normalized) return { success: false, error: "Invalid phone number format." };

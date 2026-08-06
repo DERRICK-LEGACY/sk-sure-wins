@@ -5,8 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { X, ShieldCheck, LockKeyhole, CheckCircle2, Loader2, AlertTriangle, RotateCcw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { initiatePaymentByName } from "@/app/actions";
-
+import { initiatePaymentByName, autoLoginAfterPayment } from "@/app/actions";
 interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -81,6 +80,8 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
 
         if (data.status === "SUCCESSFUL") {
           stopPolling();
+          // Auto-login the user immediately after payment succeeds
+          await autoLoginAfterPayment(phone);
           setStep("success");
           return;
         } else if (data.status === "FAILED") {
@@ -98,7 +99,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
     };
 
     pollRef.current = setTimeout(poll, 5000);
-  }, [stopPolling]);
+  }, [stopPolling, phone]);
 
   const handlePayment = async () => {
     setError("");
@@ -120,14 +121,6 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
     setStep("processing");
 
     try {
-      let numericAmount = 0;
-      const cleanPrice = selectedPkgPrice.replace(/,/g, '').toLowerCase().trim();
-      if (cleanPrice.endsWith('k')) {
-        numericAmount = parseFloat(cleanPrice.replace('k', '')) * 1000;
-      } else {
-        numericAmount = parseInt(cleanPrice, 10);
-      }
-
       // 1. Quietly create pending account and order
       const res = await initiatePaymentByName(phone, selectedPkgName, pin, name.trim());
 
@@ -165,7 +158,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
 
   const handleSuccess = () => {
     handleClose();
-    router.push("/login");
+    router.push("/vip-dashboard");
   };
 
   return (
@@ -433,7 +426,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   <p className="text-gray-300 mb-3 text-lg">Payment of <span className="font-bold text-primary">{selectedPkgPrice} UGX</span> confirmed!</p>
                   <p className="text-gray-400 text-sm mb-8">
                     Your <span className="font-bold text-white">{selectedPkgName}</span> subscription is now active.
-                    Log in with your phone number to access your premium tickets.
+                    We are redirecting you to your VIP dashboard.
                   </p>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -441,7 +434,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     onClick={handleSuccess}
                     className="w-full py-4 rounded-xl bg-[#25D366] text-black font-extrabold hover:bg-[#1da851] transition-colors shadow-[0_5px_15px_rgba(37,211,102,0.3)]"
                   >
-                    Login to View My Tickets
+                    Go to VIP Dashboard
                   </motion.button>
                 </motion.div>
               )}

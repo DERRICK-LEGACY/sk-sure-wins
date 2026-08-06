@@ -26,9 +26,34 @@ export async function POST(req: Request) {
       }
     }
 
-    if (payload.event_type === 'collection.completed' && payload.transaction?.status === 'completed') {
-      const referenceId = payload.transaction.reference;
+    // Log the payload for debugging
+    await prisma.auditLog.create({
+      data: {
+        adminId: 'SYSTEM',
+        action: 'MARZPAY_WEBHOOK_RECEIVED',
+        details: JSON.stringify(payload)
+      }
+    });
+
+    const isSuccessful = 
+      payload.event_type === 'collection.completed' || 
+      payload.transaction?.status === 'completed' ||
+      payload.transaction?.status === 'successful' ||
+      payload.status === 'completed' ||
+      payload.status === 'successful';
+
+    const isFailed = 
+      payload.event_type === 'collection.failed' || 
+      payload.transaction?.status === 'failed' ||
+      payload.status === 'failed';
+
+    if (isSuccessful) {
+      const referenceId = payload.transaction?.reference || payload.reference;
       
+      if (!referenceId) {
+        return NextResponse.json({ error: "No reference provided in payload" }, { status: 400 });
+      }
+
       const order = await prisma.order.findUnique({ 
         where: { referenceId }, 
         include: { package: true } 
@@ -81,8 +106,8 @@ export async function POST(req: Request) {
       
       // Notify Admin
       await sendTelegramNotification(`💰 <b>New VIP Payment!</b>\n\nPackage: ${order.package?.name}\nAmount: ${order.amount} UGX\nPhone: ${order.phone}`);
-    } else if (payload.event_type === 'collection.failed' || payload.transaction?.status === 'failed') {
-      const referenceId = payload.transaction?.reference;
+    } else if (isFailed) {
+      const referenceId = payload.transaction?.reference || payload.reference;
       if (referenceId) {
         const order = await prisma.order.findUnique({ where: { referenceId } });
         if (order && order.status !== 'COMPLETED') {
