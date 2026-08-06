@@ -9,6 +9,8 @@ import crypto from 'crypto';
 import { put } from '@vercel/blob';
 import bcrypt from 'bcryptjs';
 import { sendTelegramNotification } from '@/lib/notifications';
+import { writeFile, mkdir } from 'fs/promises';
+import path from 'path';
 const VIP_COOKIE = "sk_vip_session";
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'sk-sure-wins-super-secret-key-2026');
@@ -496,15 +498,30 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
   const file = formData.get(fieldName) as File | null;
   
   if (!file || file.size === 0) {
-    return "https://via.placeholder.com/600x400?text=Ticket+Uploaded"; 
+    return "https://placehold.co/600x400?text=Ticket+Uploaded"; 
   }
   
   try {
-    const blob = await put(file.name, file, { access: 'public' });
-    return blob.url;
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      const blob = await put(file.name, file, { access: 'public' });
+      return blob.url;
+    } else {
+      // Local development fallback
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      const ext = file.name.split('.').pop() || 'png';
+      const filename = `ticket-${uniqueSuffix}.${ext}`;
+      
+      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+      await mkdir(uploadDir, { recursive: true });
+      await writeFile(path.join(uploadDir, filename), buffer);
+      
+      return `/uploads/${filename}`;
+    }
   } catch (error) {
-    console.error("Vercel Blob upload error", error);
-    return "https://via.placeholder.com/600x400?text=Upload+Failed";
+    console.error("Image upload error:", error);
+    return "https://placehold.co/600x400?text=Upload+Failed";
   }
 }
 
