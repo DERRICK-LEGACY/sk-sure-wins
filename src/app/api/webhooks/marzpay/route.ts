@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { sendTelegramNotification } from '@/lib/notifications';
+import prisma from "@/lib/db";
+import { sendTelegramNotification } from "@/lib/notifications";
 import crypto from 'crypto';
 
 export async function POST(req: NextRequest) {
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
         action: "MARZPAY_WEBHOOK_RECEIVED",
         details: JSON.stringify({ body: data, headers: Object.fromEntries(req.headers.entries()) })
       }
-    }).catch(e => console.error("Failed to write audit log:", e));
+    }).catch((e: any) => console.error("Failed to write audit log:", e));
 
     if (!data) {
       return NextResponse.json({ error: "Empty payload" }, { status: 400 });
