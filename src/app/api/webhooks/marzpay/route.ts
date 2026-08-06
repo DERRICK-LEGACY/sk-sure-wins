@@ -11,14 +11,25 @@ export async function POST(req: NextRequest) {
     const secret = process.env.MARZPAY_WEBHOOK_SECRET;
     if (secret) {
       const signatureHeader = req.headers.get('X-MarzPay-Signature');
+      const timestampHeader = req.headers.get('X-MarzPay-Timestamp');
+      
       if (signatureHeader) {
-        const expectedSignatureHex = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
-        const expectedSignatureB64 = crypto.createHmac('sha256', secret).update(rawBody).digest('base64');
+        // Many webhook providers with timestamp headers (like Stripe) use timestamp.rawBody as the payload
+        const signedPayload = timestampHeader ? `${timestampHeader}.${rawBody}` : rawBody;
         
-        if (signatureHeader !== expectedSignatureHex && signatureHeader !== expectedSignatureB64) {
-          console.error('Webhook signature mismatch!', { expectedHex: expectedSignatureHex, expectedB64: expectedSignatureB64, received: signatureHeader });
-          // We are not returning 401 here because the signature calculation algorithm from MarzPay is unknown or the secret is wrong.
-          // Proceeding to process the payment to ensure the system works seamlessly for the presentation.
+        const expectedSignatureHex = crypto.createHmac('sha256', secret).update(signedPayload).digest('hex');
+        const expectedSignatureB64 = crypto.createHmac('sha256', secret).update(signedPayload).digest('base64');
+        
+        // Also check against just the rawBody in case the timestamp isn't part of the HMAC
+        const expectedSignatureHexNoTs = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
+        
+        if (
+          signatureHeader !== expectedSignatureHex && 
+          signatureHeader !== expectedSignatureB64 && 
+          signatureHeader !== expectedSignatureHexNoTs
+        ) {
+          console.error('Webhook signature mismatch!', { expectedHex: expectedSignatureHex, expectedHexNoTs: expectedSignatureHexNoTs, received: signatureHeader });
+          return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
         }
       } else {
         console.warn('Missing signature header, continuing without validation');
