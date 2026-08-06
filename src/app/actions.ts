@@ -95,7 +95,7 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
 
   const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
   const apiBase = (process.env.MARZPAY_API_BASE || 'https://wallet.wearemarz.com/api/v1').trim();
-  const callbackUrl = (process.env.MARZPAY_CALLBACK_URL || 'https://sksurewinspredictions.com/api/webhooks/marzpay').trim();
+  const callbackUrl = (process.env.MARZPAY_CALLBACK_URL || 'https://www.sksurewinspredictions.com/api/webhooks/marzpay').trim();
   
   try {
     const res = await fetch(`${apiBase}/collect-money`, {
