@@ -506,11 +506,19 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
       const blob = await put(file.name, file, { access: 'public' });
       return blob.url;
     } else {
-      // Local development fallback
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
       const ext = file.name.split('.').pop() || 'png';
+
+      // On Vercel, the file system is read-only. 
+      // If Vercel Blob isn't configured, fallback to storing the image as a Base64 string.
+      if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+        const base64 = buffer.toString('base64');
+        return `data:image/${ext};base64,${base64}`;
+      }
+
+      // Local development fallback
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
       const filename = `ticket-${uniqueSuffix}.${ext}`;
       
       const uploadDir = path.join(process.cwd(), 'public', 'uploads');
