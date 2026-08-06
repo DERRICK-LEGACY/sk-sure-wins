@@ -160,6 +160,41 @@ export default function AdminDashboard({
     };
   }, [clients, premiumTickets, testimonials]);
 
+  const sortedPackages = useMemo(() => {
+    const exactOrder = [
+      // Bronze
+      "ODD 1.5 NORMAL", "ODD 1.5 LIFECHANGER", "ODD 2", "ODD 3", "ODD 4",
+      "Bronze: ODD 1.5 Normal", "Bronze: ODD 1.5 Lifechanger", "Bronze: ODD 2", "Bronze: ODD 3", "Bronze: ODD 4",
+      // Silver
+      "VIP", "VVIP", "ODD 8-10", "ODD 20", "AKATAMBULA",
+      "Silver: VIP", "Silver: VVIP", "Silver: ODD 8-10", "Silver: ODD 20", "Silver: AKATAMBULA",
+      // Gold
+      "AKATAFA/AKATEMU", "SK COUNTER ATTACK", "ACCOUNT MANAGEMENT", "FAMILY", "BIG STAKERS", "ALL PACKAGES",
+      "Gold: VIP", "Gold: VVIP", "Gold: FAMILY", "Gold: BIG STAKERS", "Gold: ALL PACKAGE MONTHLY",
+      "Gold: AKATAFA/AKATEMU", "Gold: SK COUNTER ATTACK", "Gold: ACCOUNT MANAGEMENT", "Gold: ALL PACKAGES",
+      // Premium Offer
+      "Rent Project", "Boda boda Project", "Back to school", "1M in 5 days",
+      "Premium: Rent Project", "Premium: Boda boda Project", "Premium: Back to school", "Premium: 1M in 5 days",
+      "Premium Offer: Rent Project", "Premium Offer: Boda boda Project", "Premium Offer: Back to school", "Premium Offer: 1M in 5 days",
+      // Life Changer
+      "ODD 1.20", "ODD 1.30", "ODD 1.50",
+      "Life Changer: ODD 1.20", "Life Changer: ODD 1.30", "Life Changer: ODD 1.50"
+    ];
+    
+    const getPackageSortIndex = (name: string) => {
+      const index = exactOrder.findIndex(n => n.toLowerCase() === name.toLowerCase());
+      if (index !== -1) return index;
+      if (name.toLowerCase().includes('bronze')) return 100;
+      if (name.toLowerCase().includes('silver')) return 200;
+      if (name.toLowerCase().includes('gold')) return 300;
+      if (name.toLowerCase().includes('premium')) return 400;
+      if (name.toLowerCase().includes('life')) return 500;
+      return 999;
+    };
+    
+    return [...packages].sort((a, b) => getPackageSortIndex(a.name) - getPackageSortIndex(b.name));
+  }, [packages]);
+
   // Handlers
   const wrapAction = async (action: () => Promise<{ error?: string } | unknown>, successMsg: string) => {
     setLoading(true);
@@ -357,7 +392,7 @@ export default function AdminDashboard({
                     <div>
                       <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Select Package</label>
                       <select value={userForm.pkg} onChange={e => setUserForm({...userForm, pkg: e.target.value})} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none">
-                        {packages.map(pkg => (
+                        {sortedPackages.map(pkg => (
                           <option key={pkg.id} value={pkg.id}>{pkg.name}</option>
                         ))}
                       </select>
@@ -466,7 +501,7 @@ export default function AdminDashboard({
                       <div>
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Assign to Package</label>
                         <select name="package_id" defaultValue={editingPremium?.audiences?.[0]?.packageId} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] outline-none">
-                          {packages.map(pkg => (
+                          {sortedPackages.map(pkg => (
                             <option key={pkg.id} value={pkg.id}>{pkg.name}</option>
                           ))}
                         </select>

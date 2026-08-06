@@ -169,13 +169,13 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
               transition={{ delay: 0.15 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="mt-6 mb-8 w-full max-w-md flex items-center justify-center gap-4 bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-extrabold py-5 px-6 rounded-full shadow-[0_0_30px_rgba(37,211,102,0.6)] border border-white/20 transition-all relative overflow-hidden group"
+              className="mt-6 mb-8 w-auto max-w-sm flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-extrabold py-3.5 px-8 rounded-full shadow-[0_0_30px_rgba(37,211,102,0.6)] border border-white/20 transition-all relative overflow-hidden group"
             >
               <div className="absolute inset-0 bg-white/20 blur-md group-hover:opacity-100 opacity-0 transition-opacity"></div>
-              <div className="bg-white p-2.5 rounded-full shadow-lg relative z-10 flex items-center justify-center">
-                <WhatsAppIcon className="w-8 h-8 text-[#25D366]" />
+              <div className="bg-white p-2 rounded-full shadow-lg relative z-10 flex items-center justify-center">
+                <WhatsAppIcon className="w-6 h-6 text-[#25D366]" />
               </div>
-              <span className="text-xl tracking-tight relative z-10">Join Our Free WhatsApp</span>
+              <span className="text-lg tracking-tight relative z-10">Join Our Free WhatsApp</span>
             </motion.a>
           </div>
         </section>

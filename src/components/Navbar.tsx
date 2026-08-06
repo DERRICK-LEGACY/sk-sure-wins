@@ -17,16 +17,16 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full max-w-full z-50 bg-[#1a1525]/95 backdrop-blur-xl border-b border-white/10 py-3 sm:py-4 px-4 sm:px-6 flex justify-between items-center shadow-2xl overflow-hidden">
-        <div className="flex items-center gap-2 sm:gap-6 shrink-0">
-          <Link href="/" className="flex items-center gap-2 sm:gap-3 relative z-50">
+      <nav className="fixed top-0 left-0 w-full max-w-full z-50 bg-[#1a1525]/95 backdrop-blur-xl border-b border-white/10 py-2 sm:py-3 px-4 flex justify-between items-center shadow-2xl overflow-hidden">
+        <div className="flex items-center gap-2 shrink-0">
+          <Link href="/" className="flex items-center gap-2 relative z-50">
             <div className="relative shrink-0">
               <div className="absolute inset-0 bg-primary rounded-lg blur opacity-40"></div>
-              <img src="/sklogo.jpeg" alt="Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain relative z-10 border border-white/10 shadow-lg bg-black" />
+              <img src="/sklogo.jpeg" alt="Logo" className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-contain relative z-10 border border-white/10 shadow-lg bg-black" />
             </div>
             <div className="shrink-0">
-              <h1 className="font-extrabold text-base sm:text-xl md:text-2xl tracking-tight text-white leading-none">SK SURE <span className="text-primary">WINS</span></h1>
-              <p className="text-[10px] text-primary uppercase tracking-widest font-bold hidden sm:block mt-1">Munakapapula</p>
+              <h1 className="font-extrabold text-sm sm:text-lg md:text-xl tracking-tight text-white leading-none">SK SURE <span className="text-primary">WINS</span></h1>
+              <p className="text-[9px] text-primary uppercase tracking-widest font-bold hidden sm:block mt-1">Munakapapula</p>
             </div>
           </Link>
         </div>
@@ -39,22 +39,22 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-4">
-          <a href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h" target="_blank" className="bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-bold px-5 py-2.5 rounded-full text-sm transition-all hover:scale-105 hover:shadow-[0_0_15px_rgba(37,211,102,0.4)] flex items-center gap-2">
-            <WhatsAppIcon className="w-5 h-5 text-black" />
+          <a href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h" target="_blank" className="bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-bold px-4 py-2 rounded-full text-[13px] transition-all hover:scale-105 hover:shadow-[0_0_15px_rgba(37,211,102,0.4)] flex items-center gap-2">
+            <WhatsAppIcon className="w-4 h-4 text-black" />
             Contact Us
           </a>
-          <Link href="/login" className="group flex items-center justify-center gap-3 bg-gradient-to-r from-[#1a1525] to-[#2a2035] border-2 border-yellow-500/40 shadow-[0_0_20px_rgba(234,179,8,0.5)] hover:shadow-[0_0_30px_rgba(234,179,8,0.8)] hover:scale-105 transition-all px-6 lg:px-8 py-3 rounded-full relative overflow-hidden">
+          <Link href="/login" className="group flex items-center justify-center gap-2 bg-gradient-to-r from-[#1a1525] to-[#2a2035] border-2 border-yellow-500/40 shadow-[0_0_20px_rgba(234,179,8,0.5)] hover:shadow-[0_0_30px_rgba(234,179,8,0.8)] hover:scale-105 transition-all px-4 lg:px-6 py-2 rounded-full relative overflow-hidden">
             <div className="absolute inset-0 bg-yellow-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <Crown className="w-6 h-6 lg:w-7 lg:h-7 text-yellow-400 drop-shadow-[0_0_8px_rgba(234,179,8,1)] relative z-10" />
-            <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-600 tracking-widest uppercase text-base lg:text-lg drop-shadow-md relative z-10">VIP LOGIN</span>
+            <Crown className="w-5 h-5 lg:w-6 lg:h-6 text-yellow-400 drop-shadow-[0_0_8px_rgba(234,179,8,1)] relative z-10" />
+            <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-600 tracking-widest uppercase text-sm lg:text-base drop-shadow-md relative z-10">VIP LOGIN</span>
           </Link>
         </div>
 
         <div className="md:hidden flex items-center gap-3 shrink-0">
-          <Link href="/login" className="group flex items-center justify-center gap-2 bg-gradient-to-r from-[#1a1525] to-[#2a2035] border-2 border-yellow-500/40 shadow-[0_0_15px_rgba(234,179,8,0.5)] hover:scale-105 transition-all px-4 py-2 rounded-full relative z-50 overflow-hidden">
+          <Link href="/login" className="group flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#1a1525] to-[#2a2035] border-2 border-yellow-500/40 shadow-[0_0_15px_rgba(234,179,8,0.5)] hover:scale-105 transition-all px-3 py-1.5 rounded-full relative z-50 overflow-hidden">
             <div className="absolute inset-0 bg-yellow-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <Crown className="w-5 h-5 text-yellow-400" />
-            <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 tracking-wider uppercase text-xs mt-0.5 relative z-10">VIP LOGIN</span>
+            <Crown className="w-4 h-4 text-yellow-400" />
+            <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 tracking-wider uppercase text-[10px] mt-0.5 relative z-10">VIP LOGIN</span>
           </Link>
           <button onClick={() => setIsOpen(!isOpen)} className="text-white relative z-50 p-1">
             {isOpen ? (
