@@ -78,11 +78,11 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
         const res = await fetch(`/api/payment-status/${refId}`);
         const data = await res.json();
 
-        if (data.status === "SUCCESSFUL") {
+        if (data.status === "SUCCESSFUL" || data.status === "COMPLETED") {
           stopPolling();
           // Auto-login the user immediately after payment succeeds
           await autoLoginAfterPayment(phone);
-          setStep("success");
+          handleSuccess();
           return;
         } else if (data.status === "FAILED") {
           stopPolling();
