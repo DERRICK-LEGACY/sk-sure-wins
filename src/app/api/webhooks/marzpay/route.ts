@@ -14,23 +14,35 @@ export async function POST(req: NextRequest) {
       const timestampHeader = req.headers.get('X-MarzPay-Timestamp');
       
       if (signatureHeader) {
-        // Many webhook providers with timestamp headers (like Stripe) use timestamp.rawBody as the payload
-        const signedPayload = timestampHeader ? `${timestampHeader}.${rawBody}` : rawBody;
-        
-        const expectedSignatureHex = crypto.createHmac('sha256', secret).update(signedPayload).digest('hex');
-        const expectedSignatureB64 = crypto.createHmac('sha256', secret).update(signedPayload).digest('base64');
-        
-        // Also check against just the rawBody in case the timestamp isn't part of the HMAC
-        const expectedSignatureHexNoTs = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
-        
-        if (
-          signatureHeader !== expectedSignatureHex && 
-          signatureHeader !== expectedSignatureB64 && 
-          signatureHeader !== expectedSignatureHexNoTs
-        ) {
-          console.error('Webhook signature mismatch!', { expectedHex: expectedSignatureHex, expectedHexNoTs: expectedSignatureHexNoTs, received: signatureHeader });
-          // REMOVED 401 REJECTION. MarzPay uses an undocumented payload serialization method for their HMAC.
-          // To ensure payments process instantly, we log the mismatch but do not block the payment.
+        // We will try multiple known HMAC serialization methods since MarzPay's documentation doesn't specify which one they use.
+        const payloadsToTest = [
+          rawBody, // Standard raw body
+          timestampHeader ? `${timestampHeader}.${rawBody}` : rawBody, // Stripe style
+          timestampHeader ? `${timestampHeader}${rawBody}` : rawBody, // Concatenated
+        ];
+
+        try {
+          // Add minified JSON as a fallback in case they stringify before hashing
+          payloadsToTest.push(JSON.stringify(JSON.parse(rawBody)));
+        } catch (e) {}
+
+        let isValid = false;
+        const generatedHashes = [];
+
+        for (const payload of payloadsToTest) {
+          const hexHash = crypto.createHmac('sha256', secret).update(payload).digest('hex');
+          const b64Hash = crypto.createHmac('sha256', secret).update(payload).digest('base64');
+          
+          if (signatureHeader === hexHash || signatureHeader === b64Hash) {
+            isValid = true;
+            break;
+          }
+          generatedHashes.push(hexHash);
+        }
+
+        if (!isValid) {
+          console.error('Webhook signature mismatch!', { received: signatureHeader, testedHashes: generatedHashes, timestamp: timestampHeader });
+          return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
         }
       } else {
         console.warn('Missing signature header, continuing without validation');
