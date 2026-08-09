@@ -2,19 +2,65 @@
 /* eslint-disable @next/next/no-img-element */
 import { User, Ticket, Subscription, Package } from '@prisma/client';
 import { useRouter } from "next/navigation";
-import { LogOut, Trophy, CheckCircle, Clock } from "lucide-react";
+import { LogOut, Trophy, CheckCircle, Clock, AlertTriangle } from "lucide-react";
 import { logoutVip } from "@/app/actions";
 
 type SubWithPackage = Subscription & { packages: Package };
 type TicketWithPackage = Ticket & { packages: Package };
 
-export default function VipDashboardClient({ user, subscriptions, tickets }: { user: User, subscriptions: SubWithPackage[], tickets: TicketWithPackage[] }) {
+export default function VipDashboardClient({ 
+  user, 
+  subscriptions, 
+  tickets,
+  isExpired,
+  daysRemaining 
+}: { 
+  user: User, 
+  subscriptions: SubWithPackage[], 
+  tickets: TicketWithPackage[],
+  isExpired?: boolean,
+  daysRemaining?: number | null
+}) {
   const router = useRouter();
   const handleLogout = async () => {
     await logoutVip();
     router.push("/login");
     router.refresh();
   };
+
+  if (isExpired) {
+    return (
+      <div className="min-h-screen bg-[#0f0a14] text-white flex flex-col">
+        {/* HEADER */}
+        <header className="w-full py-4 px-6 flex justify-between items-center bg-[#1a1525] border-b border-white/5 sticky top-0 z-40">
+          <div className="flex items-center gap-3">
+            <img src="/logo.jpeg" alt="SK Sure Wins Logo" className="h-10 w-auto object-contain rounded-md" />
+            <div>
+              <h1 className="font-bold text-lg md:text-xl leading-tight tracking-tight">VIP Dashboard</h1>
+              <p className="text-[10px] text-red-500 uppercase tracking-widest font-bold">EXPIRED</p>
+            </div>
+          </div>
+          <button onClick={handleLogout} className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-bold text-sm bg-red-400/10 px-4 py-2 rounded-lg">
+            <LogOut size={16} /> Logout
+          </button>
+        </header>
+        <main className="flex-1 flex items-center justify-center p-6">
+          <div className="bg-[#1a1525] border border-red-500/20 rounded-3xl p-10 text-center shadow-2xl max-w-lg w-full">
+            <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-red-500/30">
+              <Clock className="text-red-500" size={40} />
+            </div>
+            <h2 className="text-3xl font-black text-white mb-3">Subscription Expired</h2>
+            <p className="text-gray-400 mb-8 leading-relaxed">
+              Your VIP access has expired. Please renew your subscription to regain access to our premium odds and tickets.
+            </p>
+            <a href="/#packages" className="inline-block w-full bg-primary text-black font-extrabold py-4 rounded-xl shadow-lg hover:scale-105 transition-transform text-lg">
+              Renew Now
+            </a>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0f0a14] text-white">
@@ -33,6 +79,19 @@ export default function VipDashboardClient({ user, subscriptions, tickets }: { u
       </header>
 
       <main className="max-w-4xl mx-auto p-6 md:p-12">
+        {/* WARNING BANNER */}
+        {daysRemaining !== null && daysRemaining !== undefined && daysRemaining <= 3 && (
+          <div className="bg-yellow-500/10 border border-yellow-500/50 rounded-xl p-4 mb-6 flex items-start gap-3">
+            <AlertTriangle className="text-yellow-500 shrink-0 mt-0.5" size={20} />
+            <div>
+              <h4 className="text-yellow-500 font-bold">Subscription Expiring Soon!</h4>
+              <p className="text-sm text-yellow-500/80 mt-1">
+                Your VIP access expires in {daysRemaining} day{daysRemaining === 1 ? '' : 's'}. <a href="/#packages" className="underline font-bold hover:text-yellow-400">Renew now</a> to avoid losing access.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* WELCOME BANNER */}
         <div className="bg-gradient-to-r from-[#1a1525] to-[#120d1d] border border-white/10 rounded-3xl p-8 mb-10 relative overflow-hidden shadow-2xl">
           <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#25D366]/20 blur-[60px] rounded-full pointer-events-none"></div>
