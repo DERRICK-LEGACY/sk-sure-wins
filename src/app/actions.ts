@@ -753,3 +753,16 @@ export async function getTickets() {
     orderBy: { createdAt: 'desc' }
   });
 }
+
+export async function updateSubscriptionExpiry(id: string, expiresAt: string) {
+  const isAuthed = await checkAdminAuth();
+  if (!isAuthed) return { error: "Unauthorized" };
+  
+  await prisma.subscription.update({ 
+    where: { id }, 
+    data: { expiresAt: new Date(expiresAt) } 
+  });
+  
+  revalidatePath('/');
+  return { success: true };
+}

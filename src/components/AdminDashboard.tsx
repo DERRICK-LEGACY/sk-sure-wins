@@ -7,7 +7,7 @@ import {
   updateFreeHook, addWonTicket, deleteWonTicket, addClientWithSubscription, deleteClient, completelyDeleteClient,
   editFreeHook, editWonTicket, deleteFreeHook, addTicket, 
   editTicket, deleteTicket, logoutAdmin, approveTestimonial, 
-  deleteTestimonial, extendAdminSession
+  deleteTestimonial, extendAdminSession, updateSubscriptionExpiry
 } from "@/app/actions";
 import { 
   Search, UserX, Edit2, Trash2, X, Plus, 
@@ -452,8 +452,25 @@ export default function AdminDashboard({
                                 {activeSubs.length > 0 ? (
                                   <div className="flex flex-col gap-1">
                                     {activeSubs.map((sub) => (
-                                      <span key={sub.id} className="bg-green-500/10 text-green-400 text-xs px-2 py-1 rounded inline-block font-bold">
+                                      <span key={sub.id} className="flex items-center gap-2 bg-green-500/10 text-green-400 text-xs px-2 py-1 rounded font-bold w-fit">
                                         {sub.packages?.name || sub.package?.name} (Exp: {new Date(sub.expiresAt).toLocaleDateString()})
+                                        <button 
+                                          title="Edit Expiration Date"
+                                          onClick={() => {
+                                            const newDateStr = prompt(`Enter new expiration date (YYYY-MM-DD) for ${client.name}'s ${sub.packages?.name || sub.package?.name}:`, new Date(sub.expiresAt).toISOString().split('T')[0]);
+                                            if (newDateStr) {
+                                              const newDate = new Date(newDateStr);
+                                              if (!isNaN(newDate.getTime())) {
+                                                wrapAction(() => updateSubscriptionExpiry(sub.id, newDate.toISOString()), "Expiration date updated successfully!");
+                                              } else {
+                                                showToast("Invalid date format. Please use YYYY-MM-DD.", "error");
+                                              }
+                                            }
+                                          }} 
+                                          className="text-green-500 hover:text-white transition-colors"
+                                        >
+                                          <Edit2 size={12} />
+                                        </button>
                                       </span>
                                     ))}
                                   </div>

@@ -35,8 +35,14 @@ export default async function WonTicketsPage() {
               )}
               
               {(ticket.bookingCode || ticket.description) && (
-                <div className="w-full mt-4 text-white text-xl font-bold bg-black/30 p-6 rounded-xl border border-white/5 text-center">
-                  <p className="text-gray-100">{ticket.bookingCode || ticket.description}</p>
+                <div className="w-full mt-4 text-white text-xl font-bold bg-black/30 p-6 rounded-xl border border-white/5 text-center flex justify-center">
+                  {((ticket.bookingCode || ticket.description).startsWith('http://') || (ticket.bookingCode || ticket.description).startsWith('https://')) ? (
+                    <a href={ticket.bookingCode || ticket.description} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#d4af37]/20 text-[#d4af37] hover:bg-[#d4af37]/30 hover:text-[#f9d976] px-6 py-3 rounded-xl font-bold transition-all border border-[#d4af37]/30 break-all text-left w-full md:w-auto shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                      🔗 {ticket.bookingCode || ticket.description}
+                    </a>
+                  ) : (
+                    <p className="text-gray-100">{ticket.bookingCode || ticket.description}</p>
+                  )}
                 </div>
               )}
             </div>

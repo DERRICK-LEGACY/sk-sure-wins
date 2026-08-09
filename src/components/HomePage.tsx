@@ -345,7 +345,13 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
                 )}
                 {hook.description && (
                   <div className="text-white text-lg font-bold">
-                    {hook.description}
+                    {(hook.description.startsWith('http://') || hook.description.startsWith('https://')) ? (
+                      <a href={hook.description} target="_blank" rel="noopener noreferrer" className="inline-block py-2 px-4 bg-[#25D366] text-black rounded-lg font-black hover:bg-green-500 transition-colors shadow-[0_0_15px_rgba(37,211,102,0.4)] break-all text-left">
+                        🔗 Click here to view
+                      </a>
+                    ) : (
+                      hook.description
+                    )}
                   </div>
                 )}
               </div>
@@ -373,7 +379,19 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
                   <Image src={ticket.imageUrl} alt="Receipt" width={500} height={500} className="w-full sm:w-24 h-24 object-cover rounded-lg border border-white/10 shrink-0" />
                 )}
                 <div className="flex-1 flex flex-col justify-center">
-                  <div className="text-white font-bold">{ticket.bookingCode || "WON"}</div>
+                  <div className="text-white font-bold">
+                    {ticket.bookingCode ? (
+                      (ticket.bookingCode.startsWith('http://') || ticket.bookingCode.startsWith('https://')) ? (
+                        <a href={ticket.bookingCode} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#d4af37]/20 text-[#d4af37] hover:bg-[#d4af37]/30 hover:text-[#f9d976] px-4 py-2 rounded-lg font-bold transition-all border border-[#d4af37]/30 break-all text-left text-sm md:text-base">
+                          🔗 {ticket.bookingCode}
+                        </a>
+                      ) : (
+                        ticket.bookingCode
+                      )
+                    ) : (
+                      "WON"
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
