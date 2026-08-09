@@ -5,6 +5,7 @@ import { Preloader } from "@/components/Preloader";
 import { PWA } from "@/components/PWA";
 import { InstallPWA } from "@/components/InstallPWA";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -58,6 +59,7 @@ export default function RootLayout({
         <Preloader />
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
