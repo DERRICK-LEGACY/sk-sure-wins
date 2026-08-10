@@ -280,7 +280,7 @@ export const getAllFreeHooks = unstable_cache(
     });
   },
   ['free-hooks'],
-  { revalidate: 60, tags: ['free-hooks'] }
+  { tags: ['free-hooks'] }
 );
 
 export const getWonTickets = unstable_cache(
@@ -291,7 +291,7 @@ export const getWonTickets = unstable_cache(
     });
   },
   ['won-tickets'],
-  { revalidate: 60, tags: ['won-tickets'] }
+  { tags: ['won-tickets'] }
 );
 
 export const getAllTestimonials = unstable_cache(
@@ -302,7 +302,7 @@ export const getAllTestimonials = unstable_cache(
     });
   },
   ['testimonials'],
-  { revalidate: 60, tags: ['testimonials'] }
+  { tags: ['testimonials'] }
 );
 
 export async function submitTestimonial(formData: FormData) {
