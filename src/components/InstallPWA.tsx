@@ -57,7 +57,7 @@ export function InstallPWA() {
     return () => {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     };
-  }, []); -v
+  }, []);
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
