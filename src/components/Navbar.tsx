@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Crown, Target } from "lucide-react";
+import { Crown } from "lucide-react";
 import Link from "next/link";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
@@ -19,10 +19,10 @@ export default function Navbar() {
     <>
       <nav className="fixed top-0 left-0 w-full max-w-full z-50 bg-[#1a1525]/95 backdrop-blur-xl border-b border-white/10 py-2 sm:py-3 px-4 flex justify-between items-center shadow-2xl overflow-hidden">
         <div className="flex items-center gap-2 shrink-0">
-          <Link href="/" className="flex items-center gap-3 relative z-50 group">
-            <div className="relative shrink-0 flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-blue-700 via-blue-900 to-[#1a1525] border border-blue-500/40 shadow-[0_0_20px_rgba(37,99,235,0.4)] overflow-hidden">
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300"></div>
-              <Target className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.8)] transform group-hover:scale-110 transition-all duration-300" strokeWidth={2.5} />
+          <Link href="/" className="flex items-center gap-2 relative z-50">
+            <div className="relative shrink-0">
+              <div className="absolute inset-0 bg-primary rounded-lg blur opacity-40"></div>
+              <img src="/sklogo.jpeg" alt="Logo" className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-contain relative z-10 border border-white/10 shadow-lg bg-black" />
             </div>
             <div className="shrink-0">
               <h1 className="font-extrabold text-sm sm:text-lg md:text-xl tracking-tight text-white leading-none">SK SURE <span className="text-primary">WINS</span></h1>
