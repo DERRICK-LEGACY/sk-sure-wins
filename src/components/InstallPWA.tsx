@@ -31,11 +31,11 @@ export function InstallPWA() {
     // Detect iOS
     const userAgent = window.navigator.userAgent.toLowerCase();
     const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
-    
+
     // Defer state updates to avoid cascading renders
     setTimeout(() => {
       setIsIOS(isIosDevice);
-      
+
       if (isIosDevice) {
         // For iOS, just show our custom prompt after a few seconds
         setTimeout(() => {
@@ -57,7 +57,7 @@ export function InstallPWA() {
     return () => {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     };
-  }, []);
+  }, []); -v
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
@@ -90,14 +90,14 @@ export function InstallPWA() {
           <div className="flex-1">
             <h4 className="text-white font-bold text-sm">Install SK Sure Wins</h4>
             <p className="text-gray-400 text-xs mt-1">
-              {isIOS 
+              {isIOS
                 ? "Tap the Share button below and select 'Add to Home Screen' for quick access."
                 : "Install our app for the fastest betting tips experience."}
             </p>
           </div>
-          
+
           <div className="flex flex-col gap-2">
-            <button 
+            <button
               onClick={() => setShowPrompt(false)}
               className="absolute -top-2 -right-2 bg-red-500/20 text-red-500 rounded-full p-1 border border-red-500/30 hover:bg-red-500 hover:text-white transition-colors"
             >

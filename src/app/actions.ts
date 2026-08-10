@@ -250,6 +250,7 @@ export async function getEntitledTickets() {
 
   const tickets = await prisma.ticket.findMany({
     where: {
+      status: { not: 'VOID' },
       audiences: {
         some: {
           packageId: { in: session.activePackageIds }
