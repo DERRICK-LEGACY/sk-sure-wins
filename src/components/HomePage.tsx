@@ -373,7 +373,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
           <h3 className="text-3xl font-black mb-6 text-white tracking-tight">Recent <span className="text-primary">VIP Wins</span></h3>
 
           <div className="flex flex-col gap-4 flex-1">
-            {wonTickets.slice(-2).reverse().map((ticket: WonTicket) => (
+            {wonTickets.slice(0, 2).map((ticket: WonTicket) => (
               <div key={ticket.id} className="bg-black/60 p-4 rounded-xl border border-primary/10 flex flex-col sm:flex-row gap-4">
                 {ticket.imageUrl && (
                   <Image src={ticket.imageUrl} alt="Receipt" width={500} height={500} className="w-full sm:w-24 h-24 object-cover rounded-lg border border-white/10 shrink-0" />
