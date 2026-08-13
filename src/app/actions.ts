@@ -531,17 +531,13 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
   }
   
   try {
-    if (process.env.BLOB_READ_WRITE_TOKEN) {
-      const blob = await put(file.name, file, { access: 'public' });
-      return blob.url;
-    } else {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const ext = file.name.split('.').pop() || 'png';
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const ext = file.name.split('.').pop() || 'png';
 
-      // On Vercel, the file system is read-only. 
-      // If Vercel Blob isn't configured, fallback to storing the image as a Base64 string.
-      if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    // On Vercel, the file system is read-only. 
+    // Fallback to storing the image as a Base64 string.
+    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
         const base64 = buffer.toString('base64');
         return `data:image/${ext};base64,${base64}`;
       }
@@ -555,7 +551,6 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
       await writeFile(path.join(uploadDir, filename), buffer);
       
       return `/uploads/${filename}`;
-    }
   } catch (error) {
     console.error("Image upload error:", error);
     return "https://placehold.co/600x400?text=Upload+Failed";
