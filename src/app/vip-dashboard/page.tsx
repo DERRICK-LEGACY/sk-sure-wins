@@ -1,7 +1,13 @@
+import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import VipDashboardClient from '@/components/VipDashboardClient';
 import { getVipSession, getEntitledTickets } from '@/app/actions';
 import prisma from '@/lib/db';
+
+export const metadata: Metadata = {
+  title: 'VIP Dashboard - SK Sure Wins',
+  description: 'Manage your VIP premium tickets and subscriptions.',
+};
 
 export default async function VipDashboardPage() {
   const session = await getVipSession();

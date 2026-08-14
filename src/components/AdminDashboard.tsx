@@ -163,22 +163,22 @@ export default function AdminDashboard({
   const sortedPackages = useMemo(() => {
     const exactOrder = [
       // Bronze
+      "Bronze: ODD 1.5 Normal", "Bronze: ODD 2", "Bronze: ODD 1.5 Lifechanger", "Bronze: ODD 3", "Bronze: ODD 4", "Bronze: ODD 5",
       "ODD 1.5 NORMAL", "ODD 1.5 LIFECHANGER", "ODD 2", "ODD 3", "ODD 4",
-      "Bronze: ODD 1.5 Normal", "Bronze: ODD 1.5 Lifechanger", "Bronze: ODD 2", "Bronze: ODD 3", "Bronze: ODD 4",
       // Silver
+      "Silver: VIP", "Silver: AKATAMBULA", "Silver: ODD 8-10", "Silver: VVIP", "Silver: ODD 20",
       "VIP", "VVIP", "ODD 8-10", "ODD 20", "AKATAMBULA",
-      "Silver: VIP", "Silver: VVIP", "Silver: ODD 8-10", "Silver: ODD 20", "Silver: AKATAMBULA",
       // Gold
+      "Gold: Akatafa/Akatemu", "Gold: FAMILY", "Gold: BIG STAKERS", "Gold: ALL PACKAGES", "Gold: SK Counter Attack", "Gold: Account Management",
       "AKATAFA/AKATEMU", "SK COUNTER ATTACK", "ACCOUNT MANAGEMENT", "FAMILY", "BIG STAKERS", "ALL PACKAGES",
-      "Gold: VIP", "Gold: VVIP", "Gold: FAMILY", "Gold: BIG STAKERS", "Gold: ALL PACKAGE MONTHLY",
-      "Gold: AKATAFA/AKATEMU", "Gold: SK COUNTER ATTACK", "Gold: ACCOUNT MANAGEMENT", "Gold: ALL PACKAGES",
+      "Gold: VIP", "Gold: VVIP", "Gold: ALL PACKAGE MONTHLY",
       // Premium Offer
+      "Premium: Rent Project", "Premium: Boda boda Project", "Premium: Back to school Project", "Premium: 1M in 5 days",
       "Rent Project", "Boda boda Project", "Back to school", "1M in 5 days",
-      "Premium: Rent Project", "Premium: Boda boda Project", "Premium: Back to school", "Premium: 1M in 5 days",
       "Premium Offer: Rent Project", "Premium Offer: Boda boda Project", "Premium Offer: Back to school", "Premium Offer: 1M in 5 days",
       // Life Changer
-      "ODD 1.20", "ODD 1.30", "ODD 1.50",
-      "Life Changer: ODD 1.20", "Life Changer: ODD 1.30", "Life Changer: ODD 1.50"
+      "Life Changer: ODD 1.20", "Life Changer: ODD 1.30", "Life Changer: ODD 1.50",
+      "ODD 1.20", "ODD 1.30", "ODD 1.50"
     ];
     
     const getPackageSortIndex = (name: string) => {

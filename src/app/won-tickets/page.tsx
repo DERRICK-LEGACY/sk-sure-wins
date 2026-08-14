@@ -1,11 +1,16 @@
-/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const dynamic = 'force-dynamic';
+import { Metadata } from 'next';
+export const revalidate = 60;
 
 import { getWonTickets } from '@/app/actions';
 import Navbar from '@/components/Navbar';
 import { Trophy } from 'lucide-react';
+import Image from 'next/image';
 
+export const metadata: Metadata = {
+  title: 'Winning Receipts - SK Sure Wins',
+  description: 'View our past winning receipts and betting history.',
+};
 export default async function WonTicketsPage() {
   const tickets = await getWonTickets();
 
@@ -27,7 +32,7 @@ export default async function WonTicketsPage() {
               </div>
               
               {ticket.imageUrl ? (
-                <img src={ticket.imageUrl} alt="Receipt" className="w-full h-auto object-cover rounded-xl border border-white/10 max-h-[500px]" />
+                <Image src={ticket.imageUrl} alt="Receipt" width={800} height={500} className="w-full h-auto object-cover rounded-xl border border-white/10 max-h-[500px]" />
               ) : (
                 <div className="w-full h-48 bg-black/40 rounded-xl border border-white/10 flex items-center justify-center">
                   <Trophy size={48} className="text-primary/50" />

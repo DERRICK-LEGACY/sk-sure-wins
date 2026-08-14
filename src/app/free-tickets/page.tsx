@@ -1,10 +1,15 @@
-/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const dynamic = 'force-dynamic';
+import { Metadata } from 'next';
+export const revalidate = 60;
 
 import { getAllFreeHooks } from '@/app/actions';
 import Navbar from '@/components/Navbar';
+import Image from 'next/image';
 
+export const metadata: Metadata = {
+  title: 'Free Tickets - SK Sure Wins',
+  description: 'View our recent free betting tickets.',
+};
 export default async function FreeTicketsPage() {
   const hooks = await getAllFreeHooks();
 
@@ -30,7 +35,7 @@ export default async function FreeTicketsPage() {
               </div>
               
               {hook.imageUrl && (
-                <img src={hook.imageUrl} alt="Free Ticket" className="w-full h-auto object-cover rounded-xl border border-white/5 max-h-[500px]" />
+                <Image src={hook.imageUrl} alt="Free Ticket" width={800} height={500} className="w-full h-auto object-cover rounded-xl border border-white/5 max-h-[500px]" />
               )}
               
               {hook.description && (
