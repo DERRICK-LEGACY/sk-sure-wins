@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Metadata } from 'next';
-export const revalidate = 60;
+export const revalidate = 3600;
 
 import { getWonTickets } from '@/app/actions';
 import Navbar from '@/components/Navbar';
