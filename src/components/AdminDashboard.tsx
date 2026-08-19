@@ -1,8 +1,8 @@
 "use client";
-/* eslint-disable @next/next/no-img-element */
 import { FreeHook, Ticket, User, Testimonial, Package, Subscription, TicketAudience } from '@prisma/client';
 
 import { useState, useMemo, useEffect, useRef } from "react";
+import Image from "next/image";
 import { 
   updateFreeHook, addWonTicket, deleteWonTicket, addClientWithSubscription, deleteClient, completelyDeleteClient,
   editFreeHook, editWonTicket, deleteFreeHook, addTicket, 
@@ -539,7 +539,7 @@ export default function AdminDashboard({
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Ticket Image</label>
                         {editingPremium && editingPremium.imageUrl && (
                           <div className="mb-3 relative rounded-xl overflow-hidden border border-white/10 w-fit">
-                            <img src={editingPremium.imageUrl} alt="Current Slip" className="h-24 w-auto object-cover opacity-70" />
+                            <Image src={editingPremium.imageUrl} alt="Current Slip" width={400} height={96} className="h-24 w-auto object-cover opacity-70" />
                             <div className="absolute inset-0 flex items-center justify-center bg-black/50 pointer-events-none">
                               <span className="text-xs font-bold text-white uppercase tracking-wider">Current</span>
                             </div>
@@ -561,7 +561,7 @@ export default function AdminDashboard({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {premiumTickets.map((t) => (
                     <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl overflow-hidden shadow-xl flex flex-col">
-                      {t.imageUrl && <img src={t.imageUrl} alt="Slip" className="w-full h-48 object-cover border-b border-white/5" />}
+                      {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
                           <span className="inline-block bg-[#d4af37]/10 text-[#d4af37] text-xs font-black px-3 py-1 rounded mb-3 uppercase tracking-wider">{t.audiences?.[0]?.package?.name}</span>
@@ -637,7 +637,7 @@ export default function AdminDashboard({
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Ticket Image</label>
                         {editingFree && editingFree.imageUrl && (
                           <div className="mb-3 relative rounded-xl overflow-hidden border border-white/10 w-fit">
-                            <img src={editingFree.imageUrl} alt="Current Slip" className="h-24 w-auto object-cover opacity-70" />
+                            <Image src={editingFree.imageUrl} alt="Current Slip" width={400} height={96} className="h-24 w-auto object-cover opacity-70" />
                           </div>
                         )}
                         <input name="image" type="file" accept="image/*" required={!editingFree} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-[#d4af37]/10 file:text-[#d4af37] hover:file:bg-[#d4af37]/20" />
@@ -655,7 +655,7 @@ export default function AdminDashboard({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {freeHooks.map((t) => (
                     <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl overflow-hidden shadow-xl flex flex-col">
-                      {t.imageUrl && <img src={t.imageUrl} alt="Slip" className="w-full h-48 object-cover border-b border-white/5" />}
+                      {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
                           <p className="text-gray-400 text-sm mb-4">Uploaded: {new Date(t.createdAt).toLocaleDateString()}</p>
@@ -696,7 +696,7 @@ export default function AdminDashboard({
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Ticket Image</label>
                         {editingWon && editingWon.imageUrl && (
                           <div className="mb-3 relative rounded-xl overflow-hidden border border-white/10 w-fit">
-                            <img src={editingWon.imageUrl} alt="Current Slip" className="h-24 w-auto object-cover opacity-70" />
+                            <Image src={editingWon.imageUrl} alt="Current Slip" width={400} height={96} className="h-24 w-auto object-cover opacity-70" />
                           </div>
                         )}
                         <input name="image" type="file" accept="image/*" required={!editingWon} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-[#d4af37]/10 file:text-[#d4af37] hover:file:bg-[#d4af37]/20" />
@@ -714,7 +714,7 @@ export default function AdminDashboard({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {wonTickets.map((t) => (
                     <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl overflow-hidden shadow-xl flex flex-col">
-                      {t.imageUrl && <img src={t.imageUrl} alt="Slip" className="w-full h-48 object-cover border-b border-white/5" />}
+                      {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
                           <p className="text-gray-400 text-sm mb-4">Uploaded: {new Date(t.createdAt).toLocaleDateString()}</p>

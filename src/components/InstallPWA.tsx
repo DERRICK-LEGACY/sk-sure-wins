@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Download, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -83,8 +84,7 @@ export function InstallPWA() {
         >
           <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-xl p-0.5 flex-shrink-0">
             <div className="w-full h-full bg-[#0f0a14] rounded-[10px] overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icon-192.png" alt="App Icon" className="w-full h-full object-cover" />
+              <Image src="/icon-192.png" alt="App Icon" width={64} height={64} className="w-full h-full object-cover" />
             </div>
           </div>
           <div className="flex-1">

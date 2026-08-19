@@ -10,9 +10,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const freeHooks = await getAllFreeHooks();
-  const wonTickets = await getWonTickets();
-  const testimonials = await getAllTestimonials();
+  const [freeHooks, wonTickets, testimonials] = await Promise.all([
+    getAllFreeHooks(),
+    getWonTickets(),
+    getAllTestimonials()
+  ]);
 
   return <HomePage freeHooks={freeHooks} wonTickets={wonTickets} testimonials={testimonials} />;
 }

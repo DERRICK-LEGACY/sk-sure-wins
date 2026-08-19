@@ -1,9 +1,9 @@
 "use client";
-/* eslint-disable @next/next/no-img-element */
 import { User, Ticket, Subscription, Package } from '@prisma/client';
 import { useRouter } from "next/navigation";
 import { LogOut, Trophy, CheckCircle, Clock, AlertTriangle } from "lucide-react";
 import { logoutVip } from "@/app/actions";
+import Image from "next/image";
 
 type SubWithPackage = Subscription & { packages: Package };
 type TicketWithPackage = Ticket & { packages: Package };
@@ -34,7 +34,7 @@ export default function VipDashboardClient({
         {/* HEADER */}
         <header className="w-full py-4 px-6 flex justify-between items-center bg-[#1a1525] border-b border-white/5 sticky top-0 z-40">
           <div className="flex items-center gap-3">
-            <img src="/logo.jpeg" alt="SK Sure Wins Logo" className="h-10 w-auto object-contain rounded-md" />
+            <Image src="/logo.jpeg" alt="SK Sure Wins Logo" width={150} height={40} className="h-10 w-auto object-contain rounded-md" />
             <div>
               <h1 className="font-bold text-lg md:text-xl leading-tight tracking-tight">VIP Dashboard</h1>
               <p className="text-[10px] text-red-500 uppercase tracking-widest font-bold">EXPIRED</p>
@@ -67,7 +67,7 @@ export default function VipDashboardClient({
       {/* HEADER */}
       <header className="w-full py-4 px-6 flex justify-between items-center bg-[#1a1525] border-b border-white/5 sticky top-0 z-40">
         <div className="flex items-center gap-3">
-          <img src="/logo.jpeg" alt="SK Sure Wins Logo" className="h-10 w-auto object-contain rounded-md" />
+          <Image src="/logo.jpeg" alt="SK Sure Wins Logo" width={150} height={40} className="h-10 w-auto object-contain rounded-md" />
           <div>
             <h1 className="font-bold text-lg md:text-xl leading-tight tracking-tight">VIP Dashboard</h1>
             <p className="text-[10px] text-[#25D366] uppercase tracking-widest font-bold">VIP MEMBER</p>
@@ -151,7 +151,7 @@ export default function VipDashboardClient({
                 )}
 
                 {ticket.imageUrl && (
-                  <img src={ticket.imageUrl} alt="Premium Ticket" className="w-full rounded-2xl border border-white/10 mb-4 object-contain max-h-[500px]" />
+                  <Image src={ticket.imageUrl} alt="Premium Ticket" width={800} height={500} className="w-full rounded-2xl border border-white/10 mb-4 object-contain max-h-[500px]" />
                 )}
               </div>
             ))}

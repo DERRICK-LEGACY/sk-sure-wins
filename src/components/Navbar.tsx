@@ -1,10 +1,10 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Crown } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -22,7 +22,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-2 relative z-50">
             <div className="relative shrink-0">
               <div className="absolute inset-0 bg-primary rounded-lg blur opacity-40"></div>
-              <img src="/sklogo.jpeg" alt="Logo" className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-contain relative z-10 border border-white/10 shadow-lg bg-black" />
+              <Image src="/sklogo.jpeg" alt="Logo" width={40} height={40} className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-contain relative z-10 border border-white/10 shadow-lg bg-black" />
             </div>
             <div className="shrink-0">
               <h1 className="font-extrabold text-sm sm:text-lg md:text-xl tracking-tight text-white leading-none">SK SURE <span className="text-primary">WINS</span></h1>

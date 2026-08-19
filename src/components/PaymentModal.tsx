@@ -1,11 +1,11 @@
 "use client";
-/* eslint-disable @next/next/no-img-element */
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { X, ShieldCheck, LockKeyhole, CheckCircle2, Loader2, AlertTriangle, RotateCcw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { initiatePaymentByName, autoLoginAfterPayment } from "@/app/actions";
+import Image from "next/image";
 interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -60,6 +60,23 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
       pollRef.current = null;
     }
   }, []);
+
+  const handleClose = useCallback(() => {
+    stopPolling();
+    onClose();
+    setTimeout(() => {
+      setStep("network");
+      setPhone("");
+      setPin("");
+      setName("");
+      setError("");
+    }, 300);
+  }, [stopPolling, onClose]);
+
+  const handleSuccess = useCallback(() => {
+    handleClose();
+    router.push("/vip-dashboard");
+  }, [handleClose, router]);
 
   const startPolling = useCallback((refId: string) => {
     let attempts = 0;
@@ -144,22 +161,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
     setError("");
   };
 
-  const handleClose = () => {
-    stopPolling();
-    onClose();
-    setTimeout(() => {
-      setStep("network");
-      setPhone("");
-      setPin("");
-      setName("");
-      setError("");
-    }, 300);
-  };
 
-  const handleSuccess = () => {
-    handleClose();
-    router.push("/vip-dashboard");
-  };
 
   return (
     <AnimatePresence>
@@ -229,7 +231,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     className="w-full flex items-center p-4 rounded-xl border border-yellow-400/30 bg-yellow-400/5 hover:bg-yellow-400/10 transition-colors group"
                   >
                     <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-[#ffcc00]">
-                      <img src="/mtn.png" alt="MTN" className="w-full h-full object-cover scale-110" />
+                      <Image src="/mtn.png" alt="MTN" width={48} height={48} className="w-full h-full object-cover scale-110" />
                     </div>
                     <div className="text-left flex-1">
                       <h4 className="text-white font-bold text-lg">MTN Mobile Money</h4>
@@ -245,7 +247,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     className="w-full flex items-center p-4 rounded-xl border border-red-500/30 bg-red-500/5 hover:bg-red-500/10 transition-colors group"
                   >
                     <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-white">
-                      <img src="/airtel.png" alt="Airtel" className="w-full h-full object-contain p-1" />
+                      <Image src="/airtel.png" alt="Airtel" width={48} height={48} className="w-full h-full object-contain p-1" />
                     </div>
                     <div className="text-left">
                       <h4 className="text-white font-bold text-lg">Airtel Money</h4>
@@ -269,14 +271,14 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     {network === "MTN" ? (
                       <div className="flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 px-4 py-2 rounded-xl">
                         <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-[#ffcc00]">
-                          <img src="/mtn.png" alt="MTN" className="w-full h-full object-cover scale-110" />
+                          <Image src="/mtn.png" alt="MTN" width={48} height={48} className="w-full h-full object-cover scale-110" />
                         </div>
                         <span className="text-yellow-400 font-bold text-sm">MTN Mobile Money</span>
                       </div>
                     ) : (
                       <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 px-4 py-2 rounded-xl">
                         <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-white">
-                          <img src="/airtel.png" alt="Airtel" className="w-full h-full object-contain p-0.5" />
+                          <Image src="/airtel.png" alt="Airtel" width={48} height={48} className="w-full h-full object-contain p-0.5" />
                         </div>
                         <span className="text-red-500 font-bold text-sm">Airtel Money</span>
                       </div>
