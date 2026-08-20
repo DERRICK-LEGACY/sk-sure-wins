@@ -4,7 +4,6 @@ import { useState } from "react";
 import { LockKeyhole, ArrowRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { verifyVipLogin } from "@/app/actions";
 import Link from "next/link";
 
 export default function LoginForm() {
