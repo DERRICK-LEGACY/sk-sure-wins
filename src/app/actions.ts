@@ -531,26 +531,25 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
   }
   
   try {
+    // Avoid saving large Base64 strings to the database to prevent bandwidth exhaustion.
+    // Use Vercel Blob in production.
+    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+      const { put } = await import('@vercel/blob');
+      const blob = await put(file.name, file, { access: 'public' });
+      return blob.url;
+    }
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const ext = file.name.split('.').pop() || 'png';
-
-    // On Vercel, the file system is read-only. 
-    // Fallback to storing the image as a Base64 string.
-    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
-        const base64 = buffer.toString('base64');
-        return `data:image/${ext};base64,${base64}`;
-      }
-
-      // Local development fallback
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      const filename = `ticket-${uniqueSuffix}.${ext}`;
-      
-      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-      await mkdir(uploadDir, { recursive: true });
-      await writeFile(path.join(uploadDir, filename), buffer);
-      
-      return `/uploads/${filename}`;
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const filename = `ticket-${uniqueSuffix}.${ext}`;
+    
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+    await mkdir(uploadDir, { recursive: true });
+    await writeFile(path.join(uploadDir, filename), buffer);
+    
+    return `/uploads/${filename}`;
   } catch (error) {
     console.error("Image upload error:", error);
     return "https://placehold.co/600x400?text=Upload+Failed";
