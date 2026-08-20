@@ -26,12 +26,17 @@ export default function LoginForm() {
       if (phone.length < 10) throw new Error("Please enter a valid 10-digit phone number (e.g., 077... or 075...).");
       if (pin.length < 4) throw new Error("Please enter your 4-digit PIN.");
 
+      // Temporary maintenance message to avoid hitting the locked database
+      throw new Error("VIP clients section under maintenance. Please contact SK for today's tickets.");
+
+      /*
       const res = await verifyVipLogin(phone, pin);
       if (!res.success) {
         throw new Error(res.error);
       }
 
       router.push("/vip-dashboard");
+      */
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Login failed.");
     } finally {
