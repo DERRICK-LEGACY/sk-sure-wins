@@ -10,11 +10,22 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const [freeHooks, wonTickets, testimonials] = await Promise.all([
-    getAllFreeHooks(),
-    getWonTickets(),
-    getAllTestimonials()
-  ]);
+  let freeHooks: any[] = [];
+  let wonTickets: any[] = [];
+  let testimonials: any[] = [];
+
+  try {
+    const results = await Promise.all([
+      getAllFreeHooks(),
+      getWonTickets(),
+      getAllTestimonials()
+    ]);
+    freeHooks = results[0] || [];
+    wonTickets = results[1] || [];
+    testimonials = results[2] || [];
+  } catch (error) {
+    console.warn("Database connection failed during pre-render:", error);
+  }
 
   return <HomePage freeHooks={freeHooks} wonTickets={wonTickets} testimonials={testimonials} />;
 }

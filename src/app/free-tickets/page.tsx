@@ -11,7 +11,12 @@ export const metadata: Metadata = {
   description: 'View our recent free betting tickets.',
 };
 export default async function FreeTicketsPage() {
-  const hooks = await getAllFreeHooks();
+  let hooks: any[] = [];
+  try {
+    hooks = await getAllFreeHooks();
+  } catch (e) {
+    console.warn("Database connection failed during pre-render:", e);
+  }
 
   return (
     <div className="min-h-screen bg-[#0f0a14] text-white flex flex-col">
