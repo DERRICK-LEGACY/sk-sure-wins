@@ -12,7 +12,12 @@ export const metadata: Metadata = {
   description: 'View our past winning receipts and betting history.',
 };
 export default async function WonTicketsPage() {
-  const tickets = await getWonTickets();
+  let tickets: any[] = [];
+  try {
+    tickets = await getWonTickets();
+  } catch (error) {
+    console.warn("Database connection failed during pre-render:", error);
+  }
 
   return (
     <div className="min-h-screen bg-[#0f0a14] text-white flex flex-col">
