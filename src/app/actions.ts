@@ -574,10 +574,12 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
   }
   
   try {
+    const blobToken = process.env.BLOB_READ_WRITE_TOKEN || "vercel_blob_rw_Aj39zR6a84Y4HNke_kIshsnfokuxjNGhGY4Qiw4vudyPjgY";
+    
     // ALWAYS use Vercel Blob if token is available. DO NOT store Base64 strings.
-    if (process.env.BLOB_READ_WRITE_TOKEN) {
+    if (blobToken) {
       const { put } = await import('@vercel/blob');
-      const blob = await put(file.name, file, { access: 'public' });
+      const blob = await put(file.name, file, { access: 'public', token: blobToken });
       return blob.url;
     }
 
