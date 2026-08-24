@@ -36,7 +36,7 @@ export default async function WonTicketsPage() {
                 <span className="text-gray-500 text-sm">{new Date(ticket.createdAt).toLocaleDateString()}</span>
               </div>
               
-              {ticket.imageUrl ? (
+              {ticket.imageUrl && !ticket.imageUrl.includes('Upload+Failed') && !ticket.imageUrl.includes('placehold.co') ? (
                 <Image src={ticket.imageUrl} alt="Receipt" width={800} height={500} className="w-full h-auto object-cover rounded-xl border border-white/10 max-h-[500px]" />
               ) : (
                 <div className="w-full h-48 bg-black/40 rounded-xl border border-white/10 flex items-center justify-center">

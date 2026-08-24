@@ -23,6 +23,12 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const TelegramIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+  </svg>
+);
+
 
 export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: { freeHooks: FreeHook[], wonTickets: WonTicket[], testimonials?: Testimonial[] }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -160,23 +166,37 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-300 to-primary-dark">We Deliver Wins.</span>
             </motion.h2>
 
-            {/* JOIN WHATSAPP FUNNEL */}
-            <motion.a
-              href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h"
-              target="_blank"
+            {/* JOIN CHANNELS FUNNEL */}
+            <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="mt-6 mb-8 w-auto max-w-sm flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-extrabold py-3.5 px-8 rounded-full shadow-[0_0_30px_rgba(37,211,102,0.6)] border border-white/20 transition-all relative overflow-hidden group"
+              className="mt-6 mb-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-2xl"
             >
-              <div className="absolute inset-0 bg-white/20 blur-md group-hover:opacity-100 opacity-0 transition-opacity"></div>
-              <div className="bg-white p-2 rounded-full shadow-lg relative z-10 flex items-center justify-center">
-                <WhatsAppIcon className="w-6 h-6 text-[#25D366]" />
-              </div>
-              <span className="text-lg tracking-tight relative z-10">Join Our Free WhatsApp</span>
-            </motion.a>
+              <a
+                href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h"
+                target="_blank"
+                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-extrabold py-3.5 px-8 rounded-full shadow-[0_0_30px_rgba(37,211,102,0.4)] hover:shadow-[0_0_30px_rgba(37,211,102,0.8)] border border-white/20 hover:scale-105 active:scale-95 transition-all relative overflow-hidden group"
+              >
+                <div className="absolute inset-0 bg-white/20 blur-md group-hover:opacity-100 opacity-0 transition-opacity"></div>
+                <div className="bg-white p-2 rounded-full shadow-lg relative z-10 flex items-center justify-center">
+                  <WhatsAppIcon className="w-5 h-5 text-[#25D366]" />
+                </div>
+                <span className="text-base tracking-tight relative z-10">WhatsApp Channel</span>
+              </a>
+
+              <a
+                href="https://t.me/+Gd917QQhofRiZGVk"
+                target="_blank"
+                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-gradient-to-r from-[#0088cc] to-[#0077b5] text-white font-extrabold py-3.5 px-8 rounded-full shadow-[0_0_30px_rgba(0,136,204,0.4)] hover:shadow-[0_0_30px_rgba(0,136,204,0.8)] border border-white/20 hover:scale-105 active:scale-95 transition-all relative overflow-hidden group"
+              >
+                <div className="absolute inset-0 bg-white/20 blur-md group-hover:opacity-100 opacity-0 transition-opacity"></div>
+                <div className="bg-white p-2 rounded-full shadow-lg relative z-10 flex items-center justify-center">
+                  <TelegramIcon className="w-5 h-5 text-[#0088cc]" />
+                </div>
+                <span className="text-base tracking-tight relative z-10">Telegram Channel</span>
+              </a>
+            </motion.div>
           </div>
         </section>
 
@@ -547,7 +567,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
       </footer>
 
       {/* FLOATING WHATSAPP BUTTON */}
-      <a href="https://wa.me/256703743057" target="_blank" rel="noreferrer" className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white p-4 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.5)] hover:scale-110 transition-transform flex items-center justify-center group">
+      <a href="https://wa.me/256785478399?text=Hey%20Mr%20SK%20I'm%20from%20the%20website%20I%20want%20help%20from%20this." target="_blank" rel="noreferrer" className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white p-4 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.5)] hover:scale-110 transition-transform flex items-center justify-center group">
         <WhatsAppIcon className="w-7 h-7 text-white" />
         <span className="absolute right-16 bg-white text-black text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">Chat with VIP Support</span>
       </a>

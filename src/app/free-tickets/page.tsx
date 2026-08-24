@@ -39,7 +39,7 @@ export default async function FreeTicketsPage() {
                 <span className="text-gray-500 text-sm">{new Date(hook.createdAt).toLocaleDateString()}</span>
               </div>
               
-              {hook.imageUrl && (
+              {hook.imageUrl && !hook.imageUrl.includes('Upload+Failed') && !hook.imageUrl.includes('placehold.co') && (
                 <Image src={hook.imageUrl} alt="Free Ticket" width={800} height={500} className="w-full h-auto object-cover rounded-xl border border-white/5 max-h-[500px]" />
               )}
               

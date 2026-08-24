@@ -105,6 +105,18 @@ export default function AdminDashboard({
     };
   }, []);
 
+  // Security: Logout when switching tabs
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === 'hidden') {
+        await logoutAdmin();
+        router.refresh();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [router]);
+
   // Search & Edit States
   const [userSearch, setUserSearch] = useState("");
   const [editingFree, setEditingFree] = useState<FreeHook | null>(null);
@@ -178,6 +190,7 @@ export default function AdminDashboard({
         showToast((res as { error: string }).error, "error");
       } else {
         showToast(successMsg, "success");
+        router.refresh();
       }
     } catch (err) { 
       console.error(err); 
