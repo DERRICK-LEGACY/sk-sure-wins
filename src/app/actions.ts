@@ -602,24 +602,27 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
     return "https://placehold.co/600x400?text=Vercel+Blob+Not+Configured";
   } catch (error: any) {
     console.error("Image upload error with Vercel Blob:", error?.message || error);
+    // Fallback 1: Try Freeimage.host API
     try {
-      // Fallback: Upload to Catbox.moe for 100% free permanent storage (no DB bloat)
-      console.log("Falling back to Catbox.moe image host...");
-      const catboxFormData = new FormData();
-      catboxFormData.append('reqtype', 'fileupload');
-      catboxFormData.append('fileToUpload', file, file.name);
+      console.log("Attempting Freeimage.host fallback upload...");
+      const freeimageFormData = new FormData();
+      freeimageFormData.append('source', file, file.name);
+      freeimageFormData.append('key', '6d207e02198a847aa98d0a2a901485a5');
+      freeimageFormData.append('action', 'upload');
       
-      const res = await fetch('https://catbox.moe/user/api.php', {
+      const res = await fetch('https://freeimage.host/api/1/upload', {
         method: 'POST',
-        body: catboxFormData
+        body: freeimageFormData
       });
       
-      const url = await res.text();
-      if (!url.startsWith('http')) throw new Error(url);
-      
-      return url;
+      const json = await res.json();
+      if (json && json.status_code === 200 && json.image && json.image.url) {
+        return json.image.url;
+      } else {
+        throw new Error("Invalid response from Freeimage.host");
+      }
     } catch (fallbackError) {
-      console.error("Catbox fallback error:", fallbackError);
+      console.error("Freeimage fallback error:", fallbackError);
       return "https://placehold.co/600x400?text=Upload+Failed";
     }
   }
