@@ -5,7 +5,7 @@ import ws from 'ws'
 
 neonConfig.webSocketConstructor = ws
 
-const connectionString = `${process.env.DATABASE_URL}`.replace('?pgbouncer=true', '').replace('&pgbouncer=true', '')
+const connectionString = `${process.env.DATABASE_URL_UNPOOLED || process.env.POSTGRES_URL_NON_POOLING || process.env.DATABASE_URL}`.replace('?pgbouncer=true', '').replace('&pgbouncer=true', '')
 
 const pool = new Pool({ connectionString })
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

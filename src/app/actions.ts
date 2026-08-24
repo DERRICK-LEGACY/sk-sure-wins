@@ -340,7 +340,22 @@ export async function getAdminPassword() {
   const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
   if (admin?.pin) return admin.pin;
   if (process.env.ADMIN_PASSWORD) return process.env.ADMIN_PASSWORD;
-  throw new Error("Admin password not configured in production or database.");
+  
+  // Auto-seed admin user and packages if missing (for fresh Neon branches)
+  await prisma.user.create({
+    data: { phone: 'ADMIN', name: 'Super Admin', pin: 'SK2026!', role: 'ADMIN', status: 'ACTIVE' }
+  });
+  
+  await prisma.package.createMany({
+    data: [
+      { name: 'Odds 2', price: 30000, durationDays: 14 },
+      { name: 'Odds 3', price: 50000, durationDays: 14 },
+      { name: 'Odds 4', price: 70000, durationDays: 14 }
+    ],
+    skipDuplicates: true
+  });
+
+  return 'SK2026!';
 }
 
 const loginAttempts = new Map<string, { count: number, lockedUntil: number }>();
