@@ -8,6 +8,7 @@ neonConfig.webSocketConstructor = ws
 const connectionString = `${process.env.DATABASE_URL}`.replace('?pgbouncer=true', '').replace('&pgbouncer=true', '')
 
 const pool = new Pool({ connectionString })
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const adapter = new PrismaNeon(pool as any)
 
 const prismaClientSingleton = () => {

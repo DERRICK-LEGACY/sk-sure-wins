@@ -200,8 +200,8 @@ export default function AdminDashboard({
     setLoading(true);
     try { 
       const res = await action();
-      if (res && typeof res === 'object' && 'error' in res && typeof (res as any).error === 'string') {
-        showToast((res as any).error, "error");
+      if (res && typeof res === 'object' && 'error' in res && typeof (res as { error?: string }).error === 'string') {
+        showToast((res as { error: string }).error, "error");
       } else {
         showToast(successMsg, "success");
       }

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     const tickets = await prisma.ticket.findMany({
       include: { audiences: { include: { package: true } } }

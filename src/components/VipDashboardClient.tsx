@@ -4,9 +4,10 @@ import { useRouter } from "next/navigation";
 import { LogOut, Trophy, CheckCircle, Clock, AlertTriangle } from "lucide-react";
 import { logoutVip } from "@/app/actions";
 import Image from "next/image";
+import Link from "next/link";
 
-type SubWithPackage = Subscription & { packages: Package };
-type TicketWithPackage = Ticket & { packages: Package };
+type SubWithPackage = Subscription & { package: Package };
+type TicketWithPackage = Ticket & { audiences: { package: Package }[] };
 
 export default function VipDashboardClient({ 
   user, 
@@ -53,9 +54,9 @@ export default function VipDashboardClient({
             <p className="text-gray-400 mb-8 leading-relaxed">
               Your VIP access has expired. Please renew your subscription to regain access to our premium odds and tickets.
             </p>
-            <a href="/#packages" className="inline-block w-full bg-primary text-black font-extrabold py-4 rounded-xl shadow-lg hover:scale-105 transition-transform text-lg">
+            <Link href="/#packages" className="inline-block w-full bg-primary text-black font-extrabold py-4 rounded-xl shadow-lg hover:scale-105 transition-transform text-lg">
               Renew Now
-            </a>
+            </Link>
           </div>
         </main>
       </div>
@@ -86,7 +87,7 @@ export default function VipDashboardClient({
             <div>
               <h4 className="text-yellow-500 font-bold">Subscription Expiring Soon!</h4>
               <p className="text-sm text-yellow-500/80 mt-1">
-                Your VIP access expires in {daysRemaining} day{daysRemaining === 1 ? '' : 's'}. <a href="/#packages" className="underline font-bold hover:text-yellow-400">Renew now</a> to avoid losing access.
+                Your VIP access expires in {daysRemaining} day{daysRemaining === 1 ? '' : 's'}. <Link href="/#packages" className="underline font-bold hover:text-yellow-400">Renew now</Link> to avoid losing access.
               </p>
             </div>
           </div>
@@ -107,7 +108,7 @@ export default function VipDashboardClient({
             {subscriptions.map(sub => (
               <div key={sub.id} className="flex items-center gap-2 bg-[#25D366]/10 border border-[#25D366]/20 px-4 py-2 rounded-xl text-sm font-bold text-[#25D366]">
                 <Clock size={16} /> 
-                {sub.packages.name} (Active until {new Date(sub.expiresAt).toLocaleDateString()})
+                {sub.package.name} (Active until {new Date(sub.expiresAt).toLocaleDateString()})
               </div>
             ))}
           </div>
@@ -124,7 +125,7 @@ export default function VipDashboardClient({
               <div key={ticket.id} className="bg-[#1a1525] border border-primary/10 rounded-3xl p-6 shadow-xl hover:border-primary/30 transition-all">
                 <div className="flex items-center gap-2 mb-4">
                   <span className="bg-primary/20 text-primary text-[10px] font-black px-3 py-1 rounded uppercase">
-                    {ticket.packages.name}
+                    {ticket.audiences[0]?.package.name}
                   </span>
                   <span className="text-xs text-gray-500">{new Date(ticket.createdAt).toLocaleDateString()}</span>
                 </div>

@@ -116,7 +116,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
     };
 
     pollRef.current = setTimeout(poll, 5000);
-  }, [stopPolling, phone]);
+  }, [stopPolling, phone, handleSuccess]);
 
   const handlePayment = async () => {
     setError("");

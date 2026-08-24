@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { getAllFreeHooks, getWonTickets, getAllTestimonials } from './actions';
 import HomePage from '@/components/HomePage';
+import type { FreeHook, Ticket, Testimonial } from '@prisma/client';
 
 export const revalidate = 3600;
 
@@ -10,9 +11,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  let freeHooks: any[] = [];
-  let wonTickets: any[] = [];
-  let testimonials: any[] = [];
+  let freeHooks: FreeHook[] = [];
+  let wonTickets: Ticket[] = [];
+  let testimonials: Testimonial[] = [];
 
   try {
     const results = await Promise.all([

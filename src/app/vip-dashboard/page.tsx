@@ -45,7 +45,7 @@ export default async function VipDashboardPage() {
   }
 
   // 2. Fetch fully verified tickets
-  let tickets: any[] = [];
+  let tickets: Array<unknown> = [];
   if (activeSubscriptions.length > 0) {
     tickets = await getEntitledTickets();
   }

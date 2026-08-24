@@ -4,9 +4,8 @@ import prisma from '@/lib/db';
 import { revalidatePath, unstable_cache } from 'next/cache';
 import { cookies, headers } from 'next/headers';
 import { normalizePhone, sanitizeText } from '@/lib/validation';
-import { SignJWT, jwtVerify } from 'jose';
+import { jwtVerify, SignJWT } from 'jose';
 import crypto from 'crypto';
-import { put } from '@vercel/blob';
 import bcrypt from 'bcryptjs';
 import { sendTelegramNotification } from '@/lib/notifications';
 import { writeFile, mkdir } from 'fs/promises';
@@ -470,7 +469,7 @@ export async function addClientWithSubscription(data: { phone: string; name: str
   if (!user) {
     user = await prisma.user.create({ data: { phone: normalized, name: data.name, status: 'ACTIVE', pin: hashedPin } });
   } else {
-    const updateData: any = { name: data.name, status: 'ACTIVE' };
+    const updateData: Record<string, unknown> = { name: data.name, status: 'ACTIVE' };
     if (hashedPin) updateData.pin = hashedPin;
     await prisma.user.update({ where: { id: user.id }, data: updateData });
   }
@@ -531,25 +530,30 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
   }
   
   try {
-    // Avoid saving large Base64 strings to the database to prevent bandwidth exhaustion.
-    // Use Vercel Blob in production.
-    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    // ALWAYS use Vercel Blob if token is available. DO NOT store Base64 strings.
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
       const { put } = await import('@vercel/blob');
       const blob = await put(file.name, file, { access: 'public' });
       return blob.url;
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const ext = file.name.split('.').pop() || 'png';
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const filename = `ticket-${uniqueSuffix}.${ext}`;
-    
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    await mkdir(uploadDir, { recursive: true });
-    await writeFile(path.join(uploadDir, filename), buffer);
-    
-    return `/uploads/${filename}`;
+    // Fallback for local development ONLY.
+    if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const ext = file.name.split('.').pop() || 'png';
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      const filename = `ticket-${uniqueSuffix}.${ext}`;
+      
+      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+      await mkdir(uploadDir, { recursive: true });
+      await writeFile(path.join(uploadDir, filename), buffer);
+      
+      return `/uploads/${filename}`;
+    }
+
+    console.warn("Vercel Blob is not configured! Please add BLOB_READ_WRITE_TOKEN.");
+    return "https://placehold.co/600x400?text=Vercel+Blob+Not+Configured";
   } catch (error) {
     console.error("Image upload error:", error);
     return "https://placehold.co/600x400?text=Upload+Failed";

@@ -24,7 +24,9 @@ export async function POST(req: NextRequest) {
         try {
           // Add minified JSON as a fallback in case they stringify before hashing
           payloadsToTest.push(JSON.stringify(JSON.parse(rawBody)));
-        } catch (e) {}
+        } catch {
+          // Ignore JSON parse errors
+        }
 
         let isValid = false;
         const generatedHashes = [];
@@ -52,16 +54,16 @@ export async function POST(req: NextRequest) {
     }
 
     // 1. Try to parse JSON. If it fails, try URL-encoded.
-    let data: any = {};
+    let data: Record<string, unknown> = {};
     try {
       data = JSON.parse(rawBody);
-    } catch (parseError) {
+    } catch {
       try {
         const params = new URLSearchParams(rawBody);
         for (const [key, value] of params.entries()) {
           data[key] = value;
         }
-      } catch (urlError) {
+      } catch {
         console.error("Webhook payload is neither JSON nor URL-encoded", rawBody);
         return NextResponse.json({ error: "Invalid payload format" }, { status: 400 });
       }
@@ -74,7 +76,7 @@ export async function POST(req: NextRequest) {
         action: "MARZPAY_WEBHOOK_RECEIVED",
         details: JSON.stringify({ body: data, headers: Object.fromEntries(req.headers.entries()) })
       }
-    }).catch((e: any) => console.error("Failed to write audit log:", e));
+    }).catch((e: unknown) => console.error("Failed to write audit log:", e));
 
     if (!data) {
       return NextResponse.json({ error: "Empty payload" }, { status: 400 });
