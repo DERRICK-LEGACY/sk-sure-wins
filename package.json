@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && prisma db push --accept-data-loss && next build",
+    "build": "prisma generate && prisma db push --accept-data-loss --url \"$DATABASE_URL_UNPOOLED\" && next build",
     "start": "next start",
     "lint": "eslint",
     "backup": "npx --yes tsx scripts/backup-db.ts",
