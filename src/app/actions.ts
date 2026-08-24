@@ -600,9 +600,19 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
 
     console.warn("Vercel Blob is not configured! Please add BLOB_READ_WRITE_TOKEN.");
     return "https://placehold.co/600x400?text=Vercel+Blob+Not+Configured";
-  } catch (error) {
-    console.error("Image upload error:", error);
-    return "https://placehold.co/600x400?text=Upload+Failed";
+  } catch (error: any) {
+    console.error("Image upload error with Vercel Blob:", error?.message || error);
+    try {
+      // Fallback: Convert the image to a Base64 string and store it directly in the DB
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const base64 = buffer.toString('base64');
+      const mimeType = file.type || 'image/jpeg';
+      return `data:${mimeType};base64,${base64}`;
+    } catch (fallbackError) {
+      console.error("Base64 fallback error:", fallbackError);
+      return "https://placehold.co/600x400?text=Upload+Failed";
+    }
   }
 }
 
