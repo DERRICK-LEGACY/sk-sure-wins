@@ -77,31 +77,11 @@ export default function AdminDashboard({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
 
-  // Strict Security: Logout on any page leave, tab change, or back button
-  // Plus Keep-Alive: Renew session while actively working on the page
+  // Activity tracking for keep-alive
   const lastActivity = useRef<number>(0);
   useEffect(() => { lastActivity.current = Date.now(); }, []);
 
   useEffect(() => {
-    let hasLoggedOut = false;
-    
-    const triggerLogout = () => {
-      if (hasLoggedOut) return;
-      hasLoggedOut = true;
-      logoutAdmin().catch(console.error);
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        triggerLogout();
-        router.push("/admin"); // Push to login screen
-      }
-    };
-
-    const handleBeforeUnload = () => {
-      triggerLogout();
-    };
-
     // Activity tracking for keep-alive
     const updateActivity = () => { lastActivity.current = Date.now(); };
     window.addEventListener("mousemove", updateActivity);
@@ -116,20 +96,14 @@ export default function AdminDashboard({
       }
     }, 4 * 60 * 1000); // Check every 4 minutes
 
-    window.addEventListener("visibilitychange", handleVisibilityChange);
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
     return () => {
-      window.removeEventListener("visibilitychange", handleVisibilityChange);
-      window.removeEventListener("beforeunload", handleBeforeUnload);
       window.removeEventListener("mousemove", updateActivity);
       window.removeEventListener("keydown", updateActivity);
       window.removeEventListener("touchstart", updateActivity);
       window.removeEventListener("scroll", updateActivity);
       clearInterval(interval);
-      triggerLogout(); // Unmounting component (Client-side navigation like back button)
     };
-  }, [router]);
+  }, []);
 
   // Search & Edit States
   const [userSearch, setUserSearch] = useState("");
