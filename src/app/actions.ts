@@ -371,6 +371,8 @@ export async function loginAdmin(password: string) {
     });
     
     await logAudit('LOGIN', { status: 'SUCCESS' });
+    revalidatePath('/admin');
+    revalidatePath('/');
     return { success: true };
   }
 

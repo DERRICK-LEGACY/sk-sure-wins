@@ -19,7 +19,7 @@ export default function AdminLogin() {
     try {
       const result = await loginAdmin(password);
       if (result.success) {
-        router.refresh();
+        window.location.reload();
       } else {
         setError(result.error || "Login failed.");
         setLoading(false);
