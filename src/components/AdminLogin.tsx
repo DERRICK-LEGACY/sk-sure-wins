@@ -16,11 +16,16 @@ export default function AdminLogin() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const result = await loginAdmin(password);
-    if (result.success) {
-      router.refresh();
-    } else {
-      setError(result.error || "Login failed.");
+    try {
+      const result = await loginAdmin(password);
+      if (result.success) {
+        router.refresh();
+      } else {
+        setError(result.error || "Login failed.");
+        setLoading(false);
+      }
+    } catch (err: any) {
+      setError("An unexpected error occurred connecting to the database.");
       setLoading(false);
     }
   };
