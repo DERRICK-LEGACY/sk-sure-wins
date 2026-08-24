@@ -339,11 +339,12 @@ async function logAudit(action: string, details: Record<string, unknown>) {
 export async function getAdminPassword() {
   const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
   if (admin?.pin) return admin.pin;
-  if (process.env.ADMIN_PASSWORD) return process.env.ADMIN_PASSWORD;
+  
+  const defaultPin = process.env.ADMIN_PASSWORD || 'SK2026!';
   
   // Auto-seed admin user and packages if missing (for fresh Neon branches)
   await prisma.user.create({
-    data: { phone: 'ADMIN', name: 'Super Admin', pin: 'SK2026!', role: 'ADMIN', status: 'ACTIVE' }
+    data: { phone: 'ADMIN', name: 'Super Admin', pin: defaultPin, role: 'ADMIN', status: 'ACTIVE' }
   });
   
   await prisma.package.createMany({
@@ -355,7 +356,7 @@ export async function getAdminPassword() {
     skipDuplicates: true
   });
 
-  return 'SK2026!';
+  return defaultPin;
 }
 
 const loginAttempts = new Map<string, { count: number, lockedUntil: number }>();
