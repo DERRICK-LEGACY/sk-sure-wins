@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && prisma db push --accept-data-loss --url \"$DATABASE_URL_UNPOOLED\" && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "backup": "npx --yes tsx scripts/backup-db.ts",
@@ -28,8 +28,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwind-merge": "^3.6.0",
-    "uuid": "^14.0.1",
-    "ws": "^8.21.3"
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
     "@prisma/client": "^7.9.1",
@@ -38,7 +37,6 @@
     "@types/node": "^26.1.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/ws": "^8.18.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "prisma": "^7.9.1",
