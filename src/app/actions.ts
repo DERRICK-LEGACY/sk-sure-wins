@@ -602,7 +602,26 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
     return "https://placehold.co/600x400?text=Vercel+Blob+Not+Configured";
   } catch (error: any) {
     console.error("Image upload error with Vercel Blob:", error?.message || error);
-    return "https://placehold.co/600x400?text=Upload+Failed";
+    try {
+      // Fallback: Upload to Catbox.moe for 100% free permanent storage (no DB bloat)
+      console.log("Falling back to Catbox.moe image host...");
+      const catboxFormData = new FormData();
+      catboxFormData.append('reqtype', 'fileupload');
+      catboxFormData.append('fileToUpload', file, file.name);
+      
+      const res = await fetch('https://catbox.moe/user/api.php', {
+        method: 'POST',
+        body: catboxFormData
+      });
+      
+      const url = await res.text();
+      if (!url.startsWith('http')) throw new Error(url);
+      
+      return url;
+    } catch (fallbackError) {
+      console.error("Catbox fallback error:", fallbackError);
+      return "https://placehold.co/600x400?text=Upload+Failed";
+    }
   }
 }
 
