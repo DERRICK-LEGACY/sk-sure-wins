@@ -21,6 +21,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.sksurewinspredictions.com'),
   title: "SK Sure Wins | Uganda's #1 Premium Betting Tips",
   description: "Join 50,000+ happy subscribers winning daily with SK Sure Wins. Get verified Bronze, Silver, Gold & Premium VIP betting tips delivered straight to your phone. 95% win rate. Munakapapula!",
   keywords: ["betting tips", "Uganda betting", "VIP tips", "SK Sure Wins", "football predictions", "sure wins", "Munakapapula", "sports betting Uganda"],

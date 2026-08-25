@@ -18,12 +18,14 @@ export default async function AdminPage() {
     return <AdminLogin />;
   }
 
-  const freeHooks = await getAllFreeHooks();
-  const wonTickets = await getWonTickets();
-  const clients = await getClientsWithSubscriptions();
-  const premiumTickets = await getTickets();
-  const testimonials = await getAllTestimonials();
-  const packages = await getPackages();
+  const [freeHooks, wonTickets, clients, premiumTickets, testimonials, packages] = await Promise.all([
+    getAllFreeHooks(),
+    getWonTickets(),
+    getClientsWithSubscriptions(),
+    getTickets(),
+    getAllTestimonials(),
+    getPackages()
+  ]);
 
   return <AdminDashboard 
     freeHooks={freeHooks} 

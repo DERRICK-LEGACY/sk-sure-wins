@@ -276,14 +276,17 @@ export async function getSpecialOffer() {
 }
 
 export async function updateSpecialOfferName(id: string, name: string) {
-  const session = await getAdminSession();
-  if (!session) throw new Error("Unauthorized");
+  const isAuthed = await checkAdminAuth();
+  if (!isAuthed) throw new Error("Unauthorized");
   if (!name.trim()) throw new Error("Name cannot be empty");
 
-  return await prisma.package.update({
+  const result = await prisma.package.update({
     where: { id },
     data: { name: name.trim() }
   });
+  
+  revalidatePath('/');
+  return result;
 }
 
 // ========== PUBLIC HOMEPAGE DATA ==========
