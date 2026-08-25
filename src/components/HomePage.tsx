@@ -206,32 +206,33 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             <motion.div 
               initial={{ opacity: 0, y: 20 }} 
               animate={{ opacity: 1, y: 0 }} 
-              className="bg-gradient-to-r from-[#1a1100] via-[#3a2800] to-[#1a1100] p-1 rounded-3xl shadow-[0_0_40px_rgba(212,175,55,0.4)] animate-pulse border border-[#d4af37]/50"
+              className="bg-gradient-to-r from-[#d4af37]/20 via-[#ffd700]/30 to-[#d4af37]/20 p-1 rounded-3xl shadow-[0_0_50px_rgba(255,215,0,0.6),0_0_100px_rgba(212,175,55,0.4)] animate-pulse border-2 border-[#ffd700]/60 relative"
             >
-              <div className="bg-[#0f0a14]/90 backdrop-blur-xl rounded-[22px] p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-[#d4af37]/20 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#ffd700]/10 via-[#ffffff]/20 to-[#ffd700]/10 blur-xl z-0 rounded-3xl"></div>
+              <div className="bg-[#0f0a14]/80 backdrop-blur-xl rounded-[22px] p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-[#ffd700]/40 relative overflow-hidden group z-10">
                 
                 {/* Glow behind */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-r from-transparent via-[#d4af37]/20 to-transparent rotate-45 blur-2xl pointer-events-none group-hover:via-[#d4af37]/30 transition-all duration-700"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-gradient-to-r from-transparent via-[#ffd700]/30 to-transparent rotate-45 blur-3xl pointer-events-none group-hover:via-[#ffd700]/50 transition-all duration-700"></div>
 
                 <div className="flex-1 text-center md:text-left relative z-10">
-                  <div className="inline-block bg-gradient-to-r from-[#d4af37] to-[#f3e5ab] text-black text-[10px] sm:text-xs font-black uppercase tracking-widest py-1 px-3 rounded-full mb-3 shadow-[0_0_15px_rgba(212,175,55,0.5)]">
+                  <div className="inline-block bg-gradient-to-r from-[#ffd700] to-[#fff3b0] text-black text-[10px] sm:text-xs font-black uppercase tracking-widest py-1 px-3 rounded-full mb-3 shadow-[0_0_20px_rgba(255,215,0,0.8)] border border-white/40">
                     🔥 LIMITED TIME OFFER
                   </div>
-                  <h3 className="text-2xl sm:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#ffef96] to-[#d4af37] uppercase tracking-tighter mb-2">
+                  <h3 className="text-2xl sm:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#ffffff] via-[#ffef96] to-[#d4af37] uppercase tracking-tighter mb-2 drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">
                     {specialOffer.name}
                   </h3>
-                  <p className="text-[#d4af37]/80 text-sm sm:text-base font-bold">
+                  <p className="text-[#ffd700] text-sm sm:text-base font-bold drop-shadow-[0_0_5px_rgba(255,215,0,0.4)]">
                     Exclusive VIP Access • Instant Win • {specialOffer.durationDays} Days
                   </p>
                 </div>
 
                 <div className="flex flex-col items-center gap-3 relative z-10 shrink-0 w-full md:w-auto">
-                  <div className="text-3xl sm:text-4xl font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                  <div className="text-3xl sm:text-5xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
                     {specialOffer.price.toLocaleString()} UGX
                   </div>
                   <button 
                     onClick={() => openModal(specialOffer.name, `${Math.floor(specialOffer.price / 1000)}k`)} 
-                    className="w-full md:w-auto bg-gradient-to-r from-[#d4af37] to-[#b5952f] hover:from-[#f3e5ab] hover:to-[#d4af37] text-black font-black py-4 px-10 rounded-2xl shadow-[0_5px_20px_rgba(212,175,55,0.5)] hover:scale-105 active:scale-95 transition-all uppercase tracking-widest flex items-center justify-center gap-2 group/btn"
+                    className="w-full md:w-auto bg-gradient-to-r from-[#ffd700] to-[#d4af37] hover:from-[#ffffff] hover:to-[#ffd700] text-black font-black py-4 px-10 rounded-2xl shadow-[0_0_30px_rgba(255,215,0,0.8)] hover:shadow-[0_0_50px_rgba(255,215,0,1)] hover:scale-110 active:scale-95 transition-all uppercase tracking-widest flex items-center justify-center gap-2 group/btn"
                   >
                     <span>BUY NOW</span>
                     <Send size={18} className="group-hover/btn:translate-x-1 transition-transform" />
