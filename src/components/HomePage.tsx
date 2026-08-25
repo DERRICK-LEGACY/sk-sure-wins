@@ -174,7 +174,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
               className="mt-6 mb-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-2xl"
             >
               <a
-                href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h"
+                href="https://whatsapp.com/channel/0029Vb8yLOm1yT2CHUu2k70o"
                 target="_blank"
                 className="w-full sm:w-auto flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-extrabold py-3.5 px-8 rounded-full shadow-[0_0_30px_rgba(37,211,102,0.4)] hover:shadow-[0_0_30px_rgba(37,211,102,0.8)] border border-white/20 hover:scale-105 active:scale-95 transition-all relative overflow-hidden group"
               >
@@ -471,7 +471,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
           <p className="text-gray-300 text-lg leading-relaxed mb-8">
             Whether you are looking for free tips or want to lock in VIP status, you are joining a family of winners. Join today and start getting receipts!
           </p>
-          <a href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-gradient-to-r from-[#25D366] to-[#1da851] hover:from-[#1da851] hover:to-[#168940] text-black font-extrabold px-8 py-4 rounded-full text-lg transition-all hover:scale-105 shadow-[0_0_30px_rgba(37,211,102,0.5)] border border-white/20">
+          <a href="https://whatsapp.com/channel/0029Vb8yLOm1yT2CHUu2k70o" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-gradient-to-r from-[#25D366] to-[#1da851] hover:from-[#1da851] hover:to-[#168940] text-black font-extrabold px-8 py-4 rounded-full text-lg transition-all hover:scale-105 shadow-[0_0_30px_rgba(37,211,102,0.5)] border border-white/20">
             <div className="bg-white p-2 rounded-full shadow-md">
               <WhatsAppIcon className="w-6 h-6 text-[#25D366]" />
             </div>
@@ -540,7 +540,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
               <ul className="space-y-4 text-gray-400 text-sm">
                 <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
                 <li><Link href="/vip-dashboard" className="hover:text-primary transition-colors">VIP Dashboard</Link></li>
-                <li><a href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h" target="_blank" rel="noreferrer" className="hover:text-[#25D366] transition-colors">WhatsApp Channel</a></li>
+                <li><a href="https://whatsapp.com/channel/0029Vb8yLOm1yT2CHUu2k70o" target="_blank" rel="noreferrer" className="hover:text-[#25D366] transition-colors">WhatsApp Channel</a></li>
                 <li><Link href="/admin" className="hover:text-white transition-colors">Admin Portal</Link></li>
               </ul>
             </div>
@@ -549,7 +549,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
             <div className="flex flex-col items-center">
               <h3 className="text-white font-bold mb-6 tracking-wider uppercase text-sm">Connect With Us</h3>
               <div className="flex items-center gap-4">
-                <a href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-[#25D366] hover:text-white transition-all border border-white/10 shadow-lg hover:shadow-[#25D366]/20 hover:-translate-y-1">
+                <a href="https://whatsapp.com/channel/0029Vb8yLOm1yT2CHUu2k70o" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-[#25D366] hover:text-white transition-all border border-white/10 shadow-lg hover:shadow-[#25D366]/20 hover:-translate-y-1">
                   <MessageCircle size={22} />
                 </a>
                 <a href="https://www.tiktok.com/@sk_surewins_officialpage" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-black hover:text-white transition-all border border-white/10 shadow-lg hover:-translate-y-1">

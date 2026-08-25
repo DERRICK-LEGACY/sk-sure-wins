@@ -39,7 +39,7 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-4">
-          <a href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h" target="_blank" className="bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-bold px-4 py-2 rounded-full text-[13px] transition-all hover:scale-105 hover:shadow-[0_0_15px_rgba(37,211,102,0.4)] flex items-center gap-2">
+          <a href="https://whatsapp.com/channel/0029Vb8yLOm1yT2CHUu2k70o" target="_blank" className="bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-bold px-4 py-2 rounded-full text-[13px] transition-all hover:scale-105 hover:shadow-[0_0_15px_rgba(37,211,102,0.4)] flex items-center gap-2">
             <WhatsAppIcon className="w-4 h-4 text-black" />
             Contact Us
           </a>
@@ -78,7 +78,7 @@ export default function Navbar() {
             <Link href="/free-tickets" onClick={() => setIsOpen(false)} className="text-3xl font-bold text-white hover:text-primary transition-colors">Free Tickets</Link>
             <Link href="/won-tickets" onClick={() => setIsOpen(false)} className="text-3xl font-bold text-white hover:text-primary transition-colors">Won Tickets</Link>
             <Link href="/#packages" onClick={() => setIsOpen(false)} className="text-3xl font-bold text-white hover:text-primary transition-colors">Packages</Link>
-            <a href="https://whatsapp.com/channel/0029Vb74ody59PwPUG2F8G1h" target="_blank" className="bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-bold px-8 py-4 rounded-full text-xl mt-6 flex items-center gap-3 shadow-[0_0_30px_rgba(37,211,102,0.4)]">
+            <a href="https://whatsapp.com/channel/0029Vb8yLOm1yT2CHUu2k70o" target="_blank" className="bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-bold px-8 py-4 rounded-full text-xl mt-6 flex items-center gap-3 shadow-[0_0_30px_rgba(37,211,102,0.4)]">
               <WhatsAppIcon className="w-7 h-7 text-black" />
               Contact Us
             </a>
