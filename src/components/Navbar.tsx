@@ -17,7 +17,12 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full max-w-full z-50 bg-[#1a1525]/95 backdrop-blur-xl border-b border-white/10 py-2 sm:py-3 px-4 flex justify-between items-center shadow-2xl overflow-hidden">
+      <div className="fixed top-0 left-0 w-full z-[60]">
+        <div className="w-full bg-red-600 text-white text-[11px] sm:text-xs font-bold text-center py-1.5 px-2 flex items-center justify-center gap-1.5 shadow-md">
+          <span className="animate-pulse shrink-0 text-sm leading-none">⚠️</span>
+          <span className="truncate sm:whitespace-normal">SK old WhatsApp channel was hacked & deleted. Please click the WhatsApp button on this site to join our new channel.</span>
+        </div>
+        <nav className="relative w-full max-w-full bg-[#1a1525]/95 backdrop-blur-xl border-b border-white/10 py-2 sm:py-3 px-4 flex justify-between items-center shadow-2xl overflow-hidden">
         <div className="flex items-center gap-2 shrink-0">
           <Link href="/" className="flex items-center gap-2 relative z-50">
             <div className="relative shrink-0">
@@ -65,6 +70,7 @@ export default function Navbar() {
           </button>
         </div>
       </nav>
+      </div>
 
       <AnimatePresence>
         {isOpen && (
