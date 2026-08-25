@@ -269,6 +269,23 @@ export async function getPackages() {
   return await prisma.package.findMany({ orderBy: { price: 'asc' } });
 }
 
+export async function getSpecialOffer() {
+  return await prisma.package.findFirst({
+    where: { isSpecialOffer: true, isActive: true }
+  });
+}
+
+export async function updateSpecialOfferName(id: string, name: string) {
+  const session = await getAdminSession();
+  if (!session) throw new Error("Unauthorized");
+  if (!name.trim()) throw new Error("Name cannot be empty");
+
+  return await prisma.package.update({
+    where: { id },
+    data: { name: name.trim() }
+  });
+}
+
 // ========== PUBLIC HOMEPAGE DATA ==========
 
 export const getAllFreeHooks = unstable_cache(

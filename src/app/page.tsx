@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
-import { getAllFreeHooks, getWonTickets, getAllTestimonials } from './actions';
+import { getAllFreeHooks, getWonTickets, getAllTestimonials, getSpecialOffer } from './actions';
 import HomePage from '@/components/HomePage';
-import type { FreeHook, Ticket, Testimonial } from '@prisma/client';
+import type { FreeHook, Ticket, Testimonial, Package } from '@prisma/client';
 
 export const revalidate = 3600;
 
@@ -14,19 +14,22 @@ export default async function Page() {
   let freeHooks: FreeHook[] = [];
   let wonTickets: Ticket[] = [];
   let testimonials: Testimonial[] = [];
+  let specialOffer: Package | null = null;
 
   try {
     const results = await Promise.all([
       getAllFreeHooks(),
       getWonTickets(),
-      getAllTestimonials()
+      getAllTestimonials(),
+      getSpecialOffer()
     ]);
     freeHooks = results[0] || [];
     wonTickets = results[1] || [];
     testimonials = results[2] || [];
+    specialOffer = results[3] || null;
   } catch (error) {
     console.warn("Database connection failed during pre-render:", error);
   }
 
-  return <HomePage freeHooks={freeHooks} wonTickets={wonTickets} testimonials={testimonials} />;
+  return <HomePage freeHooks={freeHooks} wonTickets={wonTickets} testimonials={testimonials} specialOffer={specialOffer} />;
 }

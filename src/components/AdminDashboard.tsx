@@ -7,7 +7,7 @@ import {
   updateFreeHook, addWonTicket, deleteWonTicket, addClientWithSubscription, deleteClient, completelyDeleteClient,
   editFreeHook, editWonTicket, deleteFreeHook, addTicket, 
   editTicket, deleteTicket, logoutAdmin, approveTestimonial, 
-  deleteTestimonial, extendAdminSession, updateSubscriptionExpiry
+  deleteTestimonial, extendAdminSession, updateSubscriptionExpiry, updateSpecialOfferName
 } from "@/app/actions";
 import { 
   Search, UserX, Edit2, Trash2, X, Plus, 
@@ -132,6 +132,8 @@ export default function AdminDashboard({
 
   // Forms
   const [userForm, setUserForm] = useState({ phone: "", name: "", pkg: packages[0]?.id || "", expiry_date: "", pin: "" });
+  const specialOffer = packages.find(p => p.isSpecialOffer);
+  const [specialOfferName, setSpecialOfferName] = useState(specialOffer?.name || "");
 
   // Calculated Stats
   const stats = useMemo(() => {
@@ -314,6 +316,7 @@ export default function AdminDashboard({
           <p className="px-4 text-xs font-bold text-gray-600 uppercase tracking-widest mt-6 mb-2">Clients & Settings</p>
           {renderSidebarItem("users", Users, "VIP Subscribers")}
           {renderSidebarItem("testimonials", MessageSquare, "Reviews")}
+          {renderSidebarItem("special-offer", Star, "Special Offer")}
           {renderSidebarItem("settings", Settings, "Settings")}
         </div>
 
@@ -730,6 +733,57 @@ export default function AdminDashboard({
               </motion.div>
             )}
 
+            {/* SPECIAL OFFER */}
+            {activeTab === "special-offer" && (
+              <motion.div key="special-offer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+                <div>
+                  <h2 className="text-2xl font-black mb-1 text-[#d4af37]">Special Offer Management</h2>
+                  <p className="text-gray-400">Edit the display name of the glowing special offer banner on the homepage. (Price is fixed at 50k)</p>
+                </div>
+
+                <div className="bg-[#15151a] p-6 rounded-3xl border border-white/5 max-w-xl">
+                  {specialOffer ? (
+                    <form onSubmit={(e) => {
+                      e.preventDefault();
+                      wrapAction(async () => {
+                        await updateSpecialOfferName(specialOffer.id, specialOfferName);
+                        router.refresh();
+                      }, "Special offer name updated!");
+                    }}>
+                      <div className="mb-6">
+                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Offer Name (Visible to Users)</label>
+                        <input 
+                          type="text" 
+                          value={specialOfferName} 
+                          onChange={(e) => setSpecialOfferName(e.target.value)} 
+                          className="w-full bg-[#0d0d12] border border-white/10 rounded-xl p-4 text-white focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] outline-none transition-all font-bold"
+                          placeholder="e.g. SK ROAD TO 700K OFFER"
+                          required
+                        />
+                      </div>
+                      
+                      <div className="mb-6">
+                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Fixed Price</label>
+                        <input 
+                          type="text" 
+                          value="50,000 UGX" 
+                          disabled
+                          className="w-full bg-[#0d0d12]/50 border border-white/5 rounded-xl p-4 text-gray-500 font-bold cursor-not-allowed"
+                        />
+                      </div>
+
+                      <button disabled={loading} type="submit" className="w-full bg-[#d4af37] text-black font-extrabold py-4 rounded-xl hover:bg-[#b5952f] transition-colors">
+                        {loading ? "SAVING..." : "SAVE CHANGES"}
+                      </button>
+                    </form>
+                  ) : (
+                    <div className="text-center p-8">
+                      <p className="text-gray-400">Special offer package not found in database.</p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
       </main>

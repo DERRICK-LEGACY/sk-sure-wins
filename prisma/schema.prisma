@@ -29,6 +29,7 @@ model Package {
   price         Int
   durationDays  Int
   isActive      Boolean        @default(true)
+  isSpecialOffer Boolean       @default(false)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   subscriptions Subscription[]

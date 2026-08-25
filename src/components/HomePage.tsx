@@ -8,7 +8,7 @@ import Link from "next/link";
 import PaymentModal from "@/components/PaymentModal";
 import Navbar from "@/components/Navbar";
 import { submitTestimonial } from "@/app/actions";
-import { FreeHook, Ticket as WonTicket, Testimonial } from '@prisma/client';
+import { FreeHook, Ticket as WonTicket, Testimonial, Package } from '@prisma/client';
 
 // Animation Variants
 const containerVariants: Variants = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.15 } } };
@@ -30,7 +30,7 @@ const TelegramIcon = ({ className }: { className?: string }) => (
 );
 
 
-export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: { freeHooks: FreeHook[], wonTickets: WonTicket[], testimonials?: Testimonial[] }) {
+export default function HomePage({ freeHooks, wonTickets, testimonials = [], specialOffer }: { freeHooks: FreeHook[], wonTickets: WonTicket[], testimonials?: Testimonial[], specialOffer?: Package | null }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [testModalOpen, setTestModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState({ name: "", price: "" });
@@ -199,6 +199,49 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [] }: {
             </motion.div>
           </div>
         </section>
+
+        {/* SPECIAL OFFER BANNER (If Active) */}
+        {specialOffer && (
+          <div className="w-full max-w-4xl mx-auto px-6 mb-10 -mt-16 relative z-20">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              className="bg-gradient-to-r from-[#1a1100] via-[#3a2800] to-[#1a1100] p-1 rounded-3xl shadow-[0_0_40px_rgba(212,175,55,0.4)] animate-pulse border border-[#d4af37]/50"
+            >
+              <div className="bg-[#0f0a14]/90 backdrop-blur-xl rounded-[22px] p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-[#d4af37]/20 relative overflow-hidden group">
+                
+                {/* Glow behind */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-r from-transparent via-[#d4af37]/20 to-transparent rotate-45 blur-2xl pointer-events-none group-hover:via-[#d4af37]/30 transition-all duration-700"></div>
+
+                <div className="flex-1 text-center md:text-left relative z-10">
+                  <div className="inline-block bg-gradient-to-r from-[#d4af37] to-[#f3e5ab] text-black text-[10px] sm:text-xs font-black uppercase tracking-widest py-1 px-3 rounded-full mb-3 shadow-[0_0_15px_rgba(212,175,55,0.5)]">
+                    🔥 LIMITED TIME OFFER
+                  </div>
+                  <h3 className="text-2xl sm:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#ffef96] to-[#d4af37] uppercase tracking-tighter mb-2">
+                    {specialOffer.name}
+                  </h3>
+                  <p className="text-[#d4af37]/80 text-sm sm:text-base font-bold">
+                    Exclusive VIP Access • Instant Win • {specialOffer.durationDays} Days
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center gap-3 relative z-10 shrink-0 w-full md:w-auto">
+                  <div className="text-3xl sm:text-4xl font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                    {specialOffer.price.toLocaleString()} UGX
+                  </div>
+                  <button 
+                    onClick={() => openModal(specialOffer.name, `${Math.floor(specialOffer.price / 1000)}k`)} 
+                    className="w-full md:w-auto bg-gradient-to-r from-[#d4af37] to-[#b5952f] hover:from-[#f3e5ab] hover:to-[#d4af37] text-black font-black py-4 px-10 rounded-2xl shadow-[0_5px_20px_rgba(212,175,55,0.5)] hover:scale-105 active:scale-95 transition-all uppercase tracking-widest flex items-center justify-center gap-2 group/btn"
+                  >
+                    <span>BUY NOW</span>
+                    <Send size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+
+              </div>
+            </motion.div>
+          </div>
+        )}
 
         {/* PAGE CONTENT CONTAINER */}
         <div className="w-full max-w-6xl mx-auto flex flex-col items-center px-6">
