@@ -39,9 +39,12 @@ export default function BookSection({ openModal }: { openModal: (name: string, p
             <span>New Release</span>
           </div>
           
-          <h2 className="text-5xl md:text-6xl font-black mb-4 text-white tracking-tight">
-            AMAZIMA <span className="text-primary">AMAKUSIKE</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-1 text-white tracking-tight uppercase">
+            THE DEEP <span className="text-primary">TRUTH</span>
           </h2>
+          <h3 className="text-lg md:text-xl font-bold text-white/90 mb-6 uppercase tracking-widest">
+            In The Business Of Betting
+          </h3>
           
           <p className="text-gray-300 text-lg md:text-xl mb-8 max-w-md font-medium">
             Learn how to win in sports betting. The only guide you need.
