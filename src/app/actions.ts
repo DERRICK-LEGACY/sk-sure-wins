@@ -771,27 +771,37 @@ export async function deleteTicket(id: string) {
 
 // ========== PUBLIC CONTENT CRUD ==========
 
-export async function updateFreeHook(data: { description: string, imageBase64?: string, imageName?: string }) {
-  const auth = await checkAdminAuthDetailed(data.adminToken);
-  if (!auth.authed) return { error: auth.reason };
-  const description = data.description;
-  const imageUrl = await processBase64Image(data.imageBase64, data.imageName);
+export async function updateFreeHook(data: { description: string, imageBase64?: string, imageName?: string, adminToken?: string }) {
+  try {
+    const auth = await checkAdminAuthDetailed(data.adminToken);
+    if (!auth.authed) return { error: auth.reason };
+    const description = data.description;
+    const imageUrl = await processBase64Image(data.imageBase64, data.imageName);
 
-  await prisma.freeHook.create({ data: { description, imageUrl, isActive: true } });
-  
-  revalidatePath('/');
-  return { success: true };
+    await prisma.freeHook.create({ data: { description, imageUrl, isActive: true } });
+    
+    revalidatePath('/');
+    return { success: true };
+  } catch (err: any) {
+    console.error("updateFreeHook error:", err);
+    return { error: err.message || "Unknown error inside updateFreeHook" };
+  }
 }
 
-export async function editFreeHook(id: string, data: { description: string, imageBase64?: string, imageName?: string }) {
-  const auth = await checkAdminAuthDetailed(data.adminToken);
-  if (!auth.authed) return { error: auth.reason };
-  const description = data.description;
-  // If we wanted to update image, we would do it here, but editFreeHook currently just updates description.
-  
-  await prisma.freeHook.update({ where: { id }, data: { description } });
-  revalidatePath('/');
-  return { success: true };
+export async function editFreeHook(id: string, data: { description: string, imageBase64?: string, imageName?: string, adminToken?: string }) {
+  try {
+    const auth = await checkAdminAuthDetailed(data.adminToken);
+    if (!auth.authed) return { error: auth.reason };
+    const description = data.description;
+    // If we wanted to update image, we would do it here, but editFreeHook currently just updates description.
+    
+    await prisma.freeHook.update({ where: { id }, data: { description } });
+    revalidatePath('/');
+    return { success: true };
+  } catch (err: any) {
+    console.error("editFreeHook error:", err);
+    return { error: err.message || "Unknown error inside editFreeHook" };
+  }
 }
 
 export async function deleteFreeHook(id: string) {
@@ -802,26 +812,36 @@ export async function deleteFreeHook(id: string) {
   return { success: true };
 }
 
-export async function addWonTicket(data: { description: string, imageBase64?: string, imageName?: string }) {
-  const auth = await checkAdminAuthDetailed(data.adminToken);
-  if (!auth.authed) return { error: auth.reason };
-  const description = data.description;
-  const imageUrl = await processBase64Image(data.imageBase64, data.imageName);
+export async function addWonTicket(data: { description: string, imageBase64?: string, imageName?: string, adminToken?: string }) {
+  try {
+    const auth = await checkAdminAuthDetailed(data.adminToken);
+    if (!auth.authed) return { error: auth.reason };
+    const description = data.description;
+    const imageUrl = await processBase64Image(data.imageBase64, data.imageName);
 
-  await prisma.ticket.create({
-    data: { imageUrl, bookingCode: description, status: 'WON' }
-  });
-  revalidatePath('/');
-  return { success: true };
+    await prisma.ticket.create({
+      data: { imageUrl, bookingCode: description, status: 'WON' }
+    });
+    revalidatePath('/');
+    return { success: true };
+  } catch (err: any) {
+    console.error("addWonTicket error:", err);
+    return { error: err.message || "Unknown error inside addWonTicket" };
+  }
 }
 
-export async function editWonTicket(id: string, data: { description: string, imageBase64?: string, imageName?: string }) {
-  const auth = await checkAdminAuthDetailed(data.adminToken);
-  if (!auth.authed) return { error: auth.reason };
-  const description = data.description;
-  await prisma.ticket.update({ where: { id }, data: { bookingCode: description } });
-  revalidatePath('/');
-  return { success: true };
+export async function editWonTicket(id: string, data: { description: string, imageBase64?: string, imageName?: string, adminToken?: string }) {
+  try {
+    const auth = await checkAdminAuthDetailed(data.adminToken);
+    if (!auth.authed) return { error: auth.reason };
+    const description = data.description;
+    await prisma.ticket.update({ where: { id }, data: { bookingCode: description } });
+    revalidatePath('/');
+    return { success: true };
+  } catch (err: any) {
+    console.error("editWonTicket error:", err);
+    return { error: err.message || "Unknown error inside editWonTicket" };
+  }
 }
 
 export async function deleteWonTicket(id: string) {
