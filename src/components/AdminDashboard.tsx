@@ -210,6 +210,8 @@ export default function AdminDashboard({
     reader.onerror = error => reject(error);
   });
 
+  const stripUndefined = (obj: any) => JSON.parse(JSON.stringify(obj));
+
   const handleUpdateHook = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -219,8 +221,9 @@ export default function AdminDashboard({
     const description = (form.elements.namedItem('description') as HTMLInputElement).value;
     
     wrapAction(async () => {
-      if (editingFree) { const res = await editFreeHook(editingFree.id, { description, imageBase64, imageName, adminToken }); setEditingFree(null); return res; } 
-      else { return await updateFreeHook({ description, imageBase64, imageName, adminToken }); }
+      const payload = stripUndefined({ description, imageBase64, imageName, adminToken });
+      if (editingFree) { const res = await editFreeHook(editingFree.id, payload); setEditingFree(null); return res; } 
+      else { return await updateFreeHook(payload); }
     }, "Free slip successfully posted!")
     .then(() => form.reset());
   };
@@ -234,8 +237,9 @@ export default function AdminDashboard({
     const description = (form.elements.namedItem('description') as HTMLInputElement).value;
 
     wrapAction(async () => {
-      if (editingWon) { const res = await editWonTicket(editingWon.id, { description, imageBase64, imageName, adminToken }); setEditingWon(null); return res; } 
-      else { return await addWonTicket({ description, imageBase64, imageName, adminToken }); }
+      const payload = stripUndefined({ description, imageBase64, imageName, adminToken });
+      if (editingWon) { const res = await editWonTicket(editingWon.id, payload); setEditingWon(null); return res; } 
+      else { return await addWonTicket(payload); }
     }, "Won ticket successfully posted!")
     .then(() => form.reset());
   };
@@ -257,7 +261,7 @@ export default function AdminDashboard({
     const file = (form.elements.namedItem('image') as HTMLInputElement)?.files?.[0];
     const imageBase64 = file ? await fileToBase64(file) : undefined;
     const imageName = file?.name;
-    const payload = {
+    const payload = stripUndefined({
       package_id: (form.elements.namedItem('package_id') as HTMLSelectElement).value,
       booking_code: (form.elements.namedItem('booking_code') as HTMLInputElement).value,
       odds_total: (form.elements.namedItem('odds_total') as HTMLInputElement).value,
@@ -265,7 +269,7 @@ export default function AdminDashboard({
       imageBase64,
       imageName,
       adminToken
-    };
+    });
 
     wrapAction(async () => {
       if (editingPremium) { const res = await editTicket(editingPremium.id, payload); setEditingPremium(null); return res; } 
