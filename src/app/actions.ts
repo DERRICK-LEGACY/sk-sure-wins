@@ -276,7 +276,7 @@ export async function getSpecialOffer() {
 }
 
 export async function updateSpecialOfferName(id: string, name: string) {
-  const isAuthed = await checkAdminAuth();
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) throw new Error("Unauthorized");
   if (!name.trim()) throw new Error("Name cannot be empty");
 
@@ -490,13 +490,13 @@ export async function checkAdminAuthDetailed(clientToken?: string): Promise<{ au
   }
 }
 
-export async function checkAdminAuth() {
-  const res = await checkAdminAuthDetailed();
+export async function checkAdminAuth(adminToken?: string) {
+  const res = await checkAdminAuthDetailed(adminToken);
   return res.authed;
 }
 
 export async function extendAdminSession() {
-  const isAuthed = await checkAdminAuth();
+  const isAuthed = await checkAdminAuth(adminToken);
   if (isAuthed) {
     const token = await new SignJWT({ role: 'admin' })
       .setProtectedHeader({ alg: 'HS256' })
@@ -514,7 +514,7 @@ export async function extendAdminSession() {
 }
 
 export async function updateAdminCredentials(newPassword: string) {
-  const isAuthed = await checkAdminAuth();
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   
   const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
@@ -542,7 +542,7 @@ export async function resetVipPin(phone: string, newPin: string) {
 // ========== ADMIN USERS & SUBSCRIPTIONS ==========
 
 export async function addClientWithSubscription(data: { phone: string; name: string; pkg: string; expiry_date: string; pin?: string }) {
-  const isAuthed = await checkAdminAuth();
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   
   const normalized = normalizePhone(data.phone);
@@ -580,8 +580,8 @@ export async function addClientWithSubscription(data: { phone: string; name: str
   return { success: true };
 }
 
-export async function deleteClient(id: string) {
-  const isAuthed = await checkAdminAuth();
+export async function deleteClient(id: string, adminToken?: string) {
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   
   // Soft Delete: Suspend the user and cancel subscriptions
@@ -594,8 +594,8 @@ export async function deleteClient(id: string) {
   return { success: true };
 }
 
-export async function completelyDeleteClient(id: string) {
-  const isAuthed = await checkAdminAuth();
+export async function completelyDeleteClient(id: string, adminToken?: string) {
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   
   // Hard Delete: Delete user and associated data. Orders are set to null instead of deleted to keep transaction history if needed.
@@ -757,8 +757,8 @@ export async function editTicket(id: string, data: any) {
   return { success: true };
 }
 
-export async function deleteTicket(id: string) {
-  const isAuthed = await checkAdminAuth();
+export async function deleteTicket(id: string, adminToken?: string) {
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   
   // Soft Delete
@@ -806,8 +806,8 @@ export async function editFreeHook(id: string, data: { description: string, imag
   }
 }
 
-export async function deleteFreeHook(id: string) {
-  const isAuthed = await checkAdminAuth();
+export async function deleteFreeHook(id: string, adminToken?: string) {
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   await prisma.freeHook.delete({ where: { id } });
   revalidatePath('/');
@@ -849,8 +849,8 @@ export async function editWonTicket(id: string, data: { description: string, ima
   }
 }
 
-export async function deleteWonTicket(id: string) {
-  const isAuthed = await checkAdminAuth();
+export async function deleteWonTicket(id: string, adminToken?: string) {
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   await prisma.ticket.update({ where: { id }, data: { status: 'VOID' } });
   revalidatePath('/');
@@ -858,16 +858,16 @@ export async function deleteWonTicket(id: string) {
   return { success: true };
 }
 
-export async function approveTestimonial(id: string) {
-  const isAuthed = await checkAdminAuth();
+export async function approveTestimonial(id: string, adminToken?: string) {
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   await prisma.testimonial.update({ where: { id }, data: { approved: true } });
   revalidatePath('/');
   return { success: true };
 }
 
-export async function deleteTestimonial(id: string) {
-  const isAuthed = await checkAdminAuth();
+export async function deleteTestimonial(id: string, adminToken?: string) {
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   await prisma.testimonial.delete({ where: { id } });
   revalidatePath('/');
@@ -877,7 +877,7 @@ export async function deleteTestimonial(id: string) {
 // ========== ADMIN FETCH QUERIES ==========
 
 export async function getClientsWithSubscriptions() {
-  const isAuthed = await checkAdminAuth();
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return [];
   
   return await prisma.user.findMany({
@@ -892,7 +892,7 @@ export async function getClientsWithSubscriptions() {
 }
 
 export async function getTickets() {
-  const isAuthed = await checkAdminAuth();
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return [];
   
   return await prisma.ticket.findMany({
@@ -907,7 +907,7 @@ export async function getTickets() {
 }
 
 export async function updateSubscriptionExpiry(id: string, expiresAt: string) {
-  const isAuthed = await checkAdminAuth();
+  const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   
   await prisma.subscription.update({ 

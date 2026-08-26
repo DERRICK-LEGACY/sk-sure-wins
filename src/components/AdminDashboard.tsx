@@ -522,10 +522,10 @@ export default function AdminDashboard({
                                 )}
                               </td>
                               <td className="p-4 flex gap-2 justify-end">
-                                <button title="Revoke Access" onClick={() => confirmAndDelete(`Revoke all access for ${client.name}?`, () => wrapAction(() => deleteClient(client.id), "Client revoked successfully!"))} className="w-8 h-8 flex items-center justify-center bg-yellow-500/10 text-yellow-500 rounded-lg hover:bg-yellow-500 hover:text-white transition-colors">
+                                <button title="Revoke Access" onClick={() => confirmAndDelete(`Revoke all access for ${client.name}?`, () => wrapAction(() => deleteClient(client.id, adminToken), "Client revoked successfully!"))} className="w-8 h-8 flex items-center justify-center bg-yellow-500/10 text-yellow-500 rounded-lg hover:bg-yellow-500 hover:text-white transition-colors">
                                   <UserX size={16} />
                                 </button>
-                                <button title="Delete User Completely" onClick={() => confirmAndDelete(`Delete ${client.name} completely from the system? This cannot be undone.`, () => wrapAction(() => completelyDeleteClient(client.id), "Client deleted successfully!"))} className="w-8 h-8 flex items-center justify-center bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors">
+                                <button title="Delete User Completely" onClick={() => confirmAndDelete(`Delete ${client.name} completely from the system? This cannot be undone.`, () => wrapAction(() => completelydeleteClient(client.id, adminToken), "Client deleted successfully!"))} className="w-8 h-8 flex items-center justify-center bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors">
                                   <Trash2 size={16} />
                                 </button>
                               </td>
@@ -616,7 +616,7 @@ export default function AdminDashboard({
                           <button onClick={() => setEditingPremium(t)} className="flex-1 bg-white/5 py-2 rounded-lg text-sm font-bold hover:bg-white/10 flex justify-center items-center gap-2">
                             <Edit2 size={14} /> Edit
                           </button>
-                          <button onClick={() => confirmAndDelete("Delete this VIP slip?", () => wrapAction(() => deleteTicket(t.id), "VIP slip deleted successfully!"))} className="flex-1 bg-red-500/10 text-red-500 py-2 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white flex justify-center items-center gap-2 transition-colors">
+                          <button onClick={() => confirmAndDelete("Delete this VIP slip?", () => wrapAction(() => deleteTicket(t.id, adminToken), "VIP slip deleted successfully!"))} className="flex-1 bg-red-500/10 text-red-500 py-2 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white flex justify-center items-center gap-2 transition-colors">
                             <Trash2 size={14} /> Delete
                           </button>
                         </div>
@@ -646,11 +646,11 @@ export default function AdminDashboard({
                       
                       <div className="flex gap-2">
                         {!t.approved && (
-                          <button onClick={() => approveTestimonial(t.id)} className="flex-1 bg-green-500 text-white py-2 rounded-lg text-sm font-bold hover:bg-green-600 transition-colors">
+                          <button onClick={() => approveTestimonial(t.id, adminToken)} className="flex-1 bg-green-500 text-white py-2 rounded-lg text-sm font-bold hover:bg-green-600 transition-colors">
                             Approve
                           </button>
                         )}
-                        <button onClick={() => confirmAndDelete("Delete this review?", () => wrapAction(() => deleteTestimonial(t.id), "Review deleted successfully!"))} className="flex-1 bg-red-500/10 text-red-500 py-2 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white transition-colors">
+                        <button onClick={() => confirmAndDelete("Delete this review?", () => wrapAction(() => deleteTestimonial(t.id, adminToken), "Review deleted successfully!"))} className="flex-1 bg-red-500/10 text-red-500 py-2 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white transition-colors">
                           Delete
                         </button>
                       </div>
@@ -708,7 +708,7 @@ export default function AdminDashboard({
                           <button onClick={() => setEditingFree(t)} className="flex-1 bg-white/5 py-2 rounded-lg text-sm font-bold hover:bg-white/10 flex justify-center items-center gap-2">
                             <Edit2 size={14} /> Edit
                           </button>
-                          <button onClick={() => confirmAndDelete("Delete this free ticket?", () => wrapAction(() => deleteFreeHook(t.id), "Ticket deleted!"))} className="flex-1 bg-red-500/10 text-red-500 py-2 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white flex justify-center items-center gap-2 transition-colors">
+                          <button onClick={() => confirmAndDelete("Delete this free ticket?", () => wrapAction(() => deleteFreeHook(t.id, adminToken), "Ticket deleted!"))} className="flex-1 bg-red-500/10 text-red-500 py-2 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white flex justify-center items-center gap-2 transition-colors">
                             <Trash2 size={14} /> Delete
                           </button>
                         </div>
@@ -767,7 +767,7 @@ export default function AdminDashboard({
                           <button onClick={() => setEditingWon(t)} className="flex-1 bg-white/5 py-2 rounded-lg text-sm font-bold hover:bg-white/10 flex justify-center items-center gap-2">
                             <Edit2 size={14} /> Edit
                           </button>
-                          <button onClick={() => confirmAndDelete("Delete this won ticket?", () => wrapAction(() => deleteWonTicket(t.id), "Ticket deleted!"))} className="flex-1 bg-red-500/10 text-red-500 py-2 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white flex justify-center items-center gap-2 transition-colors">
+                          <button onClick={() => confirmAndDelete("Delete this won ticket?", () => wrapAction(() => deleteWonTicket(t.id, adminToken), "Ticket deleted!"))} className="flex-1 bg-red-500/10 text-red-500 py-2 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white flex justify-center items-center gap-2 transition-colors">
                             <Trash2 size={14} /> Delete
                           </button>
                         </div>
