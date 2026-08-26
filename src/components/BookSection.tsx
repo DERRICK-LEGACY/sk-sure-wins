@@ -40,7 +40,7 @@ export default function BookSection({ openModal }: { openModal: (name: string, p
           </div>
           
           <h2 className="text-5xl md:text-6xl font-black mb-4 text-white tracking-tight">
-            THE WINNING <span className="text-primary">BOOK</span>
+            AMAZIMA <span className="text-primary">AMAKUSIKE</span>
           </h2>
           
           <p className="text-gray-300 text-lg md:text-xl mb-8 max-w-md font-medium">

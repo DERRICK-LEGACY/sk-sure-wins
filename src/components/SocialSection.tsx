@@ -57,6 +57,18 @@ export default function SocialSection() {
       shadow: "hover:shadow-[0_10px_30px_rgba(255,255,255,0.2)]"
     },
     {
+      name: "TikTok",
+      url: "https://www.tiktok.com/@sk_mapesa",
+      color: "from-gray-900 to-black",
+      icon: (
+        <svg fill="currentColor" viewBox="0 0 24 24" width="28" height="28" className="text-white">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 3.18-4.51v-3.5a6.33 6.33 0 0 0-5.39 10.69 6.33 6.33 0 0 0 10.86-4.42V8.69a8.18 8.18 0 0 0 4.77 1.53V6.79a4.83 4.83 0 0 1-1-.1z"/>
+        </svg>
+      ),
+      tag: "Viral Videos",
+      shadow: "hover:shadow-[0_10px_30px_rgba(255,0,80,0.3)]"
+    },
+    {
       name: "Threads",
       url: "https://www.threads.com/@sk_mapesa_kuwangula?invite=0",
       color: "from-gray-700 to-gray-900",
@@ -89,9 +101,9 @@ export default function SocialSection() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 relative z-10">
+      <div className="flex flex-wrap justify-center gap-4 md:gap-6 relative z-10">
         {socials.map((social) => (
-          <Link href={social.url} key={social.name} target="_blank" rel="noopener noreferrer">
+          <Link href={social.url} key={social.name} target="_blank" rel="noopener noreferrer" className="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-1rem)] lg:w-[220px]">
             <motion.div 
               whileHover={{ y: -8, scale: 1.02 }}
               whileTap={{ scale: 0.95 }}
