@@ -38,5 +38,6 @@ export default async function AdminPage() {
     premiumTickets={premiumTickets} 
     testimonials={testimonials} 
     packages={packages} 
+    adminToken={adminToken}
   />;
 }

@@ -61,6 +61,7 @@ const StatCard = ({ title, value, icon: Icon, color, subtitle }: { title: string
       </div>
     </div>
     <p className="text-xs text-gray-500 font-medium relative z-10">{subtitle}</p>
+
   </div>
 );
 
@@ -68,9 +69,9 @@ type ClientWithSubscriptions = User & { subscriptions: (Subscription & { package
 type TicketWithAudiences = Ticket & { audiences?: (TicketAudience & { package: Package })[] };
 
 export default function AdminDashboard({ 
-  freeHooks, wonTickets, clients, premiumTickets, testimonials = [], packages = []
+  freeHooks, wonTickets, clients, premiumTickets, testimonials = [], packages = [], adminToken
 }: { 
-  freeHooks: FreeHook[], wonTickets: Ticket[], clients: ClientWithSubscriptions[], premiumTickets: TicketWithAudiences[], testimonials?: Testimonial[], packages?: Package[] 
+  freeHooks: FreeHook[], wonTickets: Ticket[], clients: ClientWithSubscriptions[], premiumTickets: TicketWithAudiences[], testimonials?: Testimonial[], packages?: Package[], adminToken?: string
 }) {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -116,7 +117,6 @@ export default function AdminDashboard({
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [router]);
-
   // Search & Edit States
   const [userSearch, setUserSearch] = useState("");
   const [editingFree, setEditingFree] = useState<FreeHook | null>(null);
