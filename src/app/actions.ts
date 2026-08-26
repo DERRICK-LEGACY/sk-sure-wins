@@ -429,7 +429,7 @@ export async function loginAdmin(password: string) {
 
     const cookieStore = await cookies();
     cookieStore.set(ADMIN_COOKIE, token, {
-      httpOnly: true, secure: IS_PRODUCTION, sameSite: "lax", maxAge: 24 * 60 * 60, path: "/"
+      httpOnly: false, secure: IS_PRODUCTION, sameSite: "lax", maxAge: 24 * 60 * 60, path: "/"
     });
     
     await logAudit('LOGIN', { status: 'SUCCESS' });
@@ -456,13 +456,15 @@ export async function logoutAdmin() {
   return { success: true };
 }
 
-export async function checkAdminAuthDetailed(): Promise<{ authed: boolean, reason?: string }> {
-  let sessionValue = undefined;
+export async function checkAdminAuthDetailed(clientToken?: string): Promise<{ authed: boolean, reason?: string }> {
+  let sessionValue = clientToken;
   
-  try {
-    const cookieStore = await cookies();
-    sessionValue = cookieStore.get(ADMIN_COOKIE)?.value;
-  } catch (e) {
+  if (!sessionValue) {
+    try {
+      const cookieStore = await cookies();
+      sessionValue = cookieStore.get(ADMIN_COOKIE)?.value;
+    } catch (e) {
+    }
   }
 
   if (!sessionValue) {
@@ -504,7 +506,7 @@ export async function extendAdminSession() {
 
     const cookieStore = await cookies();
     cookieStore.set(ADMIN_COOKIE, token, {
-      httpOnly: true, secure: IS_PRODUCTION, sameSite: "lax", maxAge: 24 * 60 * 60, path: "/"
+      httpOnly: false, secure: IS_PRODUCTION, sameSite: "lax", maxAge: 24 * 60 * 60, path: "/"
     });
     return { success: true };
   }
@@ -685,7 +687,7 @@ async function processBase64Image(imageBase64?: string, imageName?: string): Pro
 }
 
 export async function addTicket(data: any) {
-  const auth = await checkAdminAuthDetailed();
+  const auth = await checkAdminAuthDetailed(data.adminToken);
   if (!auth.authed) return { error: auth.reason };
   
   const packageId = data.package_id;
@@ -724,7 +726,7 @@ export async function addTicket(data: any) {
 }
 
 export async function editTicket(id: string, data: any) {
-  const auth = await checkAdminAuthDetailed();
+  const auth = await checkAdminAuthDetailed(data.adminToken);
   if (!auth.authed) return { error: auth.reason };
   
   const packageId = data.package_id;
@@ -770,7 +772,7 @@ export async function deleteTicket(id: string) {
 // ========== PUBLIC CONTENT CRUD ==========
 
 export async function updateFreeHook(data: { description: string, imageBase64?: string, imageName?: string }) {
-  const auth = await checkAdminAuthDetailed();
+  const auth = await checkAdminAuthDetailed(data.adminToken);
   if (!auth.authed) return { error: auth.reason };
   const description = data.description;
   const imageUrl = await processBase64Image(data.imageBase64, data.imageName);
@@ -782,7 +784,7 @@ export async function updateFreeHook(data: { description: string, imageBase64?: 
 }
 
 export async function editFreeHook(id: string, data: { description: string, imageBase64?: string, imageName?: string }) {
-  const auth = await checkAdminAuthDetailed();
+  const auth = await checkAdminAuthDetailed(data.adminToken);
   if (!auth.authed) return { error: auth.reason };
   const description = data.description;
   // If we wanted to update image, we would do it here, but editFreeHook currently just updates description.
@@ -801,7 +803,7 @@ export async function deleteFreeHook(id: string) {
 }
 
 export async function addWonTicket(data: { description: string, imageBase64?: string, imageName?: string }) {
-  const auth = await checkAdminAuthDetailed();
+  const auth = await checkAdminAuthDetailed(data.adminToken);
   if (!auth.authed) return { error: auth.reason };
   const description = data.description;
   const imageUrl = await processBase64Image(data.imageBase64, data.imageName);
@@ -814,7 +816,7 @@ export async function addWonTicket(data: { description: string, imageBase64?: st
 }
 
 export async function editWonTicket(id: string, data: { description: string, imageBase64?: string, imageName?: string }) {
-  const auth = await checkAdminAuthDetailed();
+  const auth = await checkAdminAuthDetailed(data.adminToken);
   if (!auth.authed) return { error: auth.reason };
   const description = data.description;
   await prisma.ticket.update({ where: { id }, data: { bookingCode: description } });

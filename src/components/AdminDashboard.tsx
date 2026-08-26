@@ -202,6 +202,15 @@ export default function AdminDashboard({
   };
 
   
+  
+  const getAdminToken = () => {
+    if (typeof document !== 'undefined') {
+      const match = document.cookie.match(/(?:^|;\s*)sk_admin_session=([^;]*)/);
+      return match ? match[1] : undefined;
+    }
+    return undefined;
+  };
+
   const fileToBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -218,8 +227,8 @@ export default function AdminDashboard({
     const description = (form.elements.namedItem('description') as HTMLInputElement).value;
     
     wrapAction(async () => {
-      if (editingFree) { const res = await editFreeHook(editingFree.id, { description, imageBase64, imageName }); setEditingFree(null); return res; } 
-      else { return await updateFreeHook({ description, imageBase64, imageName }); }
+      if (editingFree) { const res = await editFreeHook(editingFree.id, { description, imageBase64, imageName, adminToken: getAdminToken() }); setEditingFree(null); return res; } 
+      else { return await updateFreeHook({ description, imageBase64, imageName, adminToken: getAdminToken() }); }
     }, "Free slip successfully posted!")
     .then(() => form.reset());
   };
@@ -233,8 +242,8 @@ export default function AdminDashboard({
     const description = (form.elements.namedItem('description') as HTMLInputElement).value;
 
     wrapAction(async () => {
-      if (editingWon) { const res = await editWonTicket(editingWon.id, { description, imageBase64, imageName }); setEditingWon(null); return res; } 
-      else { return await addWonTicket({ description, imageBase64, imageName }); }
+      if (editingWon) { const res = await editWonTicket(editingWon.id, { description, imageBase64, imageName, adminToken: getAdminToken() }); setEditingWon(null); return res; } 
+      else { return await addWonTicket({ description, imageBase64, imageName, adminToken: getAdminToken() }); }
     }, "Won ticket successfully posted!")
     .then(() => form.reset());
   };
@@ -262,7 +271,8 @@ export default function AdminDashboard({
       odds_total: (form.elements.namedItem('odds_total') as HTMLInputElement).value,
       match_time: (form.elements.namedItem('match_time') as HTMLInputElement).value,
       imageBase64,
-      imageName
+      imageName,
+      adminToken: getAdminToken()
     };
 
     wrapAction(async () => {
