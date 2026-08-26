@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { checkAdminAuth } from '../actions';
+import { cookies } from 'next/headers';
 import { getAllFreeHooks, getWonTickets, getClientsWithSubscriptions, getTickets, getAllTestimonials, getPackages } from '../actions';
 import AdminDashboard from '@/components/AdminDashboard';
 import AdminLogin from '@/components/AdminLogin';
@@ -17,6 +18,9 @@ export default async function AdminPage() {
   if (!isAuthed) {
     return <AdminLogin />;
   }
+
+  const cookieStore = await cookies();
+  const adminToken = cookieStore.get("sk_admin_session")?.value;
 
   const [freeHooks, wonTickets, clients, premiumTickets, testimonials, packages] = await Promise.all([
     getAllFreeHooks(),
