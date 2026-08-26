@@ -424,12 +424,12 @@ export async function loginAdmin(password: string) {
     const token = await new SignJWT({ role: 'admin' })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
-      .setExpirationTime('15m')
+      .setExpirationTime('24h')
       .sign(JWT_SECRET);
 
     const cookieStore = await cookies();
     cookieStore.set(ADMIN_COOKIE, token, {
-      httpOnly: true, secure: IS_PRODUCTION, sameSite: "strict", maxAge: 15 * 60, path: "/"
+      httpOnly: true, secure: IS_PRODUCTION, sameSite: "strict", maxAge: 24 * 60 * 60, path: "/"
     });
     
     await logAudit('LOGIN', { status: 'SUCCESS' });
@@ -474,12 +474,12 @@ export async function extendAdminSession() {
     const token = await new SignJWT({ role: 'admin' })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
-      .setExpirationTime('15m')
+      .setExpirationTime('24h')
       .sign(JWT_SECRET);
 
     const cookieStore = await cookies();
     cookieStore.set(ADMIN_COOKIE, token, {
-      httpOnly: true, secure: IS_PRODUCTION, sameSite: "strict", maxAge: 15 * 60, path: "/"
+      httpOnly: true, secure: IS_PRODUCTION, sameSite: "strict", maxAge: 24 * 60 * 60, path: "/"
     });
     return { success: true };
   }
