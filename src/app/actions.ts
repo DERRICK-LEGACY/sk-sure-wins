@@ -398,6 +398,8 @@ export async function getAdminPassword() {
       { name: 'Life Changer: ODD 1.20', price: 50000, durationDays: 14 },
       { name: 'Life Changer: ODD 1.30', price: 50000, durationDays: 14 },
       { name: 'Life Changer: ODD 1.50', price: 50000, durationDays: 14 },
+      // Book
+      { name: 'Book: AMAZIMA AMAKUSIKE', price: 50000, durationDays: 36500 },
     ],
     skipDuplicates: true
   });

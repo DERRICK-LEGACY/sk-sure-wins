@@ -6,6 +6,7 @@ import { MessageCircle, CheckCircle, Send, BellRing, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import PaymentModal from "@/components/PaymentModal";
+import BookSection from "@/components/BookSection";
 import Navbar from "@/components/Navbar";
 import { submitTestimonial } from "@/app/actions";
 import { FreeHook, Ticket as WonTicket, Testimonial, Package } from '@prisma/client';
@@ -472,28 +473,6 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
         </div>
 
       </motion.section>
-      {/* STATS SECTION */}
-      <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} className="w-full max-w-6xl mx-auto px-6 py-12 md:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div className="flex flex-col items-center">
-            <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={95} suffix="%" /></h3>
-            <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Win Rate</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={50} suffix="k+" /></h3>
-            <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Happy Subscribers</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={5} suffix="+" /></h3>
-            <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Years Active</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <h3 className="text-4xl md:text-5xl font-black text-primary mb-2"><AnimatedNumber value={100} suffix="%" /></h3>
-            <p className="text-xs md:text-sm font-bold tracking-widest uppercase text-gray-400">Daily Winning Tickets</p>
-          </div>
-        </div>
-      </motion.section>
-
       {/* MEET THE EXPERT */}
       <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} className="w-full max-w-6xl mx-auto px-6 py-12 md:py-20 flex flex-col md:flex-row items-center gap-12 text-left">
         <div className="w-full md:w-1/2 relative group">
