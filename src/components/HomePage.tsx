@@ -473,6 +473,10 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
         </div>
 
       </motion.section>
+
+      {/* BOOK SECTION */}
+      <BookSection openModal={openModal} />
+
       {/* MEET THE EXPERT */}
       <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} className="w-full max-w-6xl mx-auto px-6 py-12 md:py-20 flex flex-col md:flex-row items-center gap-12 text-left">
         <div className="w-full md:w-1/2 relative group">
