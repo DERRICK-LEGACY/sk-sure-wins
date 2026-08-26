@@ -93,7 +93,7 @@ export default function AdminDashboard({
     // Keep-alive interval
     const interval = setInterval(() => {
       if (Date.now() - lastActivity.current < 5 * 60 * 1000) {
-        extendAdminSession().catch(console.error);
+        extendAdminSession(adminToken).catch(console.error);
       }
     }, 4 * 60 * 1000); // Check every 4 minutes
 
@@ -264,7 +264,7 @@ export default function AdminDashboard({
   const handleClientSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     wrapAction(async () => {
-      const res = await addClientWithSubscription(userForm);
+      const res = await addClientWithSubscription({ ...userForm, adminToken });
       if (!res?.error) {
         setUserForm({ phone: "", name: "", pkg: packages[0]?.id || "", expiry_date: "", pin: "" });
       }
@@ -504,7 +504,7 @@ export default function AdminDashboard({
                                             if (newDateStr) {
                                               const newDate = new Date(newDateStr);
                                               if (!isNaN(newDate.getTime())) {
-                                                wrapAction(() => updateSubscriptionExpiry(sub.id, newDate.toISOString()), "Expiration date updated successfully!");
+                                                wrapAction(() => updateSubscriptionExpiry(sub.id, newDate.toISOString(), adminToken), "Expiration date updated successfully!");
                                               } else {
                                                 showToast("Invalid date format. Please use YYYY-MM-DD.", "error");
                                               }
@@ -799,7 +799,7 @@ export default function AdminDashboard({
                     <form onSubmit={(e) => {
                       e.preventDefault();
                       wrapAction(async () => {
-                        await updateSpecialOfferName(specialOffer.id, specialOfferName);
+                        await updateSpecialOfferName(specialOffer.id, specialOfferName, adminToken);
                         router.refresh();
                       }, "Special offer name updated!");
                     }}>
