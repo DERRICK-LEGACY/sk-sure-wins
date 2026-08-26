@@ -781,6 +781,7 @@ export async function updateFreeHook(data: { description: string, imageBase64?: 
     await prisma.freeHook.create({ data: { description, imageUrl, isActive: true } });
     
     revalidatePath('/');
+    revalidatePath('/free-tickets');
     return { success: true };
   } catch (err: any) {
     console.error("updateFreeHook error:", err);
@@ -797,6 +798,7 @@ export async function editFreeHook(id: string, data: { description: string, imag
     
     await prisma.freeHook.update({ where: { id }, data: { description } });
     revalidatePath('/');
+    revalidatePath('/free-tickets');
     return { success: true };
   } catch (err: any) {
     console.error("editFreeHook error:", err);
@@ -809,6 +811,7 @@ export async function deleteFreeHook(id: string) {
   if (!isAuthed) return { error: "Unauthorized" };
   await prisma.freeHook.delete({ where: { id } });
   revalidatePath('/');
+  revalidatePath('/free-tickets');
   return { success: true };
 }
 
@@ -823,6 +826,7 @@ export async function addWonTicket(data: { description: string, imageBase64?: st
       data: { imageUrl, bookingCode: description, status: 'WON' }
     });
     revalidatePath('/');
+    revalidatePath('/won-tickets');
     return { success: true };
   } catch (err: any) {
     console.error("addWonTicket error:", err);
@@ -837,6 +841,7 @@ export async function editWonTicket(id: string, data: { description: string, ima
     const description = data.description;
     await prisma.ticket.update({ where: { id }, data: { bookingCode: description } });
     revalidatePath('/');
+    revalidatePath('/won-tickets');
     return { success: true };
   } catch (err: any) {
     console.error("editWonTicket error:", err);
@@ -849,6 +854,7 @@ export async function deleteWonTicket(id: string) {
   if (!isAuthed) return { error: "Unauthorized" };
   await prisma.ticket.update({ where: { id }, data: { status: 'VOID' } });
   revalidatePath('/');
+  revalidatePath('/won-tickets');
   return { success: true };
 }
 

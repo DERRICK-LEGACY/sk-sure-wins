@@ -108,14 +108,31 @@ export default function AdminDashboard({
 
   // Security: Logout when switching tabs
   useEffect(() => {
+    let filePickerActive = false;
+    const handleFocus = () => { filePickerActive = false; };
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && target.tagName.toLowerCase() === 'input' && (target as HTMLInputElement).type === 'file') {
+        filePickerActive = true;
+        setTimeout(() => { filePickerActive = false; }, 10000); // safety fallback
+      }
+    };
+
     const handleVisibilityChange = async () => {
-      if (document.visibilityState === 'hidden') {
+      if (document.visibilityState === 'hidden' && !filePickerActive) {
         await logoutAdmin();
         router.refresh();
       }
     };
+    
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("click", handleClick, true); // capture phase to intercept early
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("click", handleClick, true);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, [router]);
   // Search & Edit States
   const [userSearch, setUserSearch] = useState("");
