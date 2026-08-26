@@ -201,24 +201,42 @@ export default function AdminDashboard({
     finally { setLoading(false); }
   };
 
-  const handleUpdateHook = (e: React.FormEvent<HTMLFormElement>) => {
+  
+  const fileToBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = error => reject(error);
+  });
+
+  const handleUpdateHook = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const file = (form.elements.namedItem('image') as HTMLInputElement)?.files?.[0];
+    const imageBase64 = file ? await fileToBase64(file) : undefined;
+    const imageName = file?.name;
+    const description = (form.elements.namedItem('description') as HTMLInputElement).value;
+    
     wrapAction(async () => {
-      if (editingFree) { const res = await editFreeHook(editingFree.id, formData); setEditingFree(null); return res; } 
-      else { return await updateFreeHook(formData); }
+      if (editingFree) { const res = await editFreeHook(editingFree.id, { description, imageBase64, imageName }); setEditingFree(null); return res; } 
+      else { return await updateFreeHook({ description, imageBase64, imageName }); }
     }, "Free slip successfully posted!")
-    .then(() => (e.target as HTMLFormElement).reset());
+    .then(() => form.reset());
   };
 
-  const handleAddWonTicket = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAddWonTicket = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const file = (form.elements.namedItem('image') as HTMLInputElement)?.files?.[0];
+    const imageBase64 = file ? await fileToBase64(file) : undefined;
+    const imageName = file?.name;
+    const description = (form.elements.namedItem('description') as HTMLInputElement).value;
+
     wrapAction(async () => {
-      if (editingWon) { const res = await editWonTicket(editingWon.id, formData); setEditingWon(null); return res; } 
-      else { return await addWonTicket(formData); }
+      if (editingWon) { const res = await editWonTicket(editingWon.id, { description, imageBase64, imageName }); setEditingWon(null); return res; } 
+      else { return await addWonTicket({ description, imageBase64, imageName }); }
     }, "Won ticket successfully posted!")
-    .then(() => (e.target as HTMLFormElement).reset());
+    .then(() => form.reset());
   };
 
   const handleClientSubmit = (e: React.FormEvent) => {
@@ -232,14 +250,26 @@ export default function AdminDashboard({
     }, "Client subscription successfully updated!");
   };
 
-  const handlePremiumSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handlePremiumSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const file = (form.elements.namedItem('image') as HTMLInputElement)?.files?.[0];
+    const imageBase64 = file ? await fileToBase64(file) : undefined;
+    const imageName = file?.name;
+    const payload = {
+      package_id: (form.elements.namedItem('package_id') as HTMLSelectElement).value,
+      booking_code: (form.elements.namedItem('booking_code') as HTMLInputElement).value,
+      odds_total: (form.elements.namedItem('odds_total') as HTMLInputElement).value,
+      match_time: (form.elements.namedItem('match_time') as HTMLInputElement).value,
+      imageBase64,
+      imageName
+    };
+
     wrapAction(async () => {
-      if (editingPremium) { const res = await editTicket(editingPremium.id, formData); setEditingPremium(null); return res; } 
-      else { return await addTicket(formData); }
+      if (editingPremium) { const res = await editTicket(editingPremium.id, payload); setEditingPremium(null); return res; } 
+      else { return await addTicket(payload); }
     }, "VIP slip successfully posted!")
-    .then(() => (e.target as HTMLFormElement).reset());
+    .then(() => form.reset());
   };
 
   const confirmAndDelete = (message: string, action: () => void) => setConfirmDelete({ message, action });

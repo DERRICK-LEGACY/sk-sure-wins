@@ -668,16 +668,27 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
   }
 }
 
-export async function addTicket(formData: FormData) {
+
+async function processBase64Image(imageBase64?: string, imageName?: string): Promise<string> {
+  if (!imageBase64 || !imageName) return "https://placehold.co/600x400?text=Ticket+Uploaded";
+  const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, "");
+  const buffer = Buffer.from(base64Data, 'base64');
+  const blob = new Blob([buffer]);
+  const formData = new FormData();
+  formData.append('image', blob, imageName);
+  return handleImageUpload(formData, 'image');
+}
+
+export async function addTicket(data: any) {
   const isAuthed = await checkAdminAuth();
   if (!isAuthed) return { error: "Unauthorized" };
   
-  const packageId = formData.get('package_id') as string;
-  const bookingCode = formData.get('booking_code') as string;
-  const oddsTotal = parseFloat(formData.get('odds_total') as string) || null;
-  const matchTimeStr = formData.get('match_time') as string;
+  const packageId = data.package_id;
+  const bookingCode = data.booking_code;
+  const oddsTotal = parseFloat(data.odds_total) || null;
+  const matchTimeStr = data.match_time;
   const matchTime = matchTimeStr ? new Date(matchTimeStr) : null;
-  const imageUrl = await handleImageUpload(formData, 'image');
+  const imageUrl = await processBase64Image(data.imageBase64, data.imageName);
 
   const pkg = await prisma.package.findUnique({ where: { id: packageId } });
   if (!pkg) return { error: "Invalid package selected." };
@@ -707,21 +718,20 @@ export async function addTicket(formData: FormData) {
   return { success: true };
 }
 
-export async function editTicket(id: string, formData: FormData) {
+export async function editTicket(id: string, data: any) {
   const isAuthed = await checkAdminAuth();
   if (!isAuthed) return { error: "Unauthorized" };
   
-  const packageId = formData.get('package_id') as string;
-  const bookingCode = formData.get('booking_code') as string;
-  const oddsTotal = parseFloat(formData.get('odds_total') as string) || null;
-  const matchTimeStr = formData.get('match_time') as string;
+  const packageId = data.package_id;
+  const bookingCode = data.booking_code;
+  const oddsTotal = parseFloat(data.odds_total) || null;
+  const matchTimeStr = data.match_time;
   const matchTime = matchTimeStr ? new Date(matchTimeStr) : null;
   
   const updateData: Record<string, unknown> = { bookingCode, oddsTotal, matchTime };
   
-  const imageFile = formData.get('image') as File | null;
-  if (imageFile && imageFile.size > 0) {
-    updateData.imageUrl = await handleImageUpload(formData, 'image');
+  if (data.imageBase64) {
+    updateData.imageUrl = await processBase64Image(data.imageBase64, data.imageName);
   }
   
   await prisma.ticket.update({ 
@@ -754,11 +764,11 @@ export async function deleteTicket(id: string) {
 
 // ========== PUBLIC CONTENT CRUD ==========
 
-export async function updateFreeHook(formData: FormData) {
+export async function updateFreeHook(data: { description: string, imageBase64?: string, imageName?: string }) {
   const isAuthed = await checkAdminAuth();
   if (!isAuthed) return { error: "Unauthorized" };
-  const description = formData.get('description') as string;
-  const imageUrl = await handleImageUpload(formData, 'image');
+  const description = data.description;
+  const imageUrl = await processBase64Image(data.imageBase64, data.imageName);
 
   await prisma.freeHook.create({ data: { description, imageUrl, isActive: true } });
   
@@ -766,10 +776,12 @@ export async function updateFreeHook(formData: FormData) {
   return { success: true };
 }
 
-export async function editFreeHook(id: string, formData: FormData) {
+export async function editFreeHook(id: string, data: { description: string, imageBase64?: string, imageName?: string }) {
   const isAuthed = await checkAdminAuth();
   if (!isAuthed) return { error: "Unauthorized" };
-  const description = formData.get('description') as string;
+  const description = data.description;
+  // If we wanted to update image, we would do it here, but editFreeHook currently just updates description.
+  
   await prisma.freeHook.update({ where: { id }, data: { description } });
   revalidatePath('/');
   return { success: true };
@@ -783,11 +795,11 @@ export async function deleteFreeHook(id: string) {
   return { success: true };
 }
 
-export async function addWonTicket(formData: FormData) {
+export async function addWonTicket(data: { description: string, imageBase64?: string, imageName?: string }) {
   const isAuthed = await checkAdminAuth();
   if (!isAuthed) return { error: "Unauthorized" };
-  const description = formData.get('description') as string;
-  const imageUrl = await handleImageUpload(formData, 'image');
+  const description = data.description;
+  const imageUrl = await processBase64Image(data.imageBase64, data.imageName);
 
   await prisma.ticket.create({
     data: { imageUrl, bookingCode: description, status: 'WON' }
@@ -796,10 +808,10 @@ export async function addWonTicket(formData: FormData) {
   return { success: true };
 }
 
-export async function editWonTicket(id: string, formData: FormData) {
+export async function editWonTicket(id: string, data: { description: string, imageBase64?: string, imageName?: string }) {
   const isAuthed = await checkAdminAuth();
   if (!isAuthed) return { error: "Unauthorized" };
-  const description = formData.get('description') as string;
+  const description = data.description;
   await prisma.ticket.update({ where: { id }, data: { bookingCode: description } });
   revalidatePath('/');
   return { success: true };
