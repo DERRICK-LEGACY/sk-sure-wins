@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { FaWhatsapp, FaTelegramPlane, FaFacebookF, FaInstagram, FaXTwitter, FaTiktok } from 'react-icons/fa6';
+import { FaWhatsapp, FaTelegram, FaFacebookF, FaInstagram, FaXTwitter, FaTiktok } from 'react-icons/fa6';
 import { SiThreads } from 'react-icons/si';
 
 export default function SocialSection() {
@@ -14,7 +14,7 @@ export default function SocialSection() {
     {
       name: "Telegram",
       url: "https://t.me/+Gd917QQhofRiZGVk",
-      icon: <FaTelegramPlane size={24} />,
+      icon: <FaTelegram size={24} />,
       hoverColor: "hover:text-blue-500 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
     },
     {
