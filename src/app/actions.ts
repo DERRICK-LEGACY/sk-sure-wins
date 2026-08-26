@@ -456,36 +456,41 @@ export async function logoutAdmin() {
   return { success: true };
 }
 
-export async function checkAdminAuth() {
-  let sessionValue: string | undefined = undefined;
+export async function checkAdminAuthDetailed(): Promise<{ authed: boolean, reason?: string }> {
+  let sessionValue = undefined;
   
   try {
     const cookieStore = await cookies();
     sessionValue = cookieStore.get(ADMIN_COOKIE)?.value;
   } catch (e) {
-    console.error("cookies() failed:", e);
   }
 
-  // Fallback for Next.js FormData parsing dropping cookies
   if (!sessionValue) {
     try {
       const headersList = await headers();
       const cookieHeader = headersList.get('cookie') || '';
-      const match = cookieHeader.match(new RegExp(`(?:^|;\\s*)${ADMIN_COOKIE}=([^;]*)`));
+      const match = cookieHeader.match(new RegExp('(?:^|;\\s*)' + ADMIN_COOKIE + '=([^;]*)'));
       if (match) sessionValue = match[1];
     } catch (e) {
-      console.error("headers() failed:", e);
     }
   }
 
-  if (!sessionValue) return false;
+  if (!sessionValue) return { authed: false, reason: "Unauthorized: No Session Cookie Found" };
 
   try {
     const { payload } = await jwtVerify(sessionValue, JWT_SECRET);
-    return payload.role === 'admin';
-  } catch {
-    return false;
+    if (payload.role !== 'admin') {
+       return { authed: false, reason: "Unauthorized: Role mismatch" };
+    }
+    return { authed: true };
+  } catch (err) {
+    return { authed: false, reason: "Unauthorized: JWT Verify Failed (" + err.message + ")" };
   }
+}
+
+export async function checkAdminAuth() {
+  const res = await checkAdminAuthDetailed();
+  return res.authed;
 }
 
 export async function extendAdminSession() {
@@ -680,8 +685,8 @@ async function processBase64Image(imageBase64?: string, imageName?: string): Pro
 }
 
 export async function addTicket(data: any) {
-  const isAuthed = await checkAdminAuth();
-  if (!isAuthed) return { error: "Unauthorized" };
+  const auth = await checkAdminAuthDetailed();
+  if (!auth.authed) return { error: auth.reason };
   
   const packageId = data.package_id;
   const bookingCode = data.booking_code;
@@ -719,8 +724,8 @@ export async function addTicket(data: any) {
 }
 
 export async function editTicket(id: string, data: any) {
-  const isAuthed = await checkAdminAuth();
-  if (!isAuthed) return { error: "Unauthorized" };
+  const auth = await checkAdminAuthDetailed();
+  if (!auth.authed) return { error: auth.reason };
   
   const packageId = data.package_id;
   const bookingCode = data.booking_code;
@@ -765,8 +770,8 @@ export async function deleteTicket(id: string) {
 // ========== PUBLIC CONTENT CRUD ==========
 
 export async function updateFreeHook(data: { description: string, imageBase64?: string, imageName?: string }) {
-  const isAuthed = await checkAdminAuth();
-  if (!isAuthed) return { error: "Unauthorized" };
+  const auth = await checkAdminAuthDetailed();
+  if (!auth.authed) return { error: auth.reason };
   const description = data.description;
   const imageUrl = await processBase64Image(data.imageBase64, data.imageName);
 
@@ -777,8 +782,8 @@ export async function updateFreeHook(data: { description: string, imageBase64?: 
 }
 
 export async function editFreeHook(id: string, data: { description: string, imageBase64?: string, imageName?: string }) {
-  const isAuthed = await checkAdminAuth();
-  if (!isAuthed) return { error: "Unauthorized" };
+  const auth = await checkAdminAuthDetailed();
+  if (!auth.authed) return { error: auth.reason };
   const description = data.description;
   // If we wanted to update image, we would do it here, but editFreeHook currently just updates description.
   
@@ -796,8 +801,8 @@ export async function deleteFreeHook(id: string) {
 }
 
 export async function addWonTicket(data: { description: string, imageBase64?: string, imageName?: string }) {
-  const isAuthed = await checkAdminAuth();
-  if (!isAuthed) return { error: "Unauthorized" };
+  const auth = await checkAdminAuthDetailed();
+  if (!auth.authed) return { error: auth.reason };
   const description = data.description;
   const imageUrl = await processBase64Image(data.imageBase64, data.imageName);
 
@@ -809,8 +814,8 @@ export async function addWonTicket(data: { description: string, imageBase64?: st
 }
 
 export async function editWonTicket(id: string, data: { description: string, imageBase64?: string, imageName?: string }) {
-  const isAuthed = await checkAdminAuth();
-  if (!isAuthed) return { error: "Unauthorized" };
+  const auth = await checkAdminAuthDetailed();
+  if (!auth.authed) return { error: auth.reason };
   const description = data.description;
   await prisma.ticket.update({ where: { id }, data: { bookingCode: description } });
   revalidatePath('/');
