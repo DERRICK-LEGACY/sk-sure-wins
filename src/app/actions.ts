@@ -429,7 +429,7 @@ export async function loginAdmin(password: string) {
 
     const cookieStore = await cookies();
     cookieStore.set(ADMIN_COOKIE, token, {
-      httpOnly: true, secure: IS_PRODUCTION, sameSite: "strict", maxAge: 24 * 60 * 60, path: "/"
+      httpOnly: true, secure: IS_PRODUCTION, sameSite: "lax", maxAge: 24 * 60 * 60, path: "/"
     });
     
     await logAudit('LOGIN', { status: 'SUCCESS' });
@@ -457,11 +457,31 @@ export async function logoutAdmin() {
 }
 
 export async function checkAdminAuth() {
-  const cookieStore = await cookies();
-  const session = cookieStore.get(ADMIN_COOKIE);
-  if (!session?.value) return false;
+  let sessionValue: string | undefined = undefined;
+  
   try {
-    const { payload } = await jwtVerify(session.value, JWT_SECRET);
+    const cookieStore = await cookies();
+    sessionValue = cookieStore.get(ADMIN_COOKIE)?.value;
+  } catch (e) {
+    console.error("cookies() failed:", e);
+  }
+
+  // Fallback for Next.js FormData parsing dropping cookies
+  if (!sessionValue) {
+    try {
+      const headersList = await headers();
+      const cookieHeader = headersList.get('cookie') || '';
+      const match = cookieHeader.match(new RegExp(`(?:^|;\\s*)${ADMIN_COOKIE}=([^;]*)`));
+      if (match) sessionValue = match[1];
+    } catch (e) {
+      console.error("headers() failed:", e);
+    }
+  }
+
+  if (!sessionValue) return false;
+
+  try {
+    const { payload } = await jwtVerify(sessionValue, JWT_SECRET);
     return payload.role === 'admin';
   } catch {
     return false;
@@ -479,7 +499,7 @@ export async function extendAdminSession() {
 
     const cookieStore = await cookies();
     cookieStore.set(ADMIN_COOKIE, token, {
-      httpOnly: true, secure: IS_PRODUCTION, sameSite: "strict", maxAge: 24 * 60 * 60, path: "/"
+      httpOnly: true, secure: IS_PRODUCTION, sameSite: "lax", maxAge: 24 * 60 * 60, path: "/"
     });
     return { success: true };
   }
