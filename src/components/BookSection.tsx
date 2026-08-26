@@ -48,8 +48,13 @@ export default function BookSection({ openModal }: { openModal: (name: string, p
           </p>
 
           <div className="flex flex-col w-full items-center md:items-start gap-4">
-            <div className="text-5xl font-black text-white">
-              35K <span className="text-xl text-gray-500 font-normal">UGX</span>
+            <div className="flex flex-row items-end gap-3">
+              <div className="text-5xl font-black text-white">
+                35K <span className="text-xl text-gray-500 font-normal">UGX</span>
+              </div>
+              <div className="text-2xl font-bold text-gray-500 line-through mb-1 opacity-70">
+                45K
+              </div>
             </div>
             
             <button 
