@@ -5,10 +5,10 @@ export async function GET() {
   try {
     await prisma.package.upsert({
       where: { name: 'Book: AMAZIMA AMAKUSIKE' },
-      update: {},
+      update: { price: 35000 },
       create: {
         name: 'Book: AMAZIMA AMAKUSIKE',
-        price: 50000,
+        price: 35000,
         durationDays: 36500,
         isActive: true
       }
