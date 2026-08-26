@@ -1,5 +1,7 @@
 "use client";
 
+"use client";
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { MessageCircle, CheckCircle, Send, BellRing, X } from "lucide-react";
@@ -7,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PaymentModal from "@/components/PaymentModal";
 import BookSection from "@/components/BookSection";
+import SocialSection from "@/components/SocialSection";
 import Navbar from "@/components/Navbar";
 import { submitTestimonial } from "@/app/actions";
 import { FreeHook, Ticket as WonTicket, Testimonial, Package } from '@prisma/client';
@@ -544,6 +547,9 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
           )}
         </motion.div>
       </motion.section>
+
+      {/* SOCIAL MEDIA SECTION */}
+      <SocialSection />
 
       {/* FOOTER */}
       <footer className="w-full py-16 border-t border-white/5 bg-[#0f0a14] mt-20 relative overflow-hidden z-50">
