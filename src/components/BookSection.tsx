@@ -29,11 +29,10 @@ export default function BookSection({ openModal }: { openModal: (name: string, p
             <li className="flex items-center gap-2">✓ Analyzing team stats like a pro</li>
           </ul>
         </div>
-        
         <div className="flex flex-col sm:flex-row items-center gap-6">
-          <div className="text-4xl font-black text-white">50K <span className="text-sm text-gray-500 font-normal">UGX</span></div>
+          <div className="text-4xl font-black text-white">35K <span className="text-sm text-gray-500 font-normal">UGX</span></div>
           <button 
-            onClick={() => openModal("Book: AMAZIMA AMAKUSIKE", "50,000")} 
+            onClick={() => openModal("Book: AMAZIMA AMAKUSIKE", "35,000")} 
             className="w-full sm:w-auto bg-primary hover:bg-[#d4af37] text-black font-extrabold py-4 px-10 rounded-xl transition-colors shadow-[0_5px_15px_rgba(234,179,8,0.3)] uppercase tracking-wider hover:scale-105"
           >
             Buy the Book
