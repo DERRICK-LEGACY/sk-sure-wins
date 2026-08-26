@@ -276,7 +276,7 @@ export async function getSpecialOffer() {
 }
 
 export async function updateSpecialOfferName(id: string, name: string) {
-  const isAuthed = await checkAdminAuth(adminToken);
+  const isAuthed = await checkAdminAuth();
   if (!isAuthed) throw new Error("Unauthorized");
   if (!name.trim()) throw new Error("Name cannot be empty");
 
@@ -496,7 +496,7 @@ export async function checkAdminAuth(adminToken?: string) {
 }
 
 export async function extendAdminSession() {
-  const isAuthed = await checkAdminAuth(adminToken);
+  const isAuthed = await checkAdminAuth();
   if (isAuthed) {
     const token = await new SignJWT({ role: 'admin' })
       .setProtectedHeader({ alg: 'HS256' })
@@ -514,7 +514,7 @@ export async function extendAdminSession() {
 }
 
 export async function updateAdminCredentials(newPassword: string) {
-  const isAuthed = await checkAdminAuth(adminToken);
+  const isAuthed = await checkAdminAuth();
   if (!isAuthed) return { error: "Unauthorized" };
   
   const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
@@ -542,7 +542,7 @@ export async function resetVipPin(phone: string, newPin: string) {
 // ========== ADMIN USERS & SUBSCRIPTIONS ==========
 
 export async function addClientWithSubscription(data: { phone: string; name: string; pkg: string; expiry_date: string; pin?: string }) {
-  const isAuthed = await checkAdminAuth(adminToken);
+  const isAuthed = await checkAdminAuth();
   if (!isAuthed) return { error: "Unauthorized" };
   
   const normalized = normalizePhone(data.phone);
@@ -877,7 +877,7 @@ export async function deleteTestimonial(id: string, adminToken?: string) {
 // ========== ADMIN FETCH QUERIES ==========
 
 export async function getClientsWithSubscriptions() {
-  const isAuthed = await checkAdminAuth(adminToken);
+  const isAuthed = await checkAdminAuth();
   if (!isAuthed) return [];
   
   return await prisma.user.findMany({
@@ -892,7 +892,7 @@ export async function getClientsWithSubscriptions() {
 }
 
 export async function getTickets() {
-  const isAuthed = await checkAdminAuth(adminToken);
+  const isAuthed = await checkAdminAuth();
   if (!isAuthed) return [];
   
   return await prisma.ticket.findMany({
@@ -907,7 +907,7 @@ export async function getTickets() {
 }
 
 export async function updateSubscriptionExpiry(id: string, expiresAt: string) {
-  const isAuthed = await checkAdminAuth(adminToken);
+  const isAuthed = await checkAdminAuth();
   if (!isAuthed) return { error: "Unauthorized" };
   
   await prisma.subscription.update({ 
