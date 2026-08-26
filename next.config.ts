@@ -8,6 +8,11 @@ const withPWA = withPWAInit({
 
 const nextConfig = {
   turbopack: {},
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb'
+    }
+  },
   typescript: { ignoreBuildErrors: true },
   images: {
     dangerouslyAllowSVG: true,
