@@ -66,6 +66,12 @@ export default function EnableNotificationsBanner({ userId }: { userId: string }
         }
         
         localStorage.setItem(`push_synced_${userId}`, 'true');
+      } else if (!isAutoSync) {
+        if (result === 'default') {
+          alert('Notification permission was dismissed or blocked by your device. If you are on an iPhone, you MUST tap "Share" and "Add to Home Screen" first before alerts can work!');
+        } else if (result === 'denied') {
+          alert('You have blocked notifications for this site in your browser settings.');
+        }
       }
     } catch (err: any) {
       console.error('Push registration failed:', err);
