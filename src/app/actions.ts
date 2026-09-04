@@ -607,18 +607,23 @@ export async function deleteClient(id: string, adminToken?: string) {
 }
 
 export async function completelyDeleteClient(id: string, adminToken?: string) {
-  const isAuthed = await checkAdminAuth(adminToken);
-  if (!isAuthed) return { error: "Unauthorized" };
-  
-  // Hard Delete: Delete user and associated data. Orders are set to null instead of deleted to keep transaction history if needed.
-  await prisma.order.updateMany({ where: { userId: id }, data: { userId: null } });
-  await prisma.subscription.deleteMany({ where: { userId: id } });
-  await prisma.user.delete({ where: { id } });
-  
-  await logAudit('DELETE_CLIENT', { userId: id });
-  revalidatePath('/admin');
-  revalidatePath('/vip-dashboard');
-  return { success: true };
+  try {
+    const isAuthed = await checkAdminAuth(adminToken);
+    if (!isAuthed) return { error: "Unauthorized" };
+    
+    // Hard Delete: Delete user and associated data. Orders are set to null instead of deleted to keep transaction history if needed.
+    await prisma.order.updateMany({ where: { userId: id }, data: { userId: null } });
+    await prisma.subscription.deleteMany({ where: { userId: id } });
+    await prisma.user.delete({ where: { id } });
+    
+    await logAudit('DELETE_CLIENT', { userId: id });
+    revalidatePath('/admin');
+    revalidatePath('/vip-dashboard');
+    return { success: true };
+  } catch (error: any) {
+    console.error("completelyDeleteClient ERROR:", error);
+    return { error: `Delete failed: ${error.message || String(error)}` };
+  }
 }
 
 // ========== ADMIN TICKETS (MOCK IMAGE UPLOAD FOR NOW) ==========
