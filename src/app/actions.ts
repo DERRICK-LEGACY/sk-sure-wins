@@ -747,14 +747,12 @@ export async function addTicket(data: any) {
       const title = `New VIP Ticket: ${pkg.name}`;
       const message = `A new ticket has been added with ${oddsTotal ? oddsTotal + ' odds' : 'new odds'}. Check your dashboard!`;
 
-      // Create in-app notifications
-      await prisma.notification.createMany({
-        data: userIds.map(userId => ({
-          userId,
-          title,
-          message
-        }))
-      });
+      // Create in-app notifications individually since Neon HTTP driver doesn't support transactions (used by createMany)
+      await Promise.all(userIds.map(userId => 
+        prisma.notification.create({
+          data: { userId, title, message }
+        })
+      ));
 
       // Send Push Notifications
       if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
