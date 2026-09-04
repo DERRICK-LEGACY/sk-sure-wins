@@ -15,6 +15,17 @@ export default function EnableNotificationsBanner() {
     setPermission(Notification.permission);
   }, []);
 
+  const urlBase64ToUint8Array = (base64String: string) => {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  };
+
   const handleEnablePush = async () => {
     setIsSubscribing(true);
     try {
@@ -30,9 +41,14 @@ export default function EnableNotificationsBanner() {
            swReg = await navigator.serviceWorker.ready;
         }
 
+        const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+        if (!vapidKey) throw new Error("VAPID Key is missing in environment variables.");
+
+        const convertedVapidKey = urlBase64ToUint8Array(vapidKey);
+
         const subscription = await swReg.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
+          applicationServerKey: convertedVapidKey
         });
 
         await fetch('/api/notifications/subscribe', {
@@ -41,8 +57,9 @@ export default function EnableNotificationsBanner() {
           body: JSON.stringify(subscription)
         });
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Push registration failed:', err);
+      alert('Push setup failed: ' + err.message);
     } finally {
       setIsSubscribing(false);
     }
