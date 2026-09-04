@@ -5,6 +5,7 @@ import { LogOut, Trophy, CheckCircle, Clock, AlertTriangle } from "lucide-react"
 import { logoutVip } from "@/app/actions";
 import Image from "next/image";
 import Link from "next/link";
+import NotificationBell from "./NotificationBell";
 
 type SubWithPackage = Subscription & { package: Package };
 type TicketWithPackage = Ticket & { audiences: { package: Package }[] };
@@ -74,9 +75,12 @@ export default function VipDashboardClient({
             <p className="text-[10px] text-[#25D366] uppercase tracking-widest font-bold">VIP MEMBER</p>
           </div>
         </div>
-        <button onClick={handleLogout} className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-bold text-sm bg-red-400/10 px-4 py-2 rounded-lg">
-          <LogOut size={16} /> Logout
-        </button>
+        <div className="flex items-center gap-4">
+          <NotificationBell />
+          <button onClick={handleLogout} className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-bold text-sm bg-red-400/10 px-4 py-2 rounded-lg">
+            <LogOut size={16} /> Logout
+          </button>
+        </div>
       </header>
 
       <main className="max-w-4xl mx-auto p-6 md:p-12">

@@ -10,6 +10,16 @@ import bcrypt from 'bcryptjs';
 import { sendTelegramNotification } from '@/lib/notifications';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
+import webPush from 'web-push';
+
+if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+  webPush.setVapidDetails(
+    'mailto:admin@sksurewins.com',
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+    process.env.VAPID_PRIVATE_KEY
+  );
+}
+
 const VIP_COOKIE = "sk_vip_session";
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'sk-sure-wins-super-secret-key-2026');
@@ -720,6 +730,64 @@ export async function addTicket(data: any) {
 
   if (pkg) {
     await sendTelegramNotification(`🚨 <b>New VIP Ticket Added!</b>\n\nPackage: ${pkg.name}\nOdds: ${oddsTotal || 'TBA'}\nCheck your dashboard now!`);
+
+    // Fetch active users for this package
+    const activeSubs = await prisma.subscription.findMany({
+      where: {
+        packageId: pkg.id,
+        status: 'ACTIVE',
+        expiresAt: { gt: new Date() }
+      },
+      select: { userId: true }
+    });
+
+    const userIds = Array.from(new Set(activeSubs.map(s => s.userId)));
+
+    if (userIds.length > 0) {
+      const title = `New VIP Ticket: ${pkg.name}`;
+      const message = `A new ticket has been added with ${oddsTotal ? oddsTotal + ' odds' : 'new odds'}. Check your dashboard!`;
+
+      // Create in-app notifications
+      await prisma.notification.createMany({
+        data: userIds.map(userId => ({
+          userId,
+          title,
+          message
+        }))
+      });
+
+      // Send Push Notifications
+      if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
+        const pushSubs = await prisma.pushSubscription.findMany({
+          where: { userId: { in: userIds } }
+        });
+
+        const payload = JSON.stringify({ title, body: message });
+
+        const pushPromises = pushSubs.map(async (sub) => {
+          try {
+            await webPush.sendNotification(
+              {
+                endpoint: sub.endpoint,
+                keys: { p256dh: sub.p256dh, auth: sub.auth }
+              },
+              payload
+            );
+          } catch (err: any) {
+             if (err.statusCode === 410 || err.statusCode === 404) {
+                // Subscription has expired or is no longer valid
+                await prisma.pushSubscription.delete({ where: { id: sub.id } });
+             } else {
+                console.error("Push notification failed for sub:", sub.id, err);
+             }
+          }
+        });
+
+        // Don't await all so we don't block the UI response too long, or await if preferred.
+        // For reliability, we await.
+        await Promise.allSettled(pushPromises);
+      }
+    }
   }
 
   revalidatePath('/admin');

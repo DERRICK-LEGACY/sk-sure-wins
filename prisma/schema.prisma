@@ -21,6 +21,8 @@ model User {
   updatedAt     DateTime       @updatedAt
   subscriptions Subscription[]
   orders        Order[]
+  pushSubscriptions PushSubscription[]
+  notifications Notification[]
 }
 
 model Package {
@@ -111,4 +113,24 @@ model Testimonial {
   rating    Int      @default(5)
   approved  Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+model PushSubscription {
+  id        String   @id @default(uuid())
+  userId    String
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
