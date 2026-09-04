@@ -116,7 +116,7 @@ export default function VipDashboardClient({
           </div>
         </div>
 
-        <EnableNotificationsBanner />
+        <EnableNotificationsBanner userId={user.id} />
 
         {/* TODAY'S TICKETS */}
         <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 border-b border-white/5 pb-4">

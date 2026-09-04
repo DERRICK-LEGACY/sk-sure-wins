@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { BellRing, CheckCircle2 } from 'lucide-react';
 
-export default function EnableNotificationsBanner() {
+export default function EnableNotificationsBanner({ userId }: { userId: string }) {
   const [permission, setPermission] = useState<NotificationPermission | 'loading'>('loading');
   const [isSubscribing, setIsSubscribing] = useState(false);
 
@@ -26,11 +26,14 @@ export default function EnableNotificationsBanner() {
     return outputArray;
   };
 
-  const handleEnablePush = async () => {
-    setIsSubscribing(true);
+  const handleEnablePush = async (isAutoSync = false) => {
+    if (!isAutoSync) setIsSubscribing(true);
     try {
-      const result = await Notification.requestPermission();
-      setPermission(result);
+      let result = permission;
+      if (!isAutoSync) {
+         result = await Notification.requestPermission();
+         setPermission(result);
+      }
 
       if (result === 'granted') {
         let swReg = await navigator.serviceWorker.getRegistration();
@@ -61,14 +64,26 @@ export default function EnableNotificationsBanner() {
            const errData = await res.json().catch(() => ({}));
            throw new Error(errData.error || `Server returned ${res.status}`);
         }
+        
+        localStorage.setItem(`push_synced_${userId}`, 'true');
       }
     } catch (err: any) {
       console.error('Push registration failed:', err);
-      alert('Push setup failed: ' + err.message);
+      if (!isAutoSync) alert('Push setup failed: ' + err.message);
     } finally {
       setIsSubscribing(false);
     }
   };
+
+  // Auto-sync if permission is already granted but we haven't synced for this user on this device
+  useEffect(() => {
+    if (permission === 'granted' && userId) {
+      const hasSynced = localStorage.getItem(`push_synced_${userId}`);
+      if (!hasSynced) {
+        handleEnablePush(true);
+      }
+    }
+  }, [permission, userId]);
 
   if (permission === 'granted' || permission === 'denied' || permission === 'loading') {
     return null;
