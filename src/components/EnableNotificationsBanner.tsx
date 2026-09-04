@@ -106,7 +106,7 @@ export default function EnableNotificationsBanner({ userId }: { userId: string }
       </div>
 
       <button 
-        onClick={handleEnablePush} 
+        onClick={() => handleEnablePush(false)} 
         disabled={isSubscribing}
         className="w-full md:w-auto shrink-0 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-[0_0_15px_rgba(59,130,246,0.4)] flex items-center justify-center gap-2"
       >
