@@ -51,11 +51,16 @@ export default function EnableNotificationsBanner() {
           applicationServerKey: convertedVapidKey
         });
 
-        await fetch('/api/notifications/subscribe', {
+        const res = await fetch('/api/notifications/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(subscription)
         });
+
+        if (!res.ok) {
+           const errData = await res.json().catch(() => ({}));
+           throw new Error(errData.error || `Server returned ${res.status}`);
+        }
       }
     } catch (err: any) {
       console.error('Push registration failed:', err);
