@@ -5,8 +5,7 @@ import { LogOut, Trophy, CheckCircle, Clock, AlertTriangle } from "lucide-react"
 import { logoutVip } from "@/app/actions";
 import Image from "next/image";
 import Link from "next/link";
-import NotificationBell from "./NotificationBell";
-
+import EnableNotificationsBanner from "./EnableNotificationsBanner";
 type SubWithPackage = Subscription & { package: Package };
 type TicketWithPackage = Ticket & { audiences: { package: Package }[] };
 
@@ -76,7 +75,6 @@ export default function VipDashboardClient({
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <NotificationBell />
           <button onClick={handleLogout} className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-bold text-sm bg-red-400/10 px-4 py-2 rounded-lg">
             <LogOut size={16} /> Logout
           </button>
@@ -117,6 +115,8 @@ export default function VipDashboardClient({
             ))}
           </div>
         </div>
+
+        <EnableNotificationsBanner />
 
         {/* TODAY'S TICKETS */}
         <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 border-b border-white/5 pb-4">
