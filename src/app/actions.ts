@@ -13,11 +13,15 @@ import path from 'path';
 import webPush from 'web-push';
 
 if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
-  webPush.setVapidDetails(
-    'mailto:admin@sksurewins.com',
-    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-    process.env.VAPID_PRIVATE_KEY
-  );
+  try {
+    webPush.setVapidDetails(
+      'mailto:admin@sksurewins.com',
+      process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY.trim(),
+      process.env.VAPID_PRIVATE_KEY.trim()
+    );
+  } catch (error) {
+    console.warn("Failed to set VAPID details:", error);
+  }
 }
 
 const VIP_COOKIE = "sk_vip_session";
