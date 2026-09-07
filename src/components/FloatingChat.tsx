@@ -212,15 +212,20 @@ export default function FloatingChat() {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-[60px] h-[60px] bg-[#12121a] hover:bg-[#1a1a24] text-[#d4af37] rounded-[24px] rounded-br-[6px] shadow-[0_0_20px_rgba(212,175,55,0.3)] flex items-center justify-center transition-all hover:scale-110 relative border-2 border-[#d4af37]"
+        className="h-[60px] px-3 sm:px-4 min-w-[60px] bg-[#12121a] hover:bg-[#1a1a24] text-[#d4af37] rounded-[24px] rounded-br-[6px] shadow-[0_0_20px_rgba(212,175,55,0.3)] flex items-center justify-center gap-2 transition-all hover:scale-105 relative border-2 border-[#d4af37] group"
       >
         {isOpen ? (
-          <X size={28} />
+          <X size={28} className="mx-2" />
         ) : (
-          <div className="relative flex items-center justify-center mt-1">
-            <MessageCircle size={32} className="stroke-[2]" />
-            <Headset size={20} className="absolute -top-2 stroke-[2.5]" />
-          </div>
+          <>
+            <div className="relative flex items-center justify-center mt-1">
+              <MessageCircle size={32} className="stroke-[2]" />
+              <Headset size={20} className="absolute -top-2 stroke-[2.5]" />
+            </div>
+            <span className="font-black text-[11px] sm:text-sm uppercase tracking-widest whitespace-nowrap pr-1">
+              Support
+            </span>
+          </>
         )}
         {!isOpen && unreadCount > 0 && (
           <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[11px] font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-[#09090b] shadow-lg animate-bounce">
