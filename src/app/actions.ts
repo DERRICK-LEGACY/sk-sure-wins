@@ -995,3 +995,113 @@ export async function updateSubscriptionExpiry(id: string, expiresAt: string, ad
   revalidatePath('/');
   return { success: true };
 }
+
+// ========== CHAT ACTIONS ==========
+
+export async function sendChatMessage(sessionId: string, content: string, adminToken?: string) {
+  try {
+    let isAdmin = false;
+    if (adminToken) {
+      const auth = await checkAdminAuthDetailed(adminToken);
+      isAdmin = auth.authed;
+    }
+    
+    const message = await prisma.chatMessage.create({
+      data: {
+        sessionId,
+        content: sanitizeText(content),
+        isAdmin
+      }
+    });
+    
+    return { success: true, message };
+  } catch (err: any) {
+    console.error("sendChatMessage error:", err);
+    return { success: false, error: err.message || "Failed to send message" };
+  }
+}
+
+export async function getChatMessages(sessionId: string) {
+  try {
+    return await prisma.chatMessage.findMany({
+      where: { sessionId },
+      orderBy: { createdAt: 'asc' }
+    });
+  } catch (err) {
+    console.error("getChatMessages error:", err);
+    return [];
+  }
+}
+
+export async function getAdminChatSessions(adminToken?: string) {
+  try {
+    const isAuthed = await checkAdminAuth(adminToken);
+    if (!isAuthed) return [];
+    
+    const latestMessages = await prisma.chatMessage.groupBy({
+      by: ['sessionId'],
+      _max: {
+        createdAt: true
+      }
+    });
+    
+    const sessions = await Promise.all(
+      latestMessages.map(async (m) => {
+        const latestMsg = await prisma.chatMessage.findFirst({
+          where: {
+            sessionId: m.sessionId,
+            createdAt: m._max.createdAt || undefined
+          },
+          orderBy: { createdAt: 'desc' }
+        });
+        
+        const unreadCount = await prisma.chatMessage.count({
+          where: {
+            sessionId: m.sessionId,
+            isAdmin: false,
+            isRead: false
+          }
+        });
+        
+        return {
+          sessionId: m.sessionId,
+          latestMessage: latestMsg,
+          unreadCount
+        };
+      })
+    );
+    
+    return sessions.sort((a, b) => {
+      const dateA = a.latestMessage?.createdAt?.getTime() || 0;
+      const dateB = b.latestMessage?.createdAt?.getTime() || 0;
+      return dateB - dateA;
+    });
+  } catch (err) {
+    console.error("getAdminChatSessions error:", err);
+    return [];
+  }
+}
+
+export async function markChatMessagesRead(sessionId: string, asAdmin: boolean, adminToken?: string) {
+  try {
+    if (asAdmin) {
+      const isAuthed = await checkAdminAuth(adminToken);
+      if (!isAuthed) return { success: false, error: "Unauthorized" };
+      
+      await prisma.chatMessage.updateMany({
+        where: { sessionId, isAdmin: false, isRead: false },
+        data: { isRead: true }
+      });
+    } else {
+      await prisma.chatMessage.updateMany({
+        where: { sessionId, isAdmin: true, isRead: false },
+        data: { isRead: true }
+      });
+    }
+    return { success: true };
+  } catch (err) {
+    console.error("markChatMessagesRead error:", err);
+    return { success: false };
+  }
+}
+

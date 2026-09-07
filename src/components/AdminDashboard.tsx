@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, MessageCircle } from "lucide-react";
+import AdminSupportChat from "@/components/AdminSupportChat";
 
 // --- Dialogs ---
 
@@ -369,6 +370,7 @@ export default function AdminDashboard({
           <p className="px-4 text-xs font-bold text-gray-600 uppercase tracking-widest mt-6 mb-2">Clients & Settings</p>
           {renderSidebarItem("users", Users, "VIP Subscribers")}
           {renderSidebarItem("testimonials", MessageSquare, "Reviews")}
+          {renderSidebarItem("support", MessageCircle, "Support Chat")}
           {renderSidebarItem("special-offer", Star, "Special Offer")}
           {renderSidebarItem("settings", Settings, "Settings")}
         </div>
@@ -784,6 +786,11 @@ export default function AdminDashboard({
                 <h3 className="text-xl font-bold mb-2">Section Accessible</h3>
                 <p className="text-gray-400">The code for settings section is preserved.</p>
               </motion.div>
+            )}
+
+            {/* SUPPORT CHAT */}
+            {activeTab === "support" && (
+              <AdminSupportChat adminToken={adminToken} />
             )}
 
             {/* SPECIAL OFFER */}

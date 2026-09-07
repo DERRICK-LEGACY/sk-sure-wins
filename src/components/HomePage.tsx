@@ -11,6 +11,7 @@ import PaymentModal from "@/components/PaymentModal";
 import BookSection from "@/components/BookSection";
 import SocialSection from "@/components/SocialSection";
 import Navbar from "@/components/Navbar";
+import FloatingChat from "@/components/FloatingChat";
 import { submitTestimonial } from "@/app/actions";
 import { FreeHook, Ticket as WonTicket, Testimonial, Package } from '@prisma/client';
 
@@ -599,11 +600,8 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
         </div>
       </footer>
 
-      {/* FLOATING WHATSAPP BUTTON */}
-      <a href="https://wa.me/256785478399?text=Hey%20Mr%20SK%20I'm%20from%20the%20website%20I%20want%20help%20from%20this." target="_blank" rel="noreferrer" className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white p-4 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.5)] hover:scale-110 transition-transform flex items-center justify-center group">
-        <WhatsAppIcon className="w-7 h-7 text-white" />
-        <span className="absolute right-16 bg-white text-black text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">Chat with VIP Support</span>
-      </a>
+      {/* FLOATING CHAT WIDGET */}
+      <FloatingChat />
 
       {/* LIVE PURCHASE TOAST (SOCIAL PROOF) */}
       <AnimatePresence>
