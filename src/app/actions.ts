@@ -1015,37 +1015,47 @@ export async function sendChatMessage(sessionId: string, content: string, adminT
     });
     
     // Simple Chatbot logic for guests
+    let botReply = "";
     if (!isAdmin) {
       const lowerContent = content.toLowerCase();
-      let botReply = "";
       
-      if (lowerContent.includes("pay") || lowerContent.includes("deposit") || lowerContent.includes("buy")) {
+      // Vocabulary expansion
+      if (lowerContent.match(/\b(pay|deposit|buy|purchase|how to pay|payment)\b/)) {
         botReply = "To make a payment, please go to the Home page and select a VIP package. You can easily pay via MTN Mobile Money or Airtel Money. Let us know if you face any issues!";
-      } else if (lowerContent.includes("hello") || lowerContent.includes("hi") || lowerContent.includes("hey")) {
+      } else if (lowerContent.match(/\b(hello|hi|hey|greetings|morning|afternoon|evening)\b/)) {
         botReply = "Hello! Welcome to SK Sure Wins support. How can we assist you today?";
-      } else if (lowerContent.includes("free") || lowerContent.includes("ticket")) {
+      } else if (lowerContent.match(/\b(free|ticket|games|odds)\b/)) {
         botReply = "You can find our free tickets on the Free Tickets page. For massive odds and guaranteed wins, check out our VIP packages!";
-      } else if (lowerContent.includes("how") && lowerContent.includes("work")) {
+      } else if (lowerContent.match(/\b(how|work|start|register|join|process)\b/)) {
         botReply = "It's simple! You buy a VIP package, and we give you access to our premium well-analyzed betting slips directly on your dashboard. Choose a package to get started!";
-      }
-
-      if (botReply) {
-        // slight delay for realism (simulated via awaiting a small timeout if we could, but server actions shouldn't hang too long)
-        await prisma.chatMessage.create({
-          data: {
-            sessionId,
-            content: botReply,
-            isAdmin: true,
-            isRead: false
-          }
-        });
+      } else if (lowerContent.match(/\b(scam|trust|sure|guarantee|real)\b/)) {
+        botReply = "We are a trusted sports analytics platform with many VIP subscribers. You can check our 'Won Tickets' section or 'Reviews' to see our track record of success!";
+      } else {
+        botReply = "Thank you for reaching out! Let me transfer this chat to an administrator to help you further. They will reply shortly.";
       }
     }
     
-    return { success: true, message };
+    return { success: true, message, botReply };
   } catch (err: any) {
     console.error("sendChatMessage error:", err);
     return { success: false, error: err.message || "Failed to send message" };
+  }
+}
+
+export async function saveBotMessage(sessionId: string, content: string) {
+  try {
+    const message = await prisma.chatMessage.create({
+      data: {
+        sessionId,
+        content: sanitizeText(content),
+        isAdmin: true,
+        isRead: false
+      }
+    });
+    return { success: true, message };
+  } catch (err) {
+    console.error("saveBotMessage error:", err);
+    return { success: false };
   }
 }
 

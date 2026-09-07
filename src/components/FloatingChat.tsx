@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X, Send, ShieldCheck, Headset } from "lucide-react";
-import { sendChatMessage, getChatMessages, markChatMessagesRead } from "@/app/actions";
+import { sendChatMessage, getChatMessages, markChatMessagesRead, saveBotMessage } from "@/app/actions";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function FloatingChat() {
@@ -12,6 +12,7 @@ export default function FloatingChat() {
   const [inputValue, setInputValue] = useState("");
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const pollInterval = useRef<NodeJS.Timeout | null>(null);
 
@@ -93,16 +94,34 @@ export default function FloatingChat() {
     // Add to local state immediately
     setPendingMessages(prev => [...prev, newMsg]);
 
-    const res = await sendChatMessage(sessionId, content);
-    if (!res.success) {
-      console.error(res.error);
+    const result = await sendChatMessage(sessionId, content);
+    if (!result.success) {
+      console.error(result.error);
       setPendingMessages(prev => prev.map(m => m.id === newMsg.id ? { ...m, status: "error" } : m));
-    } else {
-      // Success: it will be fetched from server on next fetchMessages
-      setPendingMessages(prev => prev.filter(m => m.id !== newMsg.id));
-      fetchMessages();
+      setIsSending(false);
+      return;
     }
+    
+    // Success: it will be fetched from server on next fetchMessages
+    setPendingMessages(prev => prev.filter(m => m.id !== newMsg.id));
+    fetchMessages();
     setIsSending(false);
+
+    if (result.botReply) {
+      setIsTyping(true);
+      setTimeout(async () => {
+        const botMessage = {
+          id: Date.now().toString() + "_bot",
+          content: result.botReply,
+          isAdmin: true,
+          createdAt: new Date(),
+          status: "sent"
+        };
+        setMessages(prev => [...prev, botMessage]);
+        setIsTyping(false);
+        await saveBotMessage(sessionId, result.botReply);
+      }, 1500 + Math.random() * 1000); // 1.5 - 2.5s simulated typing delay
+    }
   };
 
   const allMessages = [...messages, ...pendingMessages].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
@@ -156,6 +175,17 @@ export default function FloatingChat() {
                   </div>
                 </div>
               ))}
+              
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="bg-[#2a2a35] text-white p-3 rounded-2xl rounded-bl-sm max-w-[80%] border border-white/10 flex gap-1 items-center">
+                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                  </div>
+                </div>
+              )}
+              
               <div ref={messagesEndRef} />
             </div>
 
@@ -182,23 +212,18 @@ export default function FloatingChat() {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="h-14 px-2 min-w-[56px] sm:px-6 bg-gradient-to-r from-[#d4af37] via-[#f3d97f] to-[#b5952f] hover:from-[#ffffff] hover:to-[#d4af37] text-black rounded-full shadow-[0_0_30px_rgba(212,175,55,0.5)] flex items-center justify-center gap-3 transition-all hover:scale-105 relative border border-white/20 group"
+        className="w-[60px] h-[60px] bg-[#25D366] hover:bg-[#128C7E] text-white rounded-[24px] rounded-br-[6px] shadow-[0_0_20px_rgba(37,211,102,0.4)] flex items-center justify-center transition-all hover:scale-110 relative border-2 border-white/20"
       >
         {isOpen ? (
-          <X size={24} className="mx-2" />
+          <X size={28} />
         ) : (
-          <>
-            <div className="relative flex items-center justify-center">
-              <Headset size={26} className="stroke-[2.5]" />
-              <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-[#d4af37] rounded-full"></div>
-            </div>
-            <span className="hidden sm:block font-black text-sm uppercase tracking-widest whitespace-nowrap pr-2">
-              Support
-            </span>
-          </>
+          <div className="relative flex items-center justify-center">
+            <MessageCircle size={32} className="fill-transparent stroke-[2]" />
+            <Headset size={16} className="absolute stroke-[2.5]" />
+          </div>
         )}
         {!isOpen && unreadCount > 0 && (
-          <span className="absolute -top-2 -right-1 sm:-right-2 bg-red-600 text-white text-[11px] font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-[#09090b] shadow-lg animate-bounce">
+          <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[11px] font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-[#09090b] shadow-lg animate-bounce">
             {unreadCount}
           </span>
         )}
