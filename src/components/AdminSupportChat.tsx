@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Send, User, MessageCircle } from "lucide-react";
-import { getAdminChatSessions, getChatMessages, sendChatMessage, markChatMessagesRead } from "@/app/actions";
+import { Send, User, MessageCircle, Paperclip, Smile, X } from "lucide-react";
+import { getAdminChatSessions, getChatMessages, sendChatMessage, markChatMessagesRead, uploadChatAttachment } from "@/app/actions";
 import { motion } from "framer-motion";
+import dynamic from 'next/dynamic';
+
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
 export default function AdminSupportChat({ adminToken }: { adminToken?: string }) {
   const [sessions, setSessions] = useState<any[]>([]);
@@ -11,6 +14,9 @@ export default function AdminSupportChat({ adminToken }: { adminToken?: string }
   const [messages, setMessages] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [attachment, setAttachment] = useState<File | null>(null);
+  const [showEmoji, setShowEmoji] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const pollInterval = useRef<NodeJS.Timeout | null>(null);
 
@@ -55,13 +61,32 @@ export default function AdminSupportChat({ adminToken }: { adminToken?: string }
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputValue.trim() || !selectedSessionId || isSending) return;
+  const handleSend = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if ((!inputValue.trim() && !attachment) || !selectedSessionId || isSending) return;
 
     const content = inputValue;
     setInputValue("");
     setIsSending(true);
+    setShowEmoji(false);
+
+    let uploadedImageUrl = undefined;
+    let uploadedAttachmentName = undefined;
+
+    if (attachment) {
+      const formData = new FormData();
+      formData.append('file', attachment);
+      const uploadRes = await uploadChatAttachment(formData);
+      if (uploadRes.success) {
+        if (attachment.type.startsWith('image/')) {
+          uploadedImageUrl = uploadRes.url;
+        } else {
+          uploadedImageUrl = uploadRes.url;
+          uploadedAttachmentName = attachment.name;
+        }
+      }
+      setAttachment(null);
+    }
 
     const newMsg = {
       id: Date.now().toString(),
@@ -69,11 +94,13 @@ export default function AdminSupportChat({ adminToken }: { adminToken?: string }
       content,
       isAdmin: true,
       isRead: false,
-      createdAt: new Date()
+      createdAt: new Date(),
+      imageUrl: uploadedImageUrl,
+      attachmentName: uploadedAttachmentName
     };
     setMessages(prev => [...prev, newMsg]);
 
-    await sendChatMessage(selectedSessionId, content, adminToken);
+    await sendChatMessage(selectedSessionId, content, adminToken, uploadedImageUrl, uploadedAttachmentName);
     await fetchMessages(selectedSessionId);
     setIsSending(false);
   };
@@ -135,6 +162,14 @@ export default function AdminSupportChat({ adminToken }: { adminToken?: string }
               {messages.map(msg => (
                 <div key={msg.id} className={`flex ${msg.isAdmin ? "justify-end" : "justify-start"}`}>
                   <div className={`max-w-[70%] rounded-2xl px-5 py-3 ${msg.isAdmin ? "bg-[#d4af37] text-black rounded-tr-none font-medium" : "bg-white/10 text-white rounded-tl-none"}`}>
+                    {msg.imageUrl && !msg.attachmentName && (
+                      <img src={msg.imageUrl} alt="attachment" className="mb-2 rounded-lg max-w-full h-auto object-cover max-h-[250px]" />
+                    )}
+                    {msg.imageUrl && msg.attachmentName && (
+                      <a href={msg.imageUrl} target="_blank" rel="noreferrer" className="text-blue-500 underline mb-2 block break-all text-xs font-bold">
+                        📎 {msg.attachmentName}
+                      </a>
+                    )}
                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                     <span className={`text-[10px] mt-2 block ${msg.isAdmin ? "text-black/60 text-right" : "text-gray-500"}`}>
                       {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -145,22 +180,59 @@ export default function AdminSupportChat({ adminToken }: { adminToken?: string }
               <div ref={messagesEndRef} />
             </div>
 
-            <form onSubmit={handleSend} className="p-4 border-t border-white/5 bg-[#0d0d12] flex gap-3">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Type your reply..."
-                className="flex-1 bg-[#15151a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#d4af37] transition-colors"
-              />
-              <button
-                type="submit"
-                disabled={!inputValue.trim() || isSending}
-                className="bg-[#d4af37] text-black px-6 rounded-xl flex items-center justify-center disabled:opacity-50 hover:bg-[#b5952f] transition-colors shrink-0 font-bold gap-2"
-              >
-                <Send size={16} /> Send
-              </button>
-            </form>
+            <div className="relative">
+              {showEmoji && (
+                <div className="absolute bottom-full right-0 mb-4 z-50 shadow-2xl">
+                  <EmojiPicker onEmojiClick={(e) => setInputValue(prev => prev + e.emoji)} theme="dark" width={320} height={400} />
+                </div>
+              )}
+              {attachment && (
+                <div className="absolute bottom-full left-0 mb-4 bg-[#1a1a24] p-3 rounded-lg border border-white/10 flex items-center justify-between gap-3 max-w-[250px]">
+                  <span className="text-xs text-white truncate">{attachment.name}</span>
+                  <button onClick={() => setAttachment(null)} className="text-red-500 hover:text-red-400"><X size={16} /></button>
+                </div>
+              )}
+              <form onSubmit={handleSend} className="p-4 border-t border-white/5 bg-[#0d0d12] flex gap-3 items-center">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <Paperclip size={24} />
+                </button>
+                <input
+                  type="file"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setAttachment(e.target.files[0]);
+                    }
+                  }}
+                />
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Type your reply..."
+                  className="flex-1 bg-[#15151a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#d4af37] transition-colors"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowEmoji(!showEmoji)}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <Smile size={24} />
+                </button>
+                <button
+                  type="submit"
+                  disabled={(!inputValue.trim() && !attachment) || isSending}
+                  className="bg-[#d4af37] text-black px-6 py-3 rounded-xl flex items-center justify-center disabled:opacity-50 hover:bg-[#b5952f] transition-colors shrink-0 font-bold gap-2 ml-2"
+                >
+                  <Send size={16} /> Send
+                </button>
+              </form>
+            </div>
           </>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-gray-500 gap-3 opacity-50">

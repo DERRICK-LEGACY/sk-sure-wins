@@ -998,7 +998,24 @@ export async function updateSubscriptionExpiry(id: string, expiresAt: string, ad
 
 // ========== CHAT ACTIONS ==========
 
-export async function sendChatMessage(sessionId: string, content: string, adminToken?: string) {
+export async function uploadChatAttachment(formData: FormData) {
+  try {
+    const file = formData.get('file') as File | null;
+    if (!file) return { success: false, error: 'No file provided' };
+
+    const blobToken = process.env.BLOB_READ_WRITE_TOKEN || "vercel_blob_rw_Aj39zR6a84Y4HNke_kIshsnfokuxjNGhGY4Qiw4vudyPjgY";
+    const { put } = await import('@vercel/blob');
+    
+    const blob = await put(`chat/${Date.now()}-${file.name}`, file, { access: 'public', token: blobToken });
+    
+    return { success: true, url: blob.url };
+  } catch (err: any) {
+    console.error("uploadChatAttachment error:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function sendChatMessage(sessionId: string, content: string, adminToken?: string, imageUrl?: string, attachmentName?: string) {
   try {
     let isAdmin = false;
     if (adminToken) {
@@ -1010,6 +1027,8 @@ export async function sendChatMessage(sessionId: string, content: string, adminT
       data: {
         sessionId,
         content: sanitizeText(content),
+        imageUrl: imageUrl || null,
+        attachmentName: attachmentName || null,
         isAdmin
       }
     });

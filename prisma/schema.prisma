@@ -138,10 +138,12 @@ model Notification {
 model ChatMessage {
   id        String   @id @default(uuid())
   sessionId String
-  content   String
-  isAdmin   Boolean  @default(false)
-  isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
+  content         String
+  imageUrl        String?
+  attachmentName  String?
+  isAdmin         Boolean  @default(false)
+  isRead          Boolean  @default(false)
+  createdAt       DateTime @default(now())
 
   @@index([sessionId, createdAt])
 }

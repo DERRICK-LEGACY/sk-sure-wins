@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { MessageCircle, X, Send, ShieldCheck, Headset } from "lucide-react";
-import { sendChatMessage, getChatMessages, markChatMessagesRead, saveBotMessage } from "@/app/actions";
+import { MessageCircle, X, Send, ShieldCheck, Headset, Paperclip, Smile } from "lucide-react";
+import { sendChatMessage, getChatMessages, markChatMessagesRead, saveBotMessage, uploadChatAttachment } from "@/app/actions";
 import { motion, AnimatePresence } from "framer-motion";
+import dynamic from 'next/dynamic';
+
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
 export default function FloatingChat() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +16,9 @@ export default function FloatingChat() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [attachment, setAttachment] = useState<File | null>(null);
+  const [showEmoji, setShowEmoji] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const pollInterval = useRef<NodeJS.Timeout | null>(null);
 
@@ -72,13 +78,32 @@ export default function FloatingChat() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputValue.trim() || !sessionId || isSending) return;
+  const handleSend = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if ((!inputValue.trim() && !attachment) || !sessionId || isSending) return;
 
     const content = inputValue;
     setInputValue("");
     setIsSending(true);
+    setShowEmoji(false);
+
+    let uploadedImageUrl = undefined;
+    let uploadedAttachmentName = undefined;
+
+    if (attachment) {
+      const formData = new FormData();
+      formData.append('file', attachment);
+      const uploadRes = await uploadChatAttachment(formData);
+      if (uploadRes.success) {
+        if (attachment.type.startsWith('image/')) {
+          uploadedImageUrl = uploadRes.url;
+        } else {
+          uploadedImageUrl = uploadRes.url;
+          uploadedAttachmentName = attachment.name;
+        }
+      }
+      setAttachment(null);
+    }
 
     // Optimistic update
     const newMsg = {
@@ -88,13 +113,15 @@ export default function FloatingChat() {
       isAdmin: false,
       isRead: false,
       createdAt: new Date(),
-      status: "sending"
+      status: "sending",
+      imageUrl: uploadedImageUrl,
+      attachmentName: uploadedAttachmentName
     };
     
     // Add to local state immediately
     setPendingMessages(prev => [...prev, newMsg]);
 
-    const result = await sendChatMessage(sessionId, content);
+    const result = await sendChatMessage(sessionId, content, undefined, uploadedImageUrl, uploadedAttachmentName);
     if (!result.success) {
       console.error(result.error);
       setPendingMessages(prev => prev.map(m => m.id === newMsg.id ? { ...m, status: "error" } : m));
@@ -166,6 +193,14 @@ export default function FloatingChat() {
               {allMessages.map((msg) => (
                 <div key={msg.id} className={`flex ${msg.isAdmin ? "justify-start" : "justify-end"}`}>
                   <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.isAdmin ? "bg-white/10 text-white rounded-tl-none border border-white/5" : "bg-gradient-to-br from-[#d4af37] to-[#b5952f] text-black rounded-tr-none font-medium shadow-md"}`}>
+                    {msg.imageUrl && !msg.attachmentName && (
+                      <img src={msg.imageUrl} alt="attachment" className="mt-2 mb-2 rounded-lg max-w-full h-auto object-cover max-h-[150px]" />
+                    )}
+                    {msg.imageUrl && msg.attachmentName && (
+                      <a href={msg.imageUrl} target="_blank" rel="noreferrer" className="text-blue-900 underline mb-2 block break-all text-xs font-bold">
+                        📎 {msg.attachmentName}
+                      </a>
+                    )}
                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                     <span className={`text-[9px] mt-1 block flex justify-end gap-1 items-center ${msg.isAdmin ? "text-gray-400 justify-start" : "text-black/60"}`}>
                       {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -190,22 +225,62 @@ export default function FloatingChat() {
             </div>
 
             {/* Input */}
-            <form onSubmit={handleSend} className="p-3 border-t border-white/5 bg-[#12121a] flex gap-2">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-1 bg-[#09090b] border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-[#d4af37]"
-              />
-              <button
-                type="submit"
-                disabled={!inputValue.trim() || isSending}
-                className="bg-[#d4af37] text-black w-10 h-10 rounded-xl flex items-center justify-center disabled:opacity-50 hover:bg-[#b5952f] transition-colors shrink-0"
-              >
-                <Send size={16} className={isSending ? "opacity-50" : ""} />
-              </button>
-            </form>
+            <div className="relative">
+              {showEmoji && (
+                <div className="absolute bottom-full right-0 mb-2 z-50 shadow-2xl">
+                  <EmojiPicker onEmojiClick={(e) => setInputValue(prev => prev + e.emoji)} theme="dark" width={300} height={350} />
+                </div>
+              )}
+              {attachment && (
+                <div className="absolute bottom-full left-0 mb-2 bg-[#1a1a24] p-2 rounded-lg border border-white/10 flex items-center justify-between gap-2 max-w-[200px]">
+                  <span className="text-xs text-white truncate">{attachment.name}</span>
+                  <button onClick={() => setAttachment(null)} className="text-red-500 hover:text-red-400"><X size={14} /></button>
+                </div>
+              )}
+              <form onSubmit={handleSend} className="p-3 border-t border-white/5 bg-[#12121a] flex gap-2 items-center">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <Paperclip size={20} />
+                </button>
+                <input
+                  type="file"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setAttachment(e.target.files[0]);
+                    }
+                  }}
+                />
+                
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Type a message..."
+                  className="flex-1 bg-[#09090b] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#d4af37]"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowEmoji(!showEmoji)}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <Smile size={20} />
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={(!inputValue.trim() && !attachment) || isSending}
+                  className="bg-[#d4af37] text-black w-9 h-9 rounded-xl flex items-center justify-center disabled:opacity-50 hover:bg-[#b5952f] transition-colors shrink-0 ml-1"
+                >
+                  <Send size={16} className={isSending ? "opacity-50" : ""} />
+                </button>
+              </form>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
