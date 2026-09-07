@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function FloatingChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<any[]>([]);
+  const [pendingMessages, setPendingMessages] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
@@ -27,6 +28,7 @@ export default function FloatingChat() {
   const fetchMessages = async () => {
     if (!sessionId) return;
     const msgs = await getChatMessages(sessionId);
+    // Combine server messages with any pending/failed optimistic ones
     setMessages(msgs);
     
     // Mark messages as read if chat is open
@@ -84,18 +86,26 @@ export default function FloatingChat() {
       content,
       isAdmin: false,
       isRead: false,
-      createdAt: new Date()
+      createdAt: new Date(),
+      status: "sending"
     };
-    setMessages(prev => [...prev, newMsg]);
+    
+    // Add to local state immediately
+    setPendingMessages(prev => [...prev, newMsg]);
 
     const res = await sendChatMessage(sessionId, content);
     if (!res.success) {
       console.error(res.error);
+      setPendingMessages(prev => prev.map(m => m.id === newMsg.id ? { ...m, status: "error" } : m));
     } else {
+      // Success: it will be fetched from server on next fetchMessages
+      setPendingMessages(prev => prev.filter(m => m.id !== newMsg.id));
       fetchMessages();
     }
     setIsSending(false);
   };
+
+  const allMessages = [...messages, ...pendingMessages].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
 
   const unreadCount = messages.filter(m => m.isAdmin && !m.isRead).length;
 
@@ -134,12 +144,14 @@ export default function FloatingChat() {
                   <p className="text-sm font-bold">Ask us anything!</p>
                 </div>
               )}
-              {messages.map((msg) => (
+              {allMessages.map((msg) => (
                 <div key={msg.id} className={`flex ${msg.isAdmin ? "justify-start" : "justify-end"}`}>
                   <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.isAdmin ? "bg-white/10 text-white rounded-tl-none border border-white/5" : "bg-gradient-to-br from-[#d4af37] to-[#b5952f] text-black rounded-tr-none font-medium shadow-md"}`}>
                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                    <span className={`text-[9px] mt-1 block ${msg.isAdmin ? "text-gray-400" : "text-black/60 text-right"}`}>
+                    <span className={`text-[9px] mt-1 block flex justify-end gap-1 items-center ${msg.isAdmin ? "text-gray-400 justify-start" : "text-black/60"}`}>
                       {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {!msg.isAdmin && msg.status === "sending" && <span className="opacity-70 text-[9px]">(Sending...)</span>}
+                      {!msg.isAdmin && msg.status === "error" && <span className="text-red-800 font-bold text-[9px]">(Failed)</span>}
                     </span>
                   </div>
                 </div>

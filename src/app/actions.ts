@@ -1014,6 +1014,34 @@ export async function sendChatMessage(sessionId: string, content: string, adminT
       }
     });
     
+    // Simple Chatbot logic for guests
+    if (!isAdmin) {
+      const lowerContent = content.toLowerCase();
+      let botReply = "";
+      
+      if (lowerContent.includes("pay") || lowerContent.includes("deposit") || lowerContent.includes("buy")) {
+        botReply = "To make a payment, please go to the Home page and select a VIP package. You can easily pay via MTN Mobile Money or Airtel Money. Let us know if you face any issues!";
+      } else if (lowerContent.includes("hello") || lowerContent.includes("hi") || lowerContent.includes("hey")) {
+        botReply = "Hello! Welcome to SK Sure Wins support. How can we assist you today?";
+      } else if (lowerContent.includes("free") || lowerContent.includes("ticket")) {
+        botReply = "You can find our free tickets on the Free Tickets page. For massive odds and guaranteed wins, check out our VIP packages!";
+      } else if (lowerContent.includes("how") && lowerContent.includes("work")) {
+        botReply = "It's simple! You buy a VIP package, and we give you access to our premium well-analyzed betting slips directly on your dashboard. Choose a package to get started!";
+      }
+
+      if (botReply) {
+        // slight delay for realism (simulated via awaiting a small timeout if we could, but server actions shouldn't hang too long)
+        await prisma.chatMessage.create({
+          data: {
+            sessionId,
+            content: botReply,
+            isAdmin: true,
+            isRead: false
+          }
+        });
+      }
+    }
+    
     return { success: true, message };
   } catch (err: any) {
     console.error("sendChatMessage error:", err);
