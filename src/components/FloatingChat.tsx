@@ -212,14 +212,14 @@ export default function FloatingChat() {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-[60px] h-[60px] bg-[#25D366] hover:bg-[#128C7E] text-white rounded-[24px] rounded-br-[6px] shadow-[0_0_20px_rgba(37,211,102,0.4)] flex items-center justify-center transition-all hover:scale-110 relative border-2 border-white/20"
+        className="w-[60px] h-[60px] bg-[#12121a] hover:bg-[#1a1a24] text-[#d4af37] rounded-[24px] rounded-br-[6px] shadow-[0_0_20px_rgba(212,175,55,0.3)] flex items-center justify-center transition-all hover:scale-110 relative border-2 border-[#d4af37]"
       >
         {isOpen ? (
           <X size={28} />
         ) : (
-          <div className="relative flex items-center justify-center">
-            <MessageCircle size={32} className="fill-transparent stroke-[2]" />
-            <Headset size={16} className="absolute stroke-[2.5]" />
+          <div className="relative flex items-center justify-center mt-1">
+            <MessageCircle size={32} className="stroke-[2]" />
+            <Headset size={20} className="absolute -top-2 stroke-[2.5]" />
           </div>
         )}
         {!isOpen && unreadCount > 0 && (
