@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { MessageCircle, X, Send, ShieldCheck } from "lucide-react";
+import { MessageCircle, X, Send, ShieldCheck, Headset } from "lucide-react";
 import { sendChatMessage, getChatMessages, markChatMessagesRead } from "@/app/actions";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -182,11 +182,23 @@ export default function FloatingChat() {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-gradient-to-br from-[#d4af37] to-[#b5952f] hover:from-[#ffffff] hover:to-[#d4af37] text-black rounded-full shadow-[0_0_30px_rgba(212,175,55,0.4)] flex items-center justify-center transition-all hover:scale-110 relative"
+        className="h-14 px-2 min-w-[56px] sm:px-6 bg-gradient-to-r from-[#d4af37] via-[#f3d97f] to-[#b5952f] hover:from-[#ffffff] hover:to-[#d4af37] text-black rounded-full shadow-[0_0_30px_rgba(212,175,55,0.5)] flex items-center justify-center gap-3 transition-all hover:scale-105 relative border border-white/20 group"
       >
-        {isOpen ? <X size={24} /> : <MessageCircle size={28} className="fill-transparent stroke-[2]" />}
+        {isOpen ? (
+          <X size={24} className="mx-2" />
+        ) : (
+          <>
+            <div className="relative flex items-center justify-center">
+              <Headset size={26} className="stroke-[2.5]" />
+              <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-[#d4af37] rounded-full"></div>
+            </div>
+            <span className="hidden sm:block font-black text-sm uppercase tracking-widest whitespace-nowrap pr-2">
+              Support
+            </span>
+          </>
+        )}
         {!isOpen && unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-[#09090b] animate-bounce">
+          <span className="absolute -top-2 -right-1 sm:-right-2 bg-red-600 text-white text-[11px] font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-[#09090b] shadow-lg animate-bounce">
             {unreadCount}
           </span>
         )}
