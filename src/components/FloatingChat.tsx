@@ -50,7 +50,7 @@ export default function FloatingChat() {
   useEffect(() => {
     if (isOpen) {
       fetchMessages();
-      pollInterval.current = setInterval(fetchMessages, 3000);
+      pollInterval.current = setInterval(fetchMessages, 10000);
       setTimeout(scrollToBottom, 100);
     } else {
       if (pollInterval.current) clearInterval(pollInterval.current);
@@ -60,15 +60,12 @@ export default function FloatingChat() {
     };
   }, [isOpen, sessionId]);
 
-  // Initial fetch for unread count even when closed
+  // Initial fetch for unread count ONLY when session is loaded (NO POLLING IN BACKGROUND)
   useEffect(() => {
-    if (!isOpen && sessionId) {
+    if (sessionId) {
       fetchMessages();
-      // Poll less frequently when closed
-      const bgPoll = setInterval(fetchMessages, 10000);
-      return () => clearInterval(bgPoll);
     }
-  }, [isOpen, sessionId]);
+  }, [sessionId]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

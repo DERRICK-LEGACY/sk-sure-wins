@@ -43,7 +43,7 @@ export default function AdminSupportChat({ adminToken }: { adminToken?: string }
       if (selectedSessionId) {
         fetchMessages(selectedSessionId);
       }
-    }, 5000);
+    }, 10000);
     pollInterval.current = interval;
     
     return () => clearInterval(interval);
