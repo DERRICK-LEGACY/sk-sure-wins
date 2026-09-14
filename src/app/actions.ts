@@ -846,6 +846,17 @@ export async function deleteTicket(id: string, adminToken?: string) {
   return { success: true };
 }
 
+export async function bulkDeleteTickets(ids: string[], adminToken?: string) {
+  const isAuthed = await checkAdminAuth(adminToken);
+  if (!isAuthed) return { error: "Unauthorized" };
+  
+  await prisma.ticket.updateMany({ where: { id: { in: ids } }, data: { status: 'VOID' } });
+  await logAudit('BULK_VOID_TICKETS', { count: ids.length });
+  revalidatePath('/admin');
+  revalidatePath('/vip-dashboard');
+  return { success: true };
+}
+
 // ========== PUBLIC CONTENT CRUD ==========
 
 export async function updateFreeHook(data: { description: string, imageBase64?: string, imageName?: string, adminToken?: string }) {
@@ -892,6 +903,15 @@ export async function deleteFreeHook(id: string, adminToken?: string) {
   return { success: true };
 }
 
+export async function bulkDeleteFreeHooks(ids: string[], adminToken?: string) {
+  const isAuthed = await checkAdminAuth(adminToken);
+  if (!isAuthed) return { error: "Unauthorized" };
+  await prisma.freeHook.deleteMany({ where: { id: { in: ids } } });
+  revalidatePath('/');
+  revalidatePath('/free-tickets');
+  return { success: true };
+}
+
 export async function addWonTicket(data: { description: string, imageBase64?: string, imageName?: string, adminToken?: string }) {
   try {
     const auth = await checkAdminAuthDetailed(data.adminToken);
@@ -930,6 +950,15 @@ export async function deleteWonTicket(id: string, adminToken?: string) {
   const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   await prisma.ticket.update({ where: { id }, data: { status: 'VOID' } });
+  revalidatePath('/');
+  revalidatePath('/won-tickets');
+  return { success: true };
+}
+
+export async function bulkDeleteWonTickets(ids: string[], adminToken?: string) {
+  const isAuthed = await checkAdminAuth(adminToken);
+  if (!isAuthed) return { error: "Unauthorized" };
+  await prisma.ticket.updateMany({ where: { id: { in: ids } }, data: { status: 'VOID' } });
   revalidatePath('/');
   revalidatePath('/won-tickets');
   return { success: true };

@@ -7,7 +7,8 @@ import {
   updateFreeHook, addWonTicket, deleteWonTicket, addClientWithSubscription, deleteClient, completelyDeleteClient,
   editFreeHook, editWonTicket, deleteFreeHook, addTicket, 
   editTicket, deleteTicket, logoutAdmin, approveTestimonial, 
-  deleteTestimonial, extendAdminSession, updateSubscriptionExpiry, updateSpecialOfferName
+  deleteTestimonial, extendAdminSession, updateSubscriptionExpiry, updateSpecialOfferName,
+  bulkDeleteTickets, bulkDeleteFreeHooks, bulkDeleteWonTickets
 } from "@/app/actions";
 import { 
   Search, UserX, Edit2, Trash2, X, Plus, 
@@ -77,6 +78,15 @@ export default function AdminDashboard({
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const [selectedPremium, setSelectedPremium] = useState<string[]>([]);
+  const [selectedFree, setSelectedFree] = useState<string[]>([]);
+  const [selectedWon, setSelectedWon] = useState<string[]>([]);
+
+  const toggleSelection = (id: string, selectedList: string[], setSelectedList: React.Dispatch<React.SetStateAction<string[]>>) => {
+    setSelectedList(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
+
   const router = useRouter();
 
   // Activity tracking for keep-alive
@@ -603,9 +613,28 @@ export default function AdminDashboard({
                   </form>
                 </div>
 
+                <div className="flex justify-between items-center mb-6">
+                  <button type="button" onClick={() => {
+                      if (selectedPremium.length === premiumTickets.length && premiumTickets.length > 0) setSelectedPremium([]);
+                      else setSelectedPremium(premiumTickets.map(t => t.id));
+                    }} className="text-sm text-gray-400 hover:text-white font-bold flex items-center gap-2">
+                      <div className={`w-4 h-4 rounded border ${selectedPremium.length === premiumTickets.length && premiumTickets.length > 0 ? 'bg-[#d4af37] border-[#d4af37]' : 'border-gray-500'} flex items-center justify-center`}>
+                        {selectedPremium.length === premiumTickets.length && premiumTickets.length > 0 && <span className="text-black text-xs leading-none">✓</span>}
+                      </div>
+                      Select All
+                  </button>
+
+                  {selectedPremium.length > 0 && (
+                    <button type="button" onClick={() => confirmAndDelete(`Delete ${selectedPremium.length} VIP slips?`, () => wrapAction(() => bulkDeleteTickets(selectedPremium, adminToken), "VIP slips deleted successfully!").then(() => setSelectedPremium([])))} className="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 transition-colors"><Trash2 size={16} /> Delete Selected ({selectedPremium.length})</button>
+                  )}
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {premiumTickets.map((t) => (
-                    <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl overflow-hidden shadow-xl flex flex-col">
+                    <div key={t.id} className={`relative bg-[#15151a] border ${selectedPremium.includes(t.id) ? 'border-[#d4af37]' : 'border-white/5'} rounded-3xl overflow-hidden shadow-xl flex flex-col transition-colors`}>
+                      <button type="button" onClick={() => toggleSelection(t.id, selectedPremium, setSelectedPremium)} className="absolute top-4 left-4 z-10 w-6 h-6 rounded-md border border-white/20 bg-black/50 backdrop-blur-sm flex items-center justify-center hover:border-[#d4af37] transition-colors">
+                        {selectedPremium.includes(t.id) && <div className="w-3 h-3 bg-[#d4af37] rounded-sm"></div>}
+                      </button>
                       {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
@@ -697,9 +726,28 @@ export default function AdminDashboard({
                   </form>
                 </div>
 
+                <div className="flex justify-between items-center mb-6">
+                  <button type="button" onClick={() => {
+                      if (selectedFree.length === freeHooks.length && freeHooks.length > 0) setSelectedFree([]);
+                      else setSelectedFree(freeHooks.map(t => t.id));
+                    }} className="text-sm text-gray-400 hover:text-white font-bold flex items-center gap-2">
+                      <div className={`w-4 h-4 rounded border ${selectedFree.length === freeHooks.length && freeHooks.length > 0 ? 'bg-[#d4af37] border-[#d4af37]' : 'border-gray-500'} flex items-center justify-center`}>
+                        {selectedFree.length === freeHooks.length && freeHooks.length > 0 && <span className="text-black text-xs leading-none">✓</span>}
+                      </div>
+                      Select All
+                  </button>
+
+                  {selectedFree.length > 0 && (
+                    <button type="button" onClick={() => confirmAndDelete(`Delete ${selectedFree.length} free tickets?`, () => wrapAction(() => bulkDeleteFreeHooks(selectedFree, adminToken), "Free tickets deleted successfully!").then(() => setSelectedFree([])))} className="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 transition-colors"><Trash2 size={16} /> Delete Selected ({selectedFree.length})</button>
+                  )}
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {freeHooks.map((t) => (
-                    <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl overflow-hidden shadow-xl flex flex-col">
+                    <div key={t.id} className={`relative bg-[#15151a] border ${selectedFree.includes(t.id) ? 'border-[#d4af37]' : 'border-white/5'} rounded-3xl overflow-hidden shadow-xl flex flex-col transition-colors`}>
+                      <button type="button" onClick={() => toggleSelection(t.id, selectedFree, setSelectedFree)} className="absolute top-4 left-4 z-10 w-6 h-6 rounded-md border border-white/20 bg-black/50 backdrop-blur-sm flex items-center justify-center hover:border-[#d4af37] transition-colors">
+                        {selectedFree.includes(t.id) && <div className="w-3 h-3 bg-[#d4af37] rounded-sm"></div>}
+                      </button>
                       {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
@@ -756,9 +804,28 @@ export default function AdminDashboard({
                   </form>
                 </div>
 
+                <div className="flex justify-between items-center mb-6">
+                  <button type="button" onClick={() => {
+                      if (selectedWon.length === wonTickets.length && wonTickets.length > 0) setSelectedWon([]);
+                      else setSelectedWon(wonTickets.map(t => t.id));
+                    }} className="text-sm text-gray-400 hover:text-white font-bold flex items-center gap-2">
+                      <div className={`w-4 h-4 rounded border ${selectedWon.length === wonTickets.length && wonTickets.length > 0 ? 'bg-[#d4af37] border-[#d4af37]' : 'border-gray-500'} flex items-center justify-center`}>
+                        {selectedWon.length === wonTickets.length && wonTickets.length > 0 && <span className="text-black text-xs leading-none">✓</span>}
+                      </div>
+                      Select All
+                  </button>
+
+                  {selectedWon.length > 0 && (
+                    <button type="button" onClick={() => confirmAndDelete(`Delete ${selectedWon.length} won tickets?`, () => wrapAction(() => bulkDeleteWonTickets(selectedWon, adminToken), "Won tickets deleted successfully!").then(() => setSelectedWon([])))} className="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 transition-colors"><Trash2 size={16} /> Delete Selected ({selectedWon.length})</button>
+                  )}
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {wonTickets.map((t) => (
-                    <div key={t.id} className="bg-[#15151a] border border-white/5 rounded-3xl overflow-hidden shadow-xl flex flex-col">
+                    <div key={t.id} className={`relative bg-[#15151a] border ${selectedWon.includes(t.id) ? 'border-[#d4af37]' : 'border-white/5'} rounded-3xl overflow-hidden shadow-xl flex flex-col transition-colors`}>
+                      <button type="button" onClick={() => toggleSelection(t.id, selectedWon, setSelectedWon)} className="absolute top-4 left-4 z-10 w-6 h-6 rounded-md border border-white/20 bg-black/50 backdrop-blur-sm flex items-center justify-center hover:border-[#d4af37] transition-colors">
+                        {selectedWon.includes(t.id) && <div className="w-3 h-3 bg-[#d4af37] rounded-sm"></div>}
+                      </button>
                       {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-cover border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
