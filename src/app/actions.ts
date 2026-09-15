@@ -642,11 +642,13 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
   }
   
   try {
+    const originalName = file.name || `upload-${Date.now()}.png`;
+    
     // 1. Fallback for local development ONLY.
     if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const ext = file.name.split('.').pop() || 'png';
+      const ext = originalName.split('.').pop() || 'png';
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
       const filename = `ticket-${uniqueSuffix}.${ext}`;
       
@@ -662,7 +664,7 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
     // ALWAYS use Vercel Blob if token is available. DO NOT store Base64 strings.
     if (blobToken) {
       const { put } = await import('@vercel/blob');
-      const blob = await put(file.name, file, { access: 'public', token: blobToken });
+      const blob = await put(originalName, file, { access: 'public', token: blobToken });
       return blob.url;
     }
 
