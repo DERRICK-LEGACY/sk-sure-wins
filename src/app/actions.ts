@@ -642,16 +642,7 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
   }
   
   try {
-    const blobToken = process.env.BLOB_READ_WRITE_TOKEN || "vercel_blob_rw_Aj39zR6a84Y4HNke_kIshsnfokuxjNGhGY4Qiw4vudyPjgY";
-    
-    // ALWAYS use Vercel Blob if token is available. DO NOT store Base64 strings.
-    if (blobToken) {
-      const { put } = await import('@vercel/blob');
-      const blob = await put(file.name, file, { access: 'public', token: blobToken });
-      return blob.url;
-    }
-
-    // Fallback for local development ONLY.
+    // 1. Fallback for local development ONLY.
     if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
@@ -666,6 +657,15 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
       return `/uploads/${filename}`;
     }
 
+    const blobToken = process.env.BLOB_READ_WRITE_TOKEN || "vercel_blob_rw_Aj39zR6a84Y4HNke_kIshsnfokuxjNGhGY4Qiw4vudyPjgY";
+    
+    // ALWAYS use Vercel Blob if token is available. DO NOT store Base64 strings.
+    if (blobToken) {
+      const { put } = await import('@vercel/blob');
+      const blob = await put(file.name, file, { access: 'public', token: blobToken });
+      return blob.url;
+    }
+
     console.warn("Vercel Blob is not configured! Please add BLOB_READ_WRITE_TOKEN.");
     return "https://placehold.co/600x400?text=Vercel+Blob+Not+Configured";
   } catch (error: any) {
@@ -673,10 +673,14 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
     // Fallback 1: Try Freeimage.host API
     try {
       console.log("Attempting Freeimage.host fallback upload...");
+      const bytes = await file.arrayBuffer();
+      const base64Str = Buffer.from(bytes).toString('base64');
+      
       const freeimageFormData = new FormData();
-      freeimageFormData.append('source', file, file.name);
+      freeimageFormData.append('source', base64Str);
       freeimageFormData.append('key', '6d207e02198a847aa98d0a2a901485a5');
       freeimageFormData.append('action', 'upload');
+      freeimageFormData.append('format', 'json');
       
       const res = await fetch('https://freeimage.host/api/1/upload', {
         method: 'POST',
