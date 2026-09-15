@@ -659,7 +659,7 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
       return `/uploads/${filename}`;
     }
 
-    const blobToken = process.env.BLOB_READ_WRITE_TOKEN || "vercel_blob_rw_Aj39zR6a84Y4HNke_kIshsnfokuxjNGhGY4Qiw4vudyPjgY";
+    const blobToken = process.env.SKSUREWINS_PUBLIC_BLOB_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN || "vercel_blob_rw_wNByysgN5a27v7mo_tBm1UA2W5RgtMDhuO1SgHdO2LVtmO1";
     
     // ALWAYS use Vercel Blob if token is available. DO NOT store Base64 strings.
     if (blobToken) {
@@ -1039,7 +1039,7 @@ export async function uploadChatAttachment(formData: FormData) {
     const file = formData.get('file') as File | null;
     if (!file) return { success: false, error: 'No file provided' };
 
-    const blobToken = process.env.BLOB_READ_WRITE_TOKEN || "vercel_blob_rw_Aj39zR6a84Y4HNke_kIshsnfokuxjNGhGY4Qiw4vudyPjgY";
+    const blobToken = process.env.SKSUREWINS_PUBLIC_BLOB_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN || "vercel_blob_rw_wNByysgN5a27v7mo_tBm1UA2W5RgtMDhuO1SgHdO2LVtmO1";
     const { put } = await import('@vercel/blob');
     
     const blob = await put(`chat/${Date.now()}-${file.name}`, file, { access: 'public', token: blobToken });
