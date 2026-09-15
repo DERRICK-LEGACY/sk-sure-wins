@@ -671,7 +671,8 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
     console.warn("Vercel Blob is not configured! Please add BLOB_READ_WRITE_TOKEN.");
     return "https://placehold.co/600x400?text=Vercel+Blob+Not+Configured";
   } catch (error: any) {
-    console.error("Image upload error with Vercel Blob:", error?.message || error);
+    const vBlobError = error?.message || String(error);
+    console.error("Image upload error with Vercel Blob:", vBlobError);
     // Fallback 1: Try Freeimage.host API
     try {
       console.log("Attempting Freeimage.host fallback upload...");
@@ -697,7 +698,7 @@ async function handleImageUpload(formData: FormData, fieldName: string): Promise
       }
     } catch (fallbackError) {
       console.error("Freeimage fallback error:", fallbackError);
-      return "https://placehold.co/600x400?text=Upload+Failed";
+      return `https://placehold.co/800x400?text=${encodeURIComponent(vBlobError.substring(0, 50))}`;
     }
   }
 }
