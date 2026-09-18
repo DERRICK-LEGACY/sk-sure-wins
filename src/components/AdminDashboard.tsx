@@ -7,8 +7,8 @@ import {
   updateFreeHook, addWonTicket, deleteWonTicket, addClientWithSubscription, deleteClient, completelyDeleteClient,
   editFreeHook, editWonTicket, deleteFreeHook, addTicket, 
   editTicket, deleteTicket, logoutAdmin, approveTestimonial, 
-  deleteTestimonial, extendAdminSession, updateSubscriptionExpiry, updateSpecialOfferName,
-  bulkDeleteTickets, bulkDeleteFreeHooks, bulkDeleteWonTickets
+  updateSubscriptionExpiry, updateSpecialOfferName,
+  bulkDeleteTickets, bulkDeleteFreeHooks, bulkDeleteWonTickets, getLiveAnalytics
 } from "@/app/actions";
 import { 
   Search, UserX, Edit2, Trash2, X, Plus, 
@@ -50,7 +50,7 @@ function ConfirmDialog({ message, onConfirm, onCancel }: { message: string, onCo
 
 // --- Main Component ---
 
-const StatCard = ({ title, value, icon: Icon, color, subtitle }: { title: string, value: number, icon: React.ElementType, color: string, subtitle: string }) => (
+const StatCard = ({ title, value, icon: Icon, color, subtitle }: { title: string, value: number | string, icon: React.ElementType, color: string, subtitle: string }) => (
   <div className="bg-[#15151a] border border-white/5 p-6 rounded-3xl relative overflow-hidden group hover:border-white/10 transition-colors">
     <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full blur-[40px] opacity-20 pointer-events-none transition-opacity group-hover:opacity-40`} style={{ backgroundColor: color }}></div>
     <div className="flex justify-between items-start mb-4 relative z-10">
@@ -78,6 +78,7 @@ export default function AdminDashboard({
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [analytics, setAnalytics] = useState({ views: 0, visitors: 0, loading: true, error: "" });
   
   const [selectedPremium, setSelectedPremium] = useState<string[]>([]);
   const [selectedFree, setSelectedFree] = useState<string[]>([]);
@@ -88,6 +89,20 @@ export default function AdminDashboard({
   };
 
   const router = useRouter();
+
+  // Fetch Live Analytics
+  useEffect(() => {
+    if (activeTab === "dashboard") {
+      setAnalytics(prev => ({ ...prev, loading: true }));
+      getLiveAnalytics(adminToken).then(res => {
+        if (res.success && res.data) {
+          setAnalytics({ views: res.data.views, visitors: res.data.visitors, loading: false, error: "" });
+        } else {
+          setAnalytics(prev => ({ ...prev, loading: false, error: res.error || "Failed to load analytics" }));
+        }
+      });
+    }
+  }, [activeTab, adminToken]);
 
   // Activity tracking for keep-alive
   const lastActivity = useRef<number>(0);
@@ -419,6 +434,20 @@ export default function AdminDashboard({
                   <StatCard title="Active VIPs" value={stats.activeUsers} icon={Activity} color="#10b981" subtitle="Currently active subscriptions" />
                   <StatCard title="Premium Slips" value={stats.premiumTicketsCount} icon={Trophy} color="#d4af37" subtitle="Total VIP tickets uploaded" />
                   <StatCard title="Pending Reviews" value={stats.pendingReviews} icon={Star} color="#f59e0b" subtitle="Testimonials awaiting approval" />
+                </div>
+                
+                <div className="mt-8 mb-4">
+                  <h3 className="text-xl font-bold flex items-center gap-2 mb-4"><Activity className="text-[#10b981]" /> Live Traffic (Vercel)</h3>
+                  {analytics.error ? (
+                    <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-red-400 text-sm">
+                      {analytics.error}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <StatCard title="Total Views" value={analytics.loading ? "..." : analytics.views} icon={Activity} color="#8b5cf6" subtitle="Page views across the site" />
+                      <StatCard title="Unique Visitors" value={analytics.loading ? "..." : analytics.visitors} icon={Users} color="#ec4899" subtitle="Distinct users visiting the site" />
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )}

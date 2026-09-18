@@ -1198,3 +1198,71 @@ export async function markChatMessagesRead(sessionId: string, asAdmin: boolean, 
   }
 }
 
+// ========== VERCEL ANALYTICS INTEGRATION ==========
+
+export async function getLiveAnalytics(adminToken?: string) {
+  try {
+    const isAuthed = await checkAdminAuth(adminToken);
+    if (!isAuthed) return { error: "Unauthorized" };
+
+    const projectId = process.env.VERCEL_PROJECT_ID;
+    const token = process.env.VERCEL_ACCESS_TOKEN;
+
+    if (!projectId || !token) {
+      return { 
+        success: false, 
+        error: "Missing Vercel credentials. Please configure VERCEL_PROJECT_ID and VERCEL_ACCESS_TOKEN.",
+        data: { views: 0, visitors: 0 }
+      };
+    }
+
+    // Try fetching the basic web analytics stats for the last 24 hours
+    // Using the generic Vercel API endpoint for web-analytics
+    const res = await fetch(`https://api.vercel.com/v8/projects/${projectId}/analytics?environment=production`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      next: { revalidate: 300 } // Cache for 5 minutes
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      console.error("Vercel API error:", err);
+      
+      // Fallback API path if v8 fails (Vercel sometimes changes these internal endpoints)
+      const fallbackRes = await fetch(`https://api.vercel.com/v1/web-analytics/stats?projectId=${projectId}&environment=production`, {
+        method: "GET",
+        headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+        next: { revalidate: 300 }
+      });
+      
+      if (!fallbackRes.ok) {
+         return { success: false, error: "Failed to fetch analytics from Vercel. Check your Token permissions.", data: { views: 0, visitors: 0 } };
+      }
+      
+      const fallbackData = await fallbackRes.json();
+      return { 
+        success: true, 
+        data: { 
+           views: fallbackData.pageviews || fallbackData.views || 0, 
+           visitors: fallbackData.visitors || 0 
+        } 
+      };
+    }
+
+    const data = await res.json();
+    return { 
+      success: true, 
+      data: { 
+        views: data.pageviews || data.views || 0, 
+        visitors: data.visitors || 0 
+      } 
+    };
+
+  } catch (error: any) {
+    console.error("getLiveAnalytics error:", error);
+    return { success: false, error: error.message, data: { views: 0, visitors: 0 } };
+  }
+}
