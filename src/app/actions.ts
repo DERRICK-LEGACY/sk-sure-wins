@@ -280,6 +280,20 @@ export async function getEntitledTickets() {
 // ========== PACKAGES ==========
 
 export async function getPackages() {
+  try {
+    await prisma.package.upsert({
+      where: { name: 'General Ticket' },
+      update: {},
+      create: {
+        name: 'General Ticket',
+        price: 0,
+        durationDays: 365,
+        isActive: true
+      }
+    });
+  } catch (e) {
+    // ignore
+  }
   return await prisma.package.findMany({ orderBy: { price: 'asc' } });
 }
 
