@@ -738,9 +738,40 @@ export async function addTicket(data: any) {
     }
   });
 
-  await prisma.ticketAudience.create({
-    data: { ticketId: ticket.id, packageId: pkg.id }
+  let targetPackageIds = new Set<string>();
+  targetPackageIds.add(pkg.id);
+
+  if (pkg.name.toLowerCase() === 'general ticket') {
+    const allActivePackages = await prisma.package.findMany({ where: { isActive: true } });
+    for (const p of allActivePackages) {
+      const lowerName = p.name.toLowerCase();
+      if (!lowerName.includes('1.5') && !lowerName.includes('akatafa')) {
+        targetPackageIds.add(p.id);
+      }
+    }
+  }
+
+  const allPackagesPkg = await prisma.package.findFirst({
+    where: {
+      OR: [
+        { name: { contains: 'ALL PACKAGE', mode: 'insensitive' } },
+        { name: { contains: 'ALL ADMIN', mode: 'insensitive' } }
+      ]
+    }
   });
+
+  if (allPackagesPkg) {
+    targetPackageIds.add(allPackagesPkg.id);
+  }
+
+  const audienceData = Array.from(targetPackageIds).map(id => ({
+    ticketId: ticket.id,
+    packageId: id
+  }));
+
+  await Promise.all(
+    audienceData.map(data => prisma.ticketAudience.create({ data }))
+  );
 
   await logAudit('ADD_TICKET', { ticketId: ticket.id });
 
@@ -750,7 +781,7 @@ export async function addTicket(data: any) {
     // Fetch active users for this package
     const activeSubs = await prisma.subscription.findMany({
       where: {
-        packageId: pkg.id,
+        packageId: { in: Array.from(targetPackageIds) },
         status: 'ACTIVE',
         expiresAt: { gt: new Date() }
       },
@@ -831,8 +862,44 @@ export async function editTicket(id: string, data: any) {
   });
   
   if (packageId) {
-    await prisma.ticketAudience.deleteMany({ where: { ticketId: id } });
-    await prisma.ticketAudience.create({ data: { ticketId: id, packageId } });
+    const pkg = await prisma.package.findUnique({ where: { id: packageId } });
+    if (pkg) {
+      let targetPackageIds = new Set<string>();
+      targetPackageIds.add(pkg.id);
+
+      if (pkg.name.toLowerCase() === 'general ticket') {
+        const allActivePackages = await prisma.package.findMany({ where: { isActive: true } });
+        for (const p of allActivePackages) {
+          const lowerName = p.name.toLowerCase();
+          if (!lowerName.includes('1.5') && !lowerName.includes('akatafa')) {
+            targetPackageIds.add(p.id);
+          }
+        }
+      }
+
+      const allPackagesPkg = await prisma.package.findFirst({
+        where: {
+          OR: [
+            { name: { contains: 'ALL PACKAGE', mode: 'insensitive' } },
+            { name: { contains: 'ALL ADMIN', mode: 'insensitive' } }
+          ]
+        }
+      });
+
+      if (allPackagesPkg) {
+        targetPackageIds.add(allPackagesPkg.id);
+      }
+
+      await prisma.ticketAudience.deleteMany({ where: { ticketId: id } });
+      const audienceData = Array.from(targetPackageIds).map(pId => ({
+        ticketId: id,
+        packageId: pId
+      }));
+
+      await Promise.all(
+        audienceData.map(data => prisma.ticketAudience.create({ data }))
+      );
+    }
   }
 
   await logAudit('EDIT_TICKET', { ticketId: id });
