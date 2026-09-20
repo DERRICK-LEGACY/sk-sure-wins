@@ -189,9 +189,9 @@ export default function AdminDashboard({
       "AKATAFA/AKATEMU", "SK COUNTER ATTACK", "ACCOUNT MANAGEMENT", "FAMILY", "BIG STAKERS", "ALL PACKAGES",
       "Gold: VIP", "Gold: VVIP", "Gold: ALL PACKAGE MONTHLY",
       // Premium Offer
-      "Premium: Rent Project", "Premium: Boda boda Project", "Premium: Back to school Project", "Premium: 1M in 5 days",
-      "Rent Project", "Boda boda Project", "Back to school", "1M in 5 days",
-      "Premium Offer: Rent Project", "Premium Offer: Boda boda Project", "Premium Offer: Back to school", "Premium Offer: 1M in 5 days",
+      "Premium: Rent Project", "Premium: Boda boda Project", "Premium: Back to school Project", "Premium: Daily Special Ticket", "Premium: 1M in 5 days",
+      "Rent Project", "Boda boda Project", "Back to school", "Daily Special Ticket", "1M in 5 days",
+      "Premium Offer: Rent Project", "Premium Offer: Boda boda Project", "Premium Offer: Back to school", "Premium Offer: Daily Special Ticket", "Premium Offer: 1M in 5 days",
       // Life Changer
       "Life Changer: ODD 1.20", "Life Changer: ODD 1.30", "Life Changer: ODD 1.50",
       "ODD 1.20", "ODD 1.30", "ODD 1.50"
