@@ -129,26 +129,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] -z-10 mix-blend-screen" />
       <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[128px] -z-10 mix-blend-screen" />
 
-      {/* TOP BANNER */}
-      <div className="w-full bg-primary text-black font-bold text-sm py-2 overflow-hidden relative mt-[120px] whitespace-nowrap">
-        <div className="marquee-track flex gap-12">
-          {[0, 1].map(copy => (
-            <div key={copy} className="marquee-content flex gap-12 shrink-0">
-              {wonTickets.length > 0 ? (
-                wonTickets.map((ticket: WonTicket, i: number) => (
-                  <span key={i}>🔥 {ticket.bookingCode || "MASSIVE WIN"} 🔥</span>
-                ))
-              ) : (
-                <>
-                  <span>🔥 YESTERDAY&apos;S VIP TICKET WON: 4.5M UGX PAID OUT! 🔥</span>
-                  <span>✅ BRONZE TICKET WON ✅</span>
-                  <span>💸 JOIN THE WINNING TEAM TODAY 💸</span>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+
 
       <main className="flex-1 w-full flex flex-col items-center pb-16">
 
