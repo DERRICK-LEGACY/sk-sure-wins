@@ -331,8 +331,8 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                     <span className="flex items-center gap-2 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Boda boda Project</span></span>
                     <span className="bg-primary text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
                   </button>
-                  <button onClick={() => openModal("Premium: Back to school Project", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group/btn text-left">
-                    <span className="flex items-center gap-2 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Back to school</span></span>
+                  <button onClick={() => openModal("Premium: Daily Special Ticket", "30,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group/btn text-left">
+                    <span className="flex items-center gap-2 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Daily Special Ticket</span></span>
                     <span className="bg-primary text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
                   </button>
                   <button onClick={() => openModal("Premium: 1M in 5 days", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group/btn text-left">

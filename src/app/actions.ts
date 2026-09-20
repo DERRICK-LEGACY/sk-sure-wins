@@ -436,7 +436,7 @@ export async function getAdminPassword() {
       // Premium (3 Weeks = 21 days)
       { name: 'Premium: Rent Project', price: 50000, durationDays: 21 },
       { name: 'Premium: Boda boda Project', price: 50000, durationDays: 21 },
-      { name: 'Premium: Back to school Project', price: 50000, durationDays: 21 },
+      { name: 'Premium: Daily Special Ticket', price: 30000, durationDays: 1 },
       { name: 'Premium: 1M in 5 days', price: 50000, durationDays: 21 },
       // Life Changer (2 Weeks = 14 days)
       { name: 'Life Changer: ODD 1.20', price: 50000, durationDays: 14 },
