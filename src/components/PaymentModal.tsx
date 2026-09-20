@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { X, ShieldCheck, LockKeyhole, CheckCircle2, Loader2, AlertTriangle, RotateCcw, CreditCard } from "lucide-react";
+import { X, ShieldCheck, LockKeyhole, CheckCircle2, Loader2, AlertTriangle, RotateCcw, CreditCard, Smartphone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { initiatePaymentByName, autoLoginAfterPayment } from "@/app/actions";
@@ -235,12 +235,12 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     }}
                     className="w-full flex items-center p-4 rounded-xl border border-yellow-400/30 bg-yellow-400/5 hover:bg-yellow-400/10 transition-colors group"
                   >
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-[#ffcc00]">
-                      <Image src="/mtn.png" alt="MTN" width={48} height={48} className="w-full h-full object-cover scale-110" />
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-[#ffcc00]/20 border border-[#ffcc00]/50 shadow-[0_0_15px_rgba(255,204,0,0.2)]">
+                      <Smartphone className="text-[#ffcc00] w-6 h-6" />
                     </div>
                     <div className="text-left flex-1">
                       <h4 className="text-white font-bold text-lg">MTN Mobile Money</h4>
-                      <p className="text-gray-400 text-xs">Pay with MTN Mobile Money</p>
+                      <p className="text-gray-400 text-xs">Instant Access via MTN</p>
                     </div>
                   </button>
 
@@ -251,12 +251,12 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     }}
                     className="w-full flex items-center p-4 rounded-xl border border-red-500/30 bg-red-500/5 hover:bg-red-500/10 transition-colors group"
                   >
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-white">
-                      <Image src="/airtel.png" alt="Airtel" width={48} height={48} className="w-full h-full object-contain p-1" />
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-red-500/20 border border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                      <Smartphone className="text-red-500 w-6 h-6" />
                     </div>
                     <div className="text-left">
                       <h4 className="text-white font-bold text-lg">Airtel Money</h4>
-                      <p className="text-gray-400 text-xs">Pay with Airtel Money</p>
+                      <p className="text-gray-400 text-xs">Instant Access via Airtel</p>
                     </div>
                   </button>
 
@@ -267,8 +267,8 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     }}
                     className="w-full flex items-center p-4 rounded-xl border border-blue-500/30 bg-blue-500/5 hover:bg-blue-500/10 transition-colors group mt-2"
                   >
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-[#0a2540]">
-                      <CreditCard className="text-white w-6 h-6" />
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-blue-500/20 border border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                      <CreditCard className="text-blue-400 w-6 h-6" />
                     </div>
                     <div className="text-left">
                       <h4 className="text-white font-bold text-lg">Credit / Debit Card</h4>
@@ -287,26 +287,25 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   exit={{ x: -20, opacity: 0 }}
                   className="relative z-10 space-y-4"
                 >
-                  {/* Network Badge */}
                   <div className="flex items-center justify-center gap-3 mb-2">
                     {network === "MTN" ? (
                       <div className="flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 px-4 py-2 rounded-xl">
-                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-[#ffcc00]">
-                          <Image src="/mtn.png" alt="MTN" width={48} height={48} className="w-full h-full object-cover scale-110" />
+                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-yellow-400/20">
+                          <Smartphone className="text-yellow-400 w-4 h-4" />
                         </div>
                         <span className="text-yellow-400 font-bold text-sm">MTN Mobile Money</span>
                       </div>
                     ) : network === "AIRTEL" ? (
                       <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 px-4 py-2 rounded-xl">
-                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-white">
-                          <Image src="/airtel.png" alt="Airtel" width={48} height={48} className="w-full h-full object-contain p-0.5" />
+                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-red-500/20">
+                          <Smartphone className="text-red-500 w-4 h-4" />
                         </div>
                         <span className="text-red-500 font-bold text-sm">Airtel Money</span>
                       </div>
                     ) : (
                       <div className="flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 px-4 py-2 rounded-xl">
-                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-[#0a2540]">
-                          <CreditCard className="text-white w-4 h-4" />
+                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-blue-500/20">
+                          <CreditCard className="text-blue-400 w-4 h-4" />
                         </div>
                         <span className="text-blue-500 font-bold text-sm">Credit / Debit Card</span>
                       </div>
@@ -371,7 +370,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
 
                   {/* PIN Input */}
                   <div>
-                    <label className="block text-xs font-bold mb-2 text-gray-400 uppercase tracking-widest">Create a 4-Digit PIN for Login</label>
+                    <label className="block text-xs font-bold mb-2 text-gray-400 uppercase tracking-widest">Create a 4-Digit Security PIN</label>
                     <div className="flex bg-[#0a0a0a]/50 border border-white/5 rounded-xl overflow-hidden focus-within:border-[#D4AF37] focus-within:ring-1 focus-within:ring-[#D4AF37] transition-all">
                       <input
                         type="password"
@@ -382,7 +381,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                         maxLength={4}
                       />
                     </div>
-                    <p className="text-[11px] text-[#D4AF37] mt-2 opacity-80">You will use your Phone Number and this PIN to access your tickets.</p>
+                    <p className="text-[11px] text-[#D4AF37] mt-2 opacity-80 font-medium">Your Phone Number and this PIN will act as your VIP Login Key.</p>
                   </div>
 
                   {error && (

@@ -20,10 +20,10 @@ export default function Navbar() {
       <div className="fixed top-0 left-0 w-full z-[60]">
         <nav className="relative w-full max-w-full glass-panel py-2 sm:py-3 px-4 flex justify-between items-center shadow-2xl overflow-hidden rounded-none border-t-0 border-x-0 border-b border-white/5">
         <div className="flex items-center gap-2 shrink-0">
-          <Link href="/" className="flex items-center gap-2 relative z-50 group">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 relative z-50 group">
             <div className="relative shrink-0 transition-transform group-hover:scale-105">
-              <div className="absolute inset-0 bg-[#D4AF37] rounded-lg blur opacity-30 group-hover:opacity-60 transition-opacity"></div>
-              <Image src="/sklogo.jpeg" alt="Logo" width={40} height={40} className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-contain relative z-10 border border-white/10 shadow-lg bg-black" />
+              <div className="absolute inset-0 bg-[#D4AF37] rounded-full blur opacity-30 group-hover:opacity-60 transition-opacity"></div>
+              <Image src="/sklogo.jpeg" alt="Logo" width={60} height={60} className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover relative z-10 border-2 border-white/10 shadow-lg bg-black" />
             </div>
             <div className="shrink-0">
               <h1 className="font-extrabold text-sm sm:text-lg md:text-xl tracking-tight text-white leading-none group-hover:text-[#FFF8D6] transition-colors">SK SURE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FFF8D6] glow-text">WINS</span></h1>
@@ -40,10 +40,6 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-4">
-          <a href="https://whatsapp.com/channel/0029Vb8yLOm1yT2CHUu2k70o" target="_blank" className="bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-bold px-4 py-2 rounded-full text-[13px] transition-all hover:scale-105 hover:shadow-[0_0_15px_rgba(37,211,102,0.4)] flex items-center gap-2">
-            <WhatsAppIcon className="w-4 h-4 text-black" />
-            Contact Us
-          </a>
           <Link href="/login" className="group flex items-center justify-center gap-2 bg-gradient-to-r from-[#111116] to-[#1a1a24] border border-[#D4AF37]/30 shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:border-[#D4AF37]/60 hover:scale-105 transition-all px-4 lg:px-6 py-2 rounded-full relative overflow-hidden">
             <div className="absolute inset-0 bg-[#D4AF37]/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <Crown className="w-5 h-5 lg:w-6 lg:h-6 text-[#D4AF37] drop-shadow-[0_0_8px_rgba(212,175,55,0.8)] relative z-10" />
