@@ -233,6 +233,46 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
         {/* PAGE CONTENT CONTAINER */}
         <div className="w-full max-w-6xl mx-auto flex flex-col items-center px-6">
 
+          {/* DAILY SPECIAL TICKET BANNER */}
+          <div className="w-full max-w-4xl mx-auto mb-16 relative z-20 mt-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} 
+              whileInView={{ opacity: 1, y: 0 }} 
+              viewport={{ once: true }}
+              className="bg-gradient-to-r from-blue-500/20 via-cyan-400/30 to-blue-500/20 p-1 rounded-3xl shadow-[0_0_40px_rgba(6,182,212,0.4)] border-2 border-cyan-400/50 relative overflow-hidden group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 via-white/10 to-cyan-400/10 blur-xl z-0 rounded-3xl"></div>
+              <div className="bg-[#0f172a]/90 backdrop-blur-xl rounded-[22px] p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 relative z-10 border border-cyan-400/30">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent rotate-45 blur-3xl pointer-events-none group-hover:via-cyan-400/40 transition-all duration-700"></div>
+                
+                <div className="flex-1 text-center md:text-left relative z-10">
+                  <div className="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 text-white text-[10px] sm:text-xs font-black uppercase tracking-widest py-1 px-3 rounded-full mb-3 shadow-[0_0_15px_rgba(6,182,212,0.6)] border border-white/20">
+                    ⚡ DAILY SPECIAL
+                  </div>
+                  <h3 className="text-2xl sm:text-4xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                    Daily Special Ticket
+                  </h3>
+                  <p className="text-cyan-300 text-sm sm:text-base font-bold drop-shadow-[0_0_5px_rgba(6,182,212,0.5)]">
+                    Guaranteed Wins • Expert Analysis • 24 Hours Access
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center gap-3 relative z-10 shrink-0 w-full md:w-auto">
+                  <div className="text-3xl sm:text-5xl font-black text-white drop-shadow-[0_0_15px_rgba(6,182,212,0.8)]">
+                    30,000 UGX
+                  </div>
+                  <button 
+                    onClick={() => openModal("Premium: Daily Special Ticket", "30k")} 
+                    className="w-full md:w-auto bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-black py-4 px-10 rounded-2xl shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:shadow-[0_0_40px_rgba(6,182,212,0.9)] hover:scale-110 active:scale-95 transition-all uppercase tracking-widest flex items-center justify-center gap-2 group/btn"
+                  >
+                    <span>BUY NOW</span>
+                    <Send size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
           {/* PACKAGES SECTION HEADER */}
           <div id="packages" className="w-full text-center mb-12 flex flex-col items-center pt-20 mt-[-80px]">
             <h2 className="text-3xl md:text-5xl font-extrabold mb-4 uppercase tracking-tight text-white drop-shadow-md">SK SUBSCRIPTION <br className="md:hidden" /><span className="text-primary-dark">PACKAGE</span></h2>
@@ -331,8 +371,8 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                     <span className="flex items-center gap-2 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Boda boda Project</span></span>
                     <span className="bg-primary text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
                   </button>
-                  <button onClick={() => openModal("Premium: Daily Special Ticket", "30,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group/btn text-left">
-                    <span className="flex items-center gap-2 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Daily Special Ticket</span></span>
+                  <button onClick={() => openModal("Premium: Back to school Project", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group/btn text-left">
+                    <span className="flex items-center gap-2 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Back to school</span></span>
                     <span className="bg-primary text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
                   </button>
                   <button onClick={() => openModal("Premium: 1M in 5 days", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group/btn text-left">
