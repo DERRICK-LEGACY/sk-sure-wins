@@ -428,7 +428,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   <h4 className="text-xl font-bold text-white mb-2">Check your phone!</h4>
                   <p className="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">
                     {network === 'CARD' ? (
-                      <>Redirecting to secure card checkout...</>
+                      <>You will be redirected to the <span className="font-bold text-white">Pegasus / MarzPay</span> secure gateway to enter your card details.</>
                     ) : (
                       <>
                         A prompt has been sent to <span className="font-bold text-white">+256 {phone}</span>.
