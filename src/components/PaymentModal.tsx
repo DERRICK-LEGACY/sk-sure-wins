@@ -235,8 +235,8 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     }}
                     className="w-full flex items-center p-4 rounded-xl border border-yellow-400/30 bg-yellow-400/5 hover:bg-yellow-400/10 transition-colors group"
                   >
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-[#ffcc00]/20 border border-[#ffcc00]/50 shadow-[0_0_15px_rgba(255,204,0,0.2)]">
-                      <Smartphone className="text-[#ffcc00] w-6 h-6" />
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-white border border-[#ffcc00]/50 shadow-[0_0_15px_rgba(255,204,0,0.2)]">
+                      <Image src="/MTNLOGO.jpg" alt="MTN" width={48} height={48} className="w-full h-full object-cover scale-110" />
                     </div>
                     <div className="text-left flex-1">
                       <h4 className="text-white font-bold text-lg">MTN Mobile Money</h4>
@@ -251,8 +251,8 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     }}
                     className="w-full flex items-center p-4 rounded-xl border border-red-500/30 bg-red-500/5 hover:bg-red-500/10 transition-colors group"
                   >
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-red-500/20 border border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
-                      <Smartphone className="text-red-500 w-6 h-6" />
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-white border border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                      <Image src="/AIRTELLOGO.png" alt="Airtel" width={48} height={48} className="w-full h-full object-cover scale-110" />
                     </div>
                     <div className="text-left">
                       <h4 className="text-white font-bold text-lg">Airtel Money</h4>
@@ -290,15 +290,15 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   <div className="flex items-center justify-center gap-3 mb-2">
                     {network === "MTN" ? (
                       <div className="flex items-center gap-2 bg-yellow-400/10 border border-yellow-400/30 px-4 py-2 rounded-xl">
-                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-yellow-400/20">
-                          <Smartphone className="text-yellow-400 w-4 h-4" />
+                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-white">
+                          <Image src="/MTNLOGO.jpg" alt="MTN" width={32} height={32} className="w-full h-full object-cover scale-110" />
                         </div>
                         <span className="text-yellow-400 font-bold text-sm">MTN Mobile Money</span>
                       </div>
                     ) : network === "AIRTEL" ? (
                       <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 px-4 py-2 rounded-xl">
-                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-red-500/20">
-                          <Smartphone className="text-red-500 w-4 h-4" />
+                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-white">
+                          <Image src="/AIRTELLOGO.png" alt="Airtel" width={32} height={32} className="w-full h-full object-cover scale-110" />
                         </div>
                         <span className="text-red-500 font-bold text-sm">Airtel Money</span>
                       </div>
