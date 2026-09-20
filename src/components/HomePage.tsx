@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { MessageCircle, CheckCircle, Send, BellRing, X } from "lucide-react";
+import { MessageCircle, CheckCircle, Send, BellRing, X, ShoppingCart, Zap, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import PaymentModal from "@/components/PaymentModal";
@@ -40,6 +40,13 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
   const [testModalOpen, setTestModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState({ name: "", price: "" });
   const [toast, setToast] = useState<{ name: string, pkg: string } | null>(null);
+  const [isPackagesLoading, setIsPackagesLoading] = useState(true);
+
+  // Simulate network request for dynamic package loading
+  useEffect(() => {
+    const timer = setTimeout(() => setIsPackagesLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const hardcodedReviews: Testimonial[] = [
     {
@@ -106,17 +113,24 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
   };
 
   const renderPackageBtn = (name: string, price: string, label: string, colorClass: string, badgeBgClass: string, textColorClass: string = 'text-black', subtext?: string) => (
-    <button onClick={() => openModal(name, price)} className="w-full flex justify-between items-center mb-2 px-3 py-2 rounded-xl bg-gradient-to-r from-black/60 to-black/40 hover:from-white/10 hover:to-white/5 border border-white/5 transition-all duration-300 group hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-      <div className="flex flex-col text-left pr-2">
-        <span className={`text-xs xl:text-sm font-black uppercase flex items-start gap-1.5 leading-tight mb-0.5 ${colorClass}`}>
-          <Send size={12} className={`shrink-0 mt-[2px] ${colorClass}`} /> <span>{label}</span>
+    <button onClick={() => openModal(name, price)} className="relative w-full flex justify-between items-center mb-3 px-4 py-3 rounded-2xl bg-black/40 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 group overflow-hidden shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+      {/* Hover glow effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none"></div>
+      
+      <div className="flex flex-col text-left pr-2 relative z-10">
+        <span className={`text-xs xl:text-sm font-black uppercase flex items-center gap-2 leading-tight mb-1 ${colorClass}`}>
+          <Zap size={14} className={`shrink-0 ${colorClass}`} /> <span>{label}</span>
         </span>
-        <span className={`font-bold text-white text-sm xl:text-base flex items-center gap-1`}>
-          {price} {subtext && <span className="text-[9px] text-gray-500 font-normal normal-case">{subtext}</span>}
+        <span className={`font-black text-white text-base xl:text-lg flex items-center gap-2`}>
+          {price} {subtext && <span className="text-[10px] text-gray-400 font-medium normal-case tracking-wide bg-white/5 px-2 py-0.5 rounded-full">{subtext}</span>}
         </span>
       </div>
-      <div className={`${badgeBgClass} ${textColorClass} text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg flex items-center shadow-lg group-hover:scale-105 transition-transform shrink-0 whitespace-nowrap`}>
-        BUY NOW
+      
+      <div className={`${badgeBgClass} ${textColorClass} flex items-center justify-center w-10 h-10 rounded-xl group-hover:w-auto group-hover:px-4 transition-all duration-300 shadow-[0_0_15px_rgba(0,0,0,0.5)] relative z-10`}>
+        <ShoppingCart size={18} className="group-hover:hidden" />
+        <span className="hidden group-hover:flex items-center gap-2 text-xs font-black tracking-widest uppercase">
+          <ShoppingCart size={14} /> Buy
+        </span>
       </div>
     </button>
   );
@@ -280,7 +294,9 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
           </div>
 
           {/* PACKAGES GRID */}
-          <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 px-4 md:px-0">
+          {isPackagesLoading ? <PackagesSkeleton /> : (
+            <>
+              <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 px-4 md:px-0">
             {/* BRONZE */}
             <motion.div whileHover={{ y: -10, scale: 1.02 }} variants={itemVariants} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/40 shadow-[0_0_30px_rgba(205,127,50,0.1)] hover:shadow-[0_0_40px_rgba(205,127,50,0.2)] transition-all duration-300">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#cd7f32] to-transparent opacity-50"></div>
@@ -422,6 +438,8 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             </div>
 
           </motion.div>
+            </>
+          )}
 
         </div>
       </main>
@@ -753,4 +771,55 @@ function AnimatedNumber({ value, suffix = "" }: { value: number, suffix?: string
   }, [value]);
 
   return <span>{count}{suffix}</span>;
+}
+
+function PackagesSkeleton() {
+  return (
+    <div className="w-full flex flex-col items-center">
+      {/* Skeleton Header */}
+      <div className="w-full text-center mb-12 flex flex-col items-center pt-20 mt-[-80px]">
+        <div className="h-12 w-64 bg-white/5 rounded-xl mb-4 animate-pulse"></div>
+        <div className="h-10 w-48 bg-[#D4AF37]/20 rounded-full animate-pulse border border-[#D4AF37]/10"></div>
+      </div>
+      
+      {/* Skeleton Grid */}
+      <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 px-4 md:px-0 max-w-6xl">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden border border-white/5">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+            <div className="w-12 h-12 bg-white/5 rounded-full mb-8 animate-pulse"></div>
+            <div className="h-8 w-32 bg-white/10 rounded-lg mb-2 animate-pulse"></div>
+            <div className="h-4 w-24 bg-white/5 rounded-md mb-6 animate-pulse"></div>
+            <div className="w-full bg-black/40 rounded-2xl p-3 mb-4 space-y-3">
+              {[1, 2, 3, 4, 5].map((j) => (
+                <div key={j} className="h-14 w-full bg-white/5 rounded-2xl animate-pulse"></div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Skeleton Split Banner */}
+      <div className="w-full max-w-5xl grid md:grid-cols-2 rounded-[2rem] overflow-hidden shadow-2xl border border-white/5 mb-16 mx-4 md:mx-auto">
+        <div className="bg-[#111116] p-8 md:p-12 flex flex-col border-b md:border-b-0 md:border-r border-white/5">
+          <div className="h-8 w-40 bg-white/10 rounded-lg mb-4 animate-pulse"></div>
+          <div className="h-4 w-32 bg-white/5 rounded-md mb-8 animate-pulse"></div>
+          <div className="space-y-3">
+            {[1, 2, 3, 4].map((j) => (
+              <div key={j} className="h-14 w-full bg-white/5 rounded-2xl animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+        <div className="bg-[#111116] p-8 md:p-12 flex flex-col">
+          <div className="h-8 w-40 bg-white/10 rounded-lg mb-4 animate-pulse"></div>
+          <div className="h-4 w-32 bg-white/5 rounded-md mb-8 animate-pulse"></div>
+          <div className="space-y-3">
+            {[1, 2, 3, 4].map((j) => (
+              <div key={j} className="h-14 w-full bg-white/5 rounded-2xl animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
