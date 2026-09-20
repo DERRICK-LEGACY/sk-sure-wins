@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { X, ShieldCheck, LockKeyhole, CheckCircle2, Loader2, AlertTriangle, RotateCcw } from "lucide-react";
+import { X, ShieldCheck, LockKeyhole, CheckCircle2, Loader2, AlertTriangle, RotateCcw, CreditCard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { initiatePaymentByName, autoLoginAfterPayment } from "@/app/actions";
@@ -19,7 +19,7 @@ type Step = "network" | "details" | "processing" | "success" | "failed";
 
 export default function PaymentModal({ isOpen, onClose, packageName, price, tier, tierPackages }: PaymentModalProps) {
   const [step, setStep] = useState<Step>("network");
-  const [network, setNetwork] = useState<"MTN" | "AIRTEL">("MTN");
+  const [network, setNetwork] = useState<"MTN" | "AIRTEL" | "CARD">("MTN");
   const [phone, setPhone] = useState("");
   const [pin, setPin] = useState("");
   const [name, setName] = useState("");
@@ -139,11 +139,16 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
 
     try {
       // 1. Quietly create pending account and order
-      const res = await initiatePaymentByName(phone, selectedPkgName, pin, name.trim());
+      const res = await initiatePaymentByName(phone, selectedPkgName, pin, name.trim(), network);
 
       if (!res.success || !res.referenceId) {
         setStep("failed");
         setError(res.error || "Failed to initiate payment. Please try again.");
+        return;
+      }
+      
+      if (network === 'CARD' && res.redirectUrl) {
+        window.location.href = res.redirectUrl;
         return;
       }
 
@@ -254,6 +259,22 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                       <p className="text-gray-400 text-xs">Pay with Airtel Money</p>
                     </div>
                   </button>
+
+                  <button
+                    onClick={() => {
+                      setNetwork("CARD");
+                      setStep("details");
+                    }}
+                    className="w-full flex items-center p-4 rounded-xl border border-blue-500/30 bg-blue-500/5 hover:bg-blue-500/10 transition-colors group mt-2"
+                  >
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-[#0a2540]">
+                      <CreditCard className="text-white w-6 h-6" />
+                    </div>
+                    <div className="text-left">
+                      <h4 className="text-white font-bold text-lg">Credit / Debit Card</h4>
+                      <p className="text-gray-400 text-xs">Visa, Mastercard (International)</p>
+                    </div>
+                  </button>
                 </motion.div>
               )}
 
@@ -275,12 +296,19 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                         </div>
                         <span className="text-yellow-400 font-bold text-sm">MTN Mobile Money</span>
                       </div>
-                    ) : (
+                    ) : network === "AIRTEL" ? (
                       <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 px-4 py-2 rounded-xl">
                         <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-white">
                           <Image src="/airtel.png" alt="Airtel" width={48} height={48} className="w-full h-full object-contain p-0.5" />
                         </div>
                         <span className="text-red-500 font-bold text-sm">Airtel Money</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 px-4 py-2 rounded-xl">
+                        <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-[#0a2540]">
+                          <CreditCard className="text-white w-4 h-4" />
+                        </div>
+                        <span className="text-blue-500 font-bold text-sm">Credit / Debit Card</span>
                       </div>
                     )}
                   </div>
@@ -324,19 +352,21 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
 
                   {/* Phone Input */}
                   <div>
-                    <label className="block text-xs font-bold mb-2 text-gray-400 uppercase tracking-widest">{network} Phone Number</label>
+                    <label className="block text-xs font-bold mb-2 text-gray-400 uppercase tracking-widest">{network === 'CARD' ? 'Phone Number' : network + ' Phone Number'}</label>
                     <div className="flex bg-black/50 border border-white/10 rounded-xl overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
                       <span className="flex items-center pl-5 pr-2 text-gray-400 font-bold text-lg border-r border-white/10 bg-white/5">+256</span>
                       <input
                         type="tel"
-                        placeholder={network === "MTN" ? "770 000 000" : "750 000 000"}
+                        placeholder={network === "MTN" ? "770 000 000" : network === "AIRTEL" ? "750 000 000" : "700 000 000"}
                         className="w-full bg-transparent px-4 py-3.5 outline-none text-lg tracking-wide text-white"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value.replace(/[^0-9 ]/g, ''))}
                         maxLength={12}
                       />
                     </div>
-                    <p className="text-[11px] text-gray-500 mt-2">Ensure this number is registered on {network === "MTN" ? "MTN Mobile Money" : "Airtel Money"}</p>
+                    <p className="text-[11px] text-gray-500 mt-2">
+                      {network === 'CARD' ? 'Used only to link your subscription.' : `Ensure this number is registered on ${network === "MTN" ? "MTN Mobile Money" : "Airtel Money"}`}
+                    </p>
                   </div>
 
                   {/* PIN Input */}
@@ -369,15 +399,17 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     className={`w-full py-4 rounded-xl font-extrabold transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_5px_15px_rgba(234,179,8,0.2)] flex items-center justify-center gap-2 text-lg ${
                       network === 'MTN' 
                         ? 'bg-gradient-to-r from-primary to-[#d4af37] text-black' 
-                        : 'bg-gradient-to-r from-red-600 to-red-500 text-white shadow-[0_5px_15px_rgba(220,38,38,0.2)]'
+                        : network === 'AIRTEL'
+                        ? 'bg-gradient-to-r from-red-600 to-red-500 text-white shadow-[0_5px_15px_rgba(220,38,38,0.2)]'
+                        : 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-[0_5px_15px_rgba(37,99,235,0.2)]'
                     }`}
                   >
                     Pay {selectedPkgPrice} UGX
                   </motion.button>
 
                   <div className="flex items-center justify-center gap-2 text-[11px] text-gray-500 mt-2">
-                    <ShieldCheck size={14} className={network === "MTN" ? "text-[#25D366]" : "text-red-400"} />
-                    <span>Secured by {network === "MTN" ? "MTN Mobile Money" : "Airtel Money"}</span>
+                    <ShieldCheck size={14} className={network === "MTN" ? "text-[#25D366]" : network === "AIRTEL" ? "text-red-400" : "text-blue-400"} />
+                    <span>Secured by {network === "MTN" ? "MTN Mobile Money" : network === "AIRTEL" ? "Airtel Money" : "MarzPay Card Gateway"}</span>
                   </div>
                 </motion.div>
               )}
@@ -395,9 +427,15 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   </div>
                   <h4 className="text-xl font-bold text-white mb-2">Check your phone!</h4>
                   <p className="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">
-                    A prompt has been sent to <span className="font-bold text-white">+256 {phone}</span>.
-                    Please enter your MTN Mobile Money PIN to authorize the payment of{" "}
-                    <span className="font-bold text-primary">{selectedPkgPrice} UGX</span>.
+                    {network === 'CARD' ? (
+                      <>Redirecting to secure card checkout...</>
+                    ) : (
+                      <>
+                        A prompt has been sent to <span className="font-bold text-white">+256 {phone}</span>.
+                        Please enter your {network} PIN to authorize the payment of{" "}
+                        <span className="font-bold text-primary">{selectedPkgPrice} UGX</span>.
+                      </>
+                    )}
                   </p>
 
                   <div className="mt-6 p-3 bg-white/5 rounded-lg border border-white/10 inline-block">
@@ -406,7 +444,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                       </span>
-                      Waiting for payment confirmation...
+                      {network === 'CARD' ? 'Connecting to payment gateway...' : 'Waiting for payment confirmation...'}
                     </p>
                   </div>
 

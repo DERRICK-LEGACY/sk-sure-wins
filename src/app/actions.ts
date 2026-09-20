@@ -50,7 +50,7 @@ function checkRateLimit(ipOrPhone: string, limit: number = 5, windowMs: number =
 
 // ========== PAYMENT & SUBSCRIPTION FLOW (USER FLOWCHART) ==========
 
-export async function initiatePaymentByName(phone: string, packageName: string, pin: string, name: string) {
+export async function initiatePaymentByName(phone: string, packageName: string, pin: string, name: string, network: string = 'MTN') {
   const normalized = normalizePhone(phone);
   const pkg = await prisma.package.findUnique({ where: { name: packageName } });
   
@@ -110,21 +110,28 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
   const apiBase = (process.env.MARZPAY_API_BASE || 'https://wallet.wearemarz.com/api/v1').trim();
   const callbackUrl = (process.env.MARZPAY_CALLBACK_URL || 'https://www.sksurewinspredictions.com/api/webhooks/marzpay').trim();
   
+  let redirectUrl;
   try {
+    const requestBody: any = {
+      amount: pkg.price,
+      reference: referenceId,
+      country: 'UG',
+      description: `SK Sure Wins VIP - ${pkg.name.substring(0, 20)}`,
+      callback_url: callbackUrl,
+    };
+    if (network === 'CARD') {
+      requestBody.method = 'card';
+    } else {
+      requestBody.phone_number = normalized;
+    }
+
     const res = await fetch(`${apiBase}/collect-money`, {
       method: 'POST',
       headers: { 
         'Authorization': `Basic ${auth}`, 
         'Content-Type': 'application/json' 
       },
-      body: JSON.stringify({
-        amount: pkg.price,
-        phone_number: normalized,
-        reference: referenceId,
-        country: 'UG',
-        description: `SK Sure Wins VIP - ${pkg.name.substring(0, 20)}`,
-        callback_url: callbackUrl,
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!res.ok) {
@@ -143,13 +150,22 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
         return { success: false, error: "Failed to initiate payment." };
       }
     }
+    
+    if (network === 'CARD') {
+      try {
+        const data = await res.json();
+        redirectUrl = data?.data?.redirect_url;
+      } catch (e) {
+        console.warn('Failed to parse MarzPay success response for card redirect', e);
+      }
+    }
   } catch (error: unknown) {
     console.error('MarzPay Request Failed:', error);
     await prisma.order.delete({ where: { id: order.id } });
     return { success: false, error: "Payment gateway connection error." };
   }
 
-  return { success: true, referenceId: order.referenceId };
+  return { success: true, referenceId: order.referenceId, redirectUrl };
 }
 
 // ========== VIP AUTHENTICATION & SESSION MANAGEMENT ==========
