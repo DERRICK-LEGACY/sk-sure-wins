@@ -184,10 +184,10 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
               animate={{ scale: 1, opacity: 1, y: 0, transition: { type: "spring", damping: 20, stiffness: 300 } }}
               exit={{ scale: 0.9, opacity: 0, y: -20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#120d1d] border border-white/10 w-full max-w-md rounded-3xl p-6 sm:p-8 relative shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden"
+              className="glass-panel w-full max-w-md rounded-[2rem] p-6 sm:p-8 relative shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden"
             >
               {/* Decorative Blob */}
-              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 blur-[60px] rounded-full pointer-events-none"></div>
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#D4AF37]/20 blur-[60px] rounded-full pointer-events-none"></div>
 
               {step !== "processing" && (
                 <button
@@ -200,20 +200,20 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
 
               {/* HEADER */}
               <div className="text-center mb-6 relative z-10">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary/30 to-transparent rounded-2xl flex items-center justify-center mx-auto mb-4 border border-primary/40 shadow-[0_0_20px_rgba(234,179,8,0.2)]">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#D4AF37]/20 to-transparent rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[#D4AF37]/30 shadow-[0_0_20px_rgba(212,175,55,0.15)]">
                   {step === "success" ? (
                     <ShieldCheck className="text-[#25D366]" size={24} />
                   ) : step === "failed" ? (
                     <AlertTriangle className="text-red-400" size={24} />
                   ) : (
-                    <LockKeyhole className="text-primary" size={24} />
+                    <LockKeyhole className="text-[#D4AF37]" size={24} />
                   )}
                 </div>
-                <h3 className="text-xl sm:text-2xl font-black text-white">
+                <h3 className="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-b from-[#FFF8D6] to-[#D4AF37]">
                   {step === "success" ? "Payment Successful!" : step === "failed" ? "Payment Failed" : (tier || selectedPkgName)}
                 </h3>
                 {(step === "details" || step === "processing") && !tierPackages?.length && (
-                  <p className="text-primary font-bold text-lg mt-1">{selectedPkgPrice} UGX</p>
+                  <p className="text-[#D4AF37] font-bold text-lg mt-1 glow-text">{selectedPkgPrice} UGX</p>
                 )}
               </div>
 
@@ -326,7 +326,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                             setSelectedPkgPrice(pkg.price);
                           }
                         }}
-                        className="w-full bg-black/50 border border-white/10 rounded-xl px-5 py-3.5 outline-none text-white focus:border-primary focus:ring-1 focus:ring-primary transition-all appearance-none cursor-pointer"
+                        className="w-full bg-[#0a0a0a]/50 border border-white/5 rounded-xl px-5 py-3.5 outline-none text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all appearance-none cursor-pointer"
                       >
                         {tierPackages.map((pkg) => (
                           <option key={pkg.name} value={pkg.name} className="bg-gray-900 text-white">
@@ -343,7 +343,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     <input
                       type="text"
                       placeholder="John Mukasa"
-                      className="w-full bg-black/50 border border-white/10 rounded-xl px-5 py-3.5 outline-none text-white focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                      className="w-full bg-[#0a0a0a]/50 border border-white/5 rounded-xl px-5 py-3.5 outline-none text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       maxLength={100}
@@ -353,7 +353,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   {/* Phone Input */}
                   <div>
                     <label className="block text-xs font-bold mb-2 text-gray-400 uppercase tracking-widest">{network === 'CARD' ? 'Phone Number' : network + ' Phone Number'}</label>
-                    <div className="flex bg-black/50 border border-white/10 rounded-xl overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+                    <div className="flex bg-[#0a0a0a]/50 border border-white/5 rounded-xl overflow-hidden focus-within:border-[#D4AF37] focus-within:ring-1 focus-within:ring-[#D4AF37] transition-all">
                       <span className="flex items-center pl-5 pr-2 text-gray-400 font-bold text-lg border-r border-white/10 bg-white/5">+256</span>
                       <input
                         type="tel"
@@ -372,7 +372,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   {/* PIN Input */}
                   <div>
                     <label className="block text-xs font-bold mb-2 text-gray-400 uppercase tracking-widest">Create a 4-Digit PIN for Login</label>
-                    <div className="flex bg-black/50 border border-white/10 rounded-xl overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+                    <div className="flex bg-[#0a0a0a]/50 border border-white/5 rounded-xl overflow-hidden focus-within:border-[#D4AF37] focus-within:ring-1 focus-within:ring-[#D4AF37] transition-all">
                       <input
                         type="password"
                         placeholder="••••"
@@ -382,7 +382,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                         maxLength={4}
                       />
                     </div>
-                    <p className="text-[11px] text-primary mt-2">You will use your Phone Number and this PIN to access your tickets.</p>
+                    <p className="text-[11px] text-[#D4AF37] mt-2 opacity-80">You will use your Phone Number and this PIN to access your tickets.</p>
                   </div>
 
                   {error && (
@@ -396,9 +396,9 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                     whileTap={{ scale: (phone.length >= 9 && name.trim().length >= 2 && pin.length >= 4) ? 0.98 : 1 }}
                     onClick={handlePayment}
                     disabled={phone.length < 9 || name.trim().length < 2 || pin.length < 4}
-                    className={`w-full py-4 rounded-xl font-extrabold transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_5px_15px_rgba(234,179,8,0.2)] flex items-center justify-center gap-2 text-lg ${
+                    className={`w-full py-4 rounded-xl font-extrabold transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_5px_15px_rgba(212,175,55,0.2)] flex items-center justify-center gap-2 text-lg ${
                       network === 'MTN' 
-                        ? 'bg-gradient-to-r from-primary to-[#d4af37] text-black' 
+                        ? 'bg-gradient-to-r from-[#FFF8D6] to-[#D4AF37] text-black' 
                         : network === 'AIRTEL'
                         ? 'bg-gradient-to-r from-red-600 to-red-500 text-white shadow-[0_5px_15px_rgba(220,38,38,0.2)]'
                         : 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-[0_5px_15px_rgba(37,99,235,0.2)]'
@@ -423,7 +423,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   className="text-center relative z-10 py-6"
                 >
                   <div className="flex justify-center mb-6">
-                    <Loader2 className="animate-spin text-primary" size={48} />
+                    <Loader2 className="animate-spin text-[#D4AF37]" size={48} />
                   </div>
                   <h4 className="text-xl font-bold text-white mb-2">Check your phone!</h4>
                   <p className="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">
@@ -433,7 +433,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                       <>
                         A prompt has been sent to <span className="font-bold text-white">+256 {phone}</span>.
                         Please enter your {network} PIN to authorize the payment of{" "}
-                        <span className="font-bold text-primary">{selectedPkgPrice} UGX</span>.
+                        <span className="font-bold text-[#D4AF37]">{selectedPkgPrice} UGX</span>.
                       </>
                     )}
                   </p>
@@ -441,8 +441,8 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   <div className="mt-6 p-3 bg-white/5 rounded-lg border border-white/10 inline-block">
                     <p className="text-xs text-gray-500 flex items-center gap-2">
                       <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D4AF37] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D4AF37]"></span>
                       </span>
                       {network === 'CARD' ? 'Connecting to payment gateway...' : 'Waiting for payment confirmation...'}
                     </p>
@@ -463,7 +463,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   <div className="w-20 h-20 bg-[#25D366]/20 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-[#25D366] shadow-[0_0_30px_rgba(37,211,102,0.3)]">
                     <CheckCircle2 className="text-[#25D366]" size={40} />
                   </div>
-                  <p className="text-gray-300 mb-3 text-lg">Payment of <span className="font-bold text-primary">{selectedPkgPrice} UGX</span> confirmed!</p>
+                  <p className="text-gray-300 mb-3 text-lg">Payment of <span className="font-bold text-[#D4AF37]">{selectedPkgPrice} UGX</span> confirmed!</p>
                   <p className="text-gray-400 text-sm mb-8">
                     Your <span className="font-bold text-white">{selectedPkgName}</span> subscription is now active.
                     We are redirecting you to your VIP dashboard.
@@ -499,7 +499,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleRetry}
-                      className="flex-1 py-4 rounded-xl bg-gradient-to-r from-primary to-[#d4af37] text-black font-extrabold transition-all flex items-center justify-center gap-2"
+                      className="flex-1 py-4 rounded-xl bg-gradient-to-r from-[#FFF8D6] to-[#D4AF37] text-black font-extrabold transition-all flex items-center justify-center gap-2"
                     >
                       <RotateCcw size={18} /> Try Again
                     </motion.button>

@@ -33,28 +33,32 @@ export default function VipDashboardClient({
     return (
       <div className="min-h-screen bg-[#0f0a14] text-white flex flex-col">
         {/* HEADER */}
-        <header className="w-full py-4 px-6 flex justify-between items-center bg-[#1a1525] border-b border-white/5 sticky top-0 z-40">
+        <header className="w-full py-4 px-6 flex justify-between items-center glass-panel border-b border-white/5 sticky top-0 z-40 rounded-none border-t-0 border-x-0">
           <div className="flex items-center gap-3">
-            <Image src="/logo.jpeg" alt="SK Sure Wins Logo" width={150} height={40} className="h-10 w-auto object-contain rounded-md" />
+            <div className="relative">
+              <div className="absolute inset-0 bg-[#D4AF37] rounded-lg blur opacity-30"></div>
+              <Image src="/sklogo.jpeg" alt="SK Sure Wins Logo" width={40} height={40} className="w-10 h-10 object-contain rounded-lg relative z-10 border border-white/10 shadow-lg bg-black" />
+            </div>
             <div>
-              <h1 className="font-bold text-lg md:text-xl leading-tight tracking-tight">VIP Dashboard</h1>
+              <h1 className="font-bold text-lg md:text-xl leading-tight tracking-tight text-white glow-text">VIP Dashboard</h1>
               <p className="text-[10px] text-red-500 uppercase tracking-widest font-bold">EXPIRED</p>
             </div>
           </div>
-          <button onClick={handleLogout} className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-bold text-sm bg-red-400/10 px-4 py-2 rounded-lg">
+          <button onClick={handleLogout} className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-bold text-sm bg-red-500/10 border border-red-500/20 px-4 py-2 rounded-xl">
             <LogOut size={16} /> Logout
           </button>
         </header>
         <main className="flex-1 flex items-center justify-center p-6">
-          <div className="bg-[#1a1525] border border-red-500/20 rounded-3xl p-10 text-center shadow-2xl max-w-lg w-full">
+          <div className="glass-panel border border-red-500/20 rounded-[2rem] p-10 text-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-w-lg w-full relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-50"></div>
             <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-red-500/30">
               <Clock className="text-red-500" size={40} />
             </div>
-            <h2 className="text-3xl font-black text-white mb-3">Subscription Expired</h2>
+            <h2 className="text-3xl font-black text-white mb-3 glow-text">Subscription Expired</h2>
             <p className="text-gray-400 mb-8 leading-relaxed">
               Your VIP access has expired. Please renew your subscription to regain access to our premium odds and tickets.
             </p>
-            <Link href="/#packages" className="inline-block w-full bg-primary text-black font-extrabold py-4 rounded-xl shadow-lg hover:scale-105 transition-transform text-lg">
+            <Link href="/#packages" className="inline-block w-full bg-gradient-to-r from-red-600 to-red-500 text-white font-extrabold py-4 rounded-xl shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:scale-105 transition-transform text-lg">
               Renew Now
             </Link>
           </div>
@@ -66,16 +70,19 @@ export default function VipDashboardClient({
   return (
     <div className="min-h-screen bg-[#0f0a14] text-white">
       {/* HEADER */}
-      <header className="w-full py-4 px-6 flex justify-between items-center bg-[#1a1525] border-b border-white/5 sticky top-0 z-40">
+      <header className="w-full py-4 px-6 flex justify-between items-center glass-panel border-b border-white/5 sticky top-0 z-40 rounded-none border-t-0 border-x-0">
         <div className="flex items-center gap-3">
-          <Image src="/logo.jpeg" alt="SK Sure Wins Logo" width={150} height={40} className="h-10 w-auto object-contain rounded-md" />
+          <div className="relative">
+            <div className="absolute inset-0 bg-[#D4AF37] rounded-lg blur opacity-30"></div>
+            <Image src="/sklogo.jpeg" alt="SK Sure Wins Logo" width={40} height={40} className="w-10 h-10 object-contain rounded-lg relative z-10 border border-white/10 shadow-lg bg-black" />
+          </div>
           <div>
-            <h1 className="font-bold text-lg md:text-xl leading-tight tracking-tight">VIP Dashboard</h1>
-            <p className="text-[10px] text-[#25D366] uppercase tracking-widest font-bold">VIP MEMBER</p>
+            <h1 className="font-bold text-lg md:text-xl leading-tight tracking-tight text-white glow-text">VIP Dashboard</h1>
+            <p className="text-[10px] text-[#25D366] uppercase tracking-widest font-bold drop-shadow-[0_0_5px_rgba(37,211,102,0.5)]">VIP MEMBER</p>
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <button onClick={handleLogout} className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-bold text-sm bg-red-400/10 px-4 py-2 rounded-lg">
+          <button onClick={handleLogout} className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-bold text-sm bg-red-500/10 border border-red-500/20 px-4 py-2 rounded-xl">
             <LogOut size={16} /> Logout
           </button>
         </div>
@@ -96,11 +103,12 @@ export default function VipDashboardClient({
         )}
 
         {/* WELCOME BANNER */}
-        <div className="bg-gradient-to-r from-[#1a1525] to-[#120d1d] border border-white/10 rounded-3xl p-8 mb-10 relative overflow-hidden shadow-2xl">
+        <div className="glass-panel border border-white/10 rounded-[2rem] p-8 mb-10 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#25D366] to-transparent opacity-50"></div>
           <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#25D366]/20 blur-[60px] rounded-full pointer-events-none"></div>
           
-          <h2 className="text-3xl font-black mb-2 flex items-center gap-3">
-            Welcome back, {user.name} <span className="text-[#25D366]">👋</span>
+          <h2 className="text-3xl font-black mb-2 flex items-center gap-3 text-white">
+            Welcome back, {user.name} <span className="text-[#25D366] drop-shadow-[0_0_10px_rgba(37,211,102,0.8)]">👋</span>
           </h2>
           <p className="text-gray-400 max-w-lg mb-6">
             You are currently subscribed to {subscriptions.length} active package(s). Below are your premium tickets.
@@ -108,7 +116,7 @@ export default function VipDashboardClient({
 
           <div className="flex flex-wrap gap-2">
             {subscriptions.map(sub => (
-              <div key={sub.id} className="flex items-center gap-2 bg-[#25D366]/10 border border-[#25D366]/20 px-4 py-2 rounded-xl text-sm font-bold text-[#25D366]">
+              <div key={sub.id} className="flex items-center gap-2 bg-[#25D366]/10 border border-[#25D366]/20 px-4 py-2 rounded-xl text-sm font-bold text-[#25D366] shadow-[0_0_15px_rgba(37,211,102,0.1)]">
                 <Clock size={16} /> 
                 {sub.package.name} (Active until {new Date(sub.expiresAt).toLocaleDateString()})
               </div>
@@ -126,9 +134,9 @@ export default function VipDashboardClient({
         {tickets.length > 0 ? (
           <div className="grid gap-6">
             {tickets.map((ticket: TicketWithPackage) => (
-              <div key={ticket.id} className="bg-[#1a1525] border border-primary/10 rounded-3xl p-6 shadow-xl hover:border-primary/30 transition-all">
+              <div key={ticket.id} className="glass-panel border border-[#D4AF37]/10 rounded-[2rem] p-6 shadow-xl hover:border-[#D4AF37]/30 transition-all hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]">
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="bg-primary/20 text-primary text-[10px] font-black px-3 py-1 rounded uppercase">
+                  <span className="bg-[#D4AF37]/20 text-[#D4AF37] text-[10px] font-black px-3 py-1 rounded uppercase">
                     {ticket.audiences[0]?.package.name}
                   </span>
                   <span className="text-xs text-gray-500">{new Date(ticket.createdAt).toLocaleDateString()}</span>
@@ -162,11 +170,11 @@ export default function VipDashboardClient({
             ))}
           </div>
         ) : (
-          <div className="bg-[#1a1525] border border-white/5 rounded-3xl p-10 text-center shadow-xl">
+          <div className="glass-panel border border-white/5 rounded-[2rem] p-10 text-center shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
             <div className="w-20 h-20 bg-yellow-400/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-yellow-400/30">
               <CheckCircle className="text-yellow-400" size={40} />
             </div>
-            <h4 className="text-2xl font-black text-white mb-3">Tickets are being finalized!</h4>
+            <h4 className="text-2xl font-black text-white mb-3 glow-text">Tickets are being finalized!</h4>
             <p className="text-gray-400 max-w-md mx-auto leading-relaxed">
               Our expert analysts are currently verifying the safest odds for your packages. The premium slips will appear here shortly. Please check back in a few hours.
             </p>

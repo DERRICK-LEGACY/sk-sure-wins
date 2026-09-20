@@ -106,13 +106,13 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
   };
 
   const renderPackageBtn = (name: string, price: string, label: string, colorClass: string, badgeBgClass: string, textColorClass: string = 'text-black', subtext?: string) => (
-    <button onClick={() => openModal(name, price)} className="w-full flex justify-between items-center mb-2 px-3 py-2 rounded-xl bg-gradient-to-r from-black/60 to-black/40 hover:from-white/10 hover:to-white/5 border border-white/10 transition-colors group">
+    <button onClick={() => openModal(name, price)} className="w-full flex justify-between items-center mb-2 px-3 py-2 rounded-xl bg-gradient-to-r from-black/60 to-black/40 hover:from-white/10 hover:to-white/5 border border-white/5 transition-all duration-300 group hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]">
       <div className="flex flex-col text-left pr-2">
-        <span className="text-xs xl:text-sm font-black text-white uppercase flex items-start gap-1.5 leading-tight mb-0.5">
+        <span className={`text-xs xl:text-sm font-black uppercase flex items-start gap-1.5 leading-tight mb-0.5 ${colorClass}`}>
           <Send size={12} className={`shrink-0 mt-[2px] ${colorClass}`} /> <span>{label}</span>
         </span>
-        <span className={`font-bold ${colorClass} text-sm xl:text-base flex items-center gap-1`}>
-          {price} {subtext && <span className="text-[9px] text-gray-400 font-normal normal-case">{subtext}</span>}
+        <span className={`font-bold text-white text-sm xl:text-base flex items-center gap-1`}>
+          {price} {subtext && <span className="text-[9px] text-gray-500 font-normal normal-case">{subtext}</span>}
         </span>
       </div>
       <div className={`${badgeBgClass} ${textColorClass} text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg flex items-center shadow-lg group-hover:scale-105 transition-transform shrink-0 whitespace-nowrap`}>
@@ -143,13 +143,13 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
           <div className="absolute inset-0 bg-black/70 z-0"></div>
 
           <div className="relative z-10 flex flex-col items-center w-full max-w-6xl mx-auto mt-8">
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="inline-block px-4 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-accent text-xs font-bold tracking-widest mb-8 uppercase shadow-lg shadow-accent/10">
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="inline-block px-4 py-1.5 rounded-full glass-panel text-primary text-xs font-bold tracking-widest mb-8 uppercase shadow-lg">
               Uganda&apos;s Most Trusted Tipster
             </motion.div>
 
             <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight leading-tight text-white drop-shadow-2xl">
               Pay Your Way, <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-300 to-primary-dark">We Deliver Wins.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#FFF8D6] to-[#B5952F] glow-text">We Deliver Wins.</span>
             </motion.h2>
 
             {/* JOIN CHANNELS FUNNEL */}
@@ -201,13 +201,13 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-gradient-to-r from-transparent via-[#ffd700]/30 to-transparent rotate-45 blur-3xl pointer-events-none group-hover:via-[#ffd700]/50 transition-all duration-700"></div>
 
                 <div className="flex-1 text-center md:text-left relative z-10">
-                  <div className="inline-block bg-gradient-to-r from-[#ffd700] to-[#fff3b0] text-black text-[10px] sm:text-xs font-black uppercase tracking-widest py-1 px-3 rounded-full mb-3 shadow-[0_0_20px_rgba(255,215,0,0.8)] border border-white/40">
+                  <div className="inline-block bg-gradient-to-r from-[#D4AF37] to-[#FFF8D6] text-black text-[10px] sm:text-xs font-black uppercase tracking-widest py-1 px-3 rounded-full mb-3 shadow-[0_0_20px_rgba(212,175,55,0.6)] border border-white/40">
                     🔥 LIMITED TIME OFFER
                   </div>
-                  <h3 className="text-2xl sm:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#ffffff] via-[#ffef96] to-[#d4af37] uppercase tracking-tighter mb-2 drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">
+                  <h3 className="text-2xl sm:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#ffffff] via-[#FFF8D6] to-[#D4AF37] uppercase tracking-tighter mb-2 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]">
                     {specialOffer.name}
                   </h3>
-                  <p className="text-[#ffd700] text-sm sm:text-base font-bold drop-shadow-[0_0_5px_rgba(255,215,0,0.4)]">
+                  <p className="text-[#D4AF37] text-sm sm:text-base font-bold drop-shadow-[0_0_5px_rgba(212,175,55,0.2)]">
                     Exclusive VIP Access • Instant Win • {specialOffer.durationDays} Days
                   </p>
                 </div>
@@ -275,14 +275,15 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
 
           {/* PACKAGES SECTION HEADER */}
           <div id="packages" className="w-full text-center mb-12 flex flex-col items-center pt-20 mt-[-80px]">
-            <h2 className="text-3xl md:text-5xl font-extrabold mb-4 uppercase tracking-tight text-white drop-shadow-md">SK SUBSCRIPTION <br className="md:hidden" /><span className="text-primary-dark">PACKAGE</span></h2>
-            <div className="inline-block bg-primary text-black font-extrabold px-8 py-2 rounded-full text-2xl shadow-[0_0_20px_rgba(234,179,8,0.5)] uppercase tracking-wide border-2 border-black/20 transform -rotate-2 hover:rotate-0 transition-transform">JOIN US TODAY</div>
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-4 uppercase tracking-tight text-white drop-shadow-md">SK SUBSCRIPTION <br className="md:hidden" /><span className="text-[#D4AF37] glow-text">PACKAGE</span></h2>
+            <div className="inline-block bg-[#D4AF37] text-black font-extrabold px-8 py-2 rounded-full text-2xl shadow-[0_0_20px_rgba(212,175,55,0.4)] uppercase tracking-wide border-2 border-black/20 transform -rotate-2 hover:rotate-0 transition-transform">JOIN US TODAY</div>
           </div>
 
           {/* PACKAGES GRID */}
-          <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16">
+          <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 px-4 md:px-0">
             {/* BRONZE */}
-            <motion.div variants={itemVariants} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/40 shadow-[0_0_20px_rgba(205,127,50,0.2)] bg-[#0a0a0a]">
+            <motion.div whileHover={{ y: -10, scale: 1.02 }} variants={itemVariants} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/40 shadow-[0_0_30px_rgba(205,127,50,0.1)] hover:shadow-[0_0_40px_rgba(205,127,50,0.2)] transition-all duration-300">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#cd7f32] to-transparent opacity-50"></div>
               <div className="absolute top-4">
                 <span className="text-5xl drop-shadow-[0_0_15px_rgba(205,127,50,0.8)]">👑</span>
               </div>
@@ -303,7 +304,8 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             </motion.div>
 
             {/* SILVER */}
-            <motion.div variants={itemVariants} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden group border border-[#c0c0c0]/40 shadow-[0_0_20px_rgba(192,192,192,0.2)] bg-[#0a0a0a]">
+            <motion.div whileHover={{ y: -10, scale: 1.02 }} variants={itemVariants} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden group border border-[#c0c0c0]/40 shadow-[0_0_30px_rgba(192,192,192,0.1)] hover:shadow-[0_0_40px_rgba(192,192,192,0.2)] transition-all duration-300">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#c0c0c0] to-transparent opacity-50"></div>
               <div className="absolute top-4">
                 <span className="text-5xl grayscale brightness-150 drop-shadow-[0_0_15px_rgba(192,192,192,0.8)]">👑</span>
               </div>
@@ -323,8 +325,9 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             </motion.div>
 
             {/* GOLD */}
-            <motion.div variants={itemVariants} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden group border border-[#d4af37]/60 shadow-[0_0_30px_rgba(212,175,55,0.3)] bg-[#0a0a0a] scale-100 md:scale-105 z-10">
-              <div className="absolute top-6 -right-10 bg-gradient-to-b from-[#ffef96] to-[#d4af37] text-black text-[10px] font-black tracking-widest py-1 px-10 transform rotate-45 shadow-lg">
+            <motion.div whileHover={{ y: -10, scale: 1.05 }} variants={itemVariants} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden group border border-[#d4af37]/60 shadow-[0_0_40px_rgba(212,175,55,0.2)] hover:shadow-[0_0_60px_rgba(212,175,55,0.4)] md:scale-105 z-10 transition-all duration-300">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent opacity-80"></div>
+              <div className="absolute top-6 -right-10 bg-gradient-to-b from-[#FFF8D6] to-[#D4AF37] text-black text-[10px] font-black tracking-widest py-1 px-10 transform rotate-45 shadow-lg">
                 MOST EXCLUSIVE
               </div>
 
@@ -333,7 +336,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               </div>
 
               <div className="mt-8 w-full text-center">
-                <h3 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#ffef96] to-[#d4af37] tracking-widest uppercase mb-1">GOLD VIP</h3>
+                <h3 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#FFF8D6] to-[#D4AF37] tracking-widest uppercase mb-1 glow-text">GOLD VIP</h3>
                 <p className="text-gray-400 text-sm font-medium mb-6">Monthly Subscription</p>
               </div>
 
@@ -341,76 +344,80 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                 {renderPackageBtn("Gold: Akatafa/Akatemu", "50k", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: FAMILY", "80k", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: BIG STAKERS", "100k", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: ALL PACKAGES", "300k", "ALL PACKAGES", "text-accent", "bg-accent")}
+                {renderPackageBtn("Gold: ALL PACKAGES", "300k", "ALL PACKAGES", "text-[#00F0FF]", "bg-[#00F0FF]", "text-black")}
                 {renderPackageBtn("Gold: SK Counter Attack", "350k", "SK Counter Attack", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: Account Management", "500k", "Account Management", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
               </div>
             </motion.div>
           </motion.div>
 
-          {/* BOTTOM PREMIUM SPLIT BANNER */}
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full max-w-5xl grid md:grid-cols-2 rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative mb-16">
+            {/* BOTTOM PREMIUM SPLIT BANNER */}
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full max-w-5xl grid md:grid-cols-2 rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 relative mb-16 mx-4 md:mx-auto">
 
             {/* BALL ICON IN CENTER */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 hidden md:flex w-28 h-28 bg-white rounded-full items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.8)] overflow-hidden p-1 border border-white/20">
-              <svg viewBox="0 0 512 512" className="w-full h-full text-black fill-current"><path d="M256 0a256 256 0 1 0 0 512A256 256 0 1 0 256 0zM130.3 358L205 283.4 121.7 200l-63 87.2c16 31.7 39.8 59 69 79.1l2.5-8.2zm112.5-98.8L168.1 184.4l49.8-96c12-3.2 24.9-5.1 38.1-5.1 14.8 0 29.2 2.3 42.9 6.4l43.8 91.5-99.9 78zm138.8 80l-85.1 53-83.3-88.6 98.7-77 69.7 112.5zm19.6-32.9L334 198.5l90.3-81c25 21.6 44.5 49.3 56.4 81l-79.6 107.8zm-153.3 121L149 365l-6.2 20.3c31.6 20.8 69.3 33 109.4 34.6l-4.4-92.6z" /></svg>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 hidden md:flex w-24 h-24 bg-[#111116] rounded-full items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.8)] overflow-hidden p-3 border border-white/10">
+              <svg viewBox="0 0 512 512" className="w-full h-full text-[#D4AF37] fill-current"><path d="M256 0a256 256 0 1 0 0 512A256 256 0 1 0 256 0zM130.3 358L205 283.4 121.7 200l-63 87.2c16 31.7 39.8 59 69 79.1l2.5-8.2zm112.5-98.8L168.1 184.4l49.8-96c12-3.2 24.9-5.1 38.1-5.1 14.8 0 29.2 2.3 42.9 6.4l43.8 91.5-99.9 78zm138.8 80l-85.1 53-83.3-88.6 98.7-77 69.7 112.5zm19.6-32.9L334 198.5l90.3-81c25 21.6 44.5 49.3 56.4 81l-79.6 107.8zm-153.3 121L149 365l-6.2 20.3c31.6 20.8 69.3 33 109.4 34.6l-4.4-92.6z" /></svg>
             </div>
 
             {/* LEFT SIDE - PREMIUM OFFER */}
-            <div className="bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] p-8 md:p-12 flex flex-col relative overflow-hidden group">
-              <div className="absolute inset-0 bg-black/10 transition-opacity group-hover:bg-transparent"></div>
+            <div className="bg-[#111116] p-8 md:p-12 flex flex-col relative overflow-hidden group border-b md:border-b-0 md:border-r border-white/10">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent transition-opacity group-hover:bg-blue-500/15"></div>
               <div className="z-10 mb-8 flex-1">
-                <h3 className="text-white text-3xl font-black uppercase tracking-widest border-b border-white/20 pb-4 mb-2 text-center md:text-left">PREMIUM OFFER</h3>
-                <p className="text-gray-400 text-sm font-black mb-6 text-center md:text-left">3 Weeks Subscription</p>
-                <div className="space-y-2 text-base font-bold text-gray-200">
-                  <button onClick={() => openModal("Premium: Rent Project", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group/btn text-left">
-                    <span className="flex items-center gap-2 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Rent Project</span></span>
-                    <span className="bg-primary text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
+                <h3 className="text-white text-3xl font-black uppercase tracking-widest border-b border-white/10 pb-4 mb-2 text-center md:text-left">PREMIUM OFFER</h3>
+                <p className="text-gray-500 text-sm font-black mb-6 text-center md:text-left">3 Weeks Subscription</p>
+                <div className="space-y-3 text-base font-bold text-gray-200">
+                  <button onClick={() => openModal("Premium: Rent Project", "50,000")} className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all group/btn text-left">
+                    <span className="flex items-center gap-3 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Rent Project</span></span>
+                    <span className="bg-[#D4AF37] text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
                   </button>
-                  <button onClick={() => openModal("Premium: Boda boda Project", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group/btn text-left">
-                    <span className="flex items-center gap-2 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Boda boda Project</span></span>
-                    <span className="bg-primary text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
+                  <button onClick={() => openModal("Premium: Boda boda Project", "50,000")} className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all group/btn text-left">
+                    <span className="flex items-center gap-3 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Boda boda Project</span></span>
+                    <span className="bg-[#D4AF37] text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
                   </button>
-                  <button onClick={() => openModal("Premium: Back to school Project", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group/btn text-left">
-                    <span className="flex items-center gap-2 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Back to school</span></span>
-                    <span className="bg-primary text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
+                  <button onClick={() => openModal("Premium: Back to school Project", "50,000")} className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all group/btn text-left">
+                    <span className="flex items-center gap-3 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">Back to school</span></span>
+                    <span className="bg-[#D4AF37] text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
                   </button>
-                  <button onClick={() => openModal("Premium: 1M in 5 days", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group/btn text-left">
-                    <span className="flex items-center gap-2 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">1M in 5 days</span></span>
-                    <span className="bg-primary text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
+                  <button onClick={() => openModal("Premium: 1M in 5 days", "50,000")} className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all group/btn text-left">
+                    <span className="flex items-center gap-3 text-white text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_10px_#60a5fa] shrink-0"></div> <span className="truncate">1M in 5 days</span></span>
+                    <span className="bg-[#D4AF37] text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
                   </button>
                 </div>
               </div>
               <div className="z-10 flex items-center justify-between">
-                <div className="hidden md:block text-right text-6xl text-white/10 font-light pr-8 transform scale-y-[2]">{'}'}</div>
-                <div className="text-5xl font-black text-primary drop-shadow-[0_0_15px_rgba(234,179,8,0.4)] ml-auto md:ml-0">50K</div>
+                <div className="hidden md:block text-right text-6xl text-white/5 font-light pr-8 transform scale-y-[2]">{'}'}</div>
+                <div className="text-5xl font-black text-[#D4AF37] drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-auto md:ml-0">50K</div>
               </div>
             </div>
 
             {/* RIGHT SIDE - LIFE CHANGER */}
-            <div className="bg-gradient-to-br from-primary via-[#eab308] to-[#d4af37] p-8 md:p-12 flex flex-col relative overflow-hidden group">
-              <div className="absolute inset-0 bg-black/5 transition-opacity group-hover:bg-transparent"></div>
+            <div className="bg-[#111116] p-8 md:p-12 flex flex-col relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-bl from-[#D4AF37]/10 to-transparent transition-opacity group-hover:bg-[#D4AF37]/15"></div>
               <div className="z-10 mb-8 flex-1">
-                <h3 className="text-black text-3xl font-black uppercase tracking-widest border-b border-black/20 pb-4 mb-2 text-center md:text-left">LIFE CHANGER</h3>
-                <p className="text-black/70 text-sm font-black mb-6 text-center md:text-left">2 Weeks Subscription</p>
-                <div className="space-y-2 text-base font-black text-black/80 md:pl-6">
-                  <button onClick={() => openModal("Life Changer: ODD 1.20", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-black/10 hover:bg-black/20 border border-black/10 transition-colors group/btn text-left">
-                    <span className="flex items-center gap-2 text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-black shadow-[0_0_10px_rgba(0,0,0,0.5)] shrink-0"></div> <span className="truncate">ODD 1.20</span></span>
-                    <span className="bg-black text-primary text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
+                <h3 className="text-white text-3xl font-black uppercase tracking-widest border-b border-white/10 pb-4 mb-2 text-center md:text-left">LIFE CHANGER</h3>
+                <p className="text-gray-500 text-sm font-black mb-6 text-center md:text-left">2 Weeks Subscription</p>
+                <div className="space-y-3 text-base font-black text-white/90 md:pl-6">
+                  <button onClick={() => openModal("Life Changer: ODD 1.20", "50,000")} className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all group/btn text-left">
+                    <span className="flex items-center gap-3 text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-[#D4AF37] shadow-[0_0_10px_rgba(212,175,55,0.8)] shrink-0"></div> <span className="truncate">ODD 1.20</span></span>
+                    <span className="bg-[#D4AF37] text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
                   </button>
-                  <button onClick={() => openModal("Life Changer: ODD 1.30", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-black/10 hover:bg-black/20 border border-black/10 transition-colors group/btn text-left">
-                    <span className="flex items-center gap-2 text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-black shadow-[0_0_10px_rgba(0,0,0,0.5)] shrink-0"></div> <span className="truncate">ODD 1.30</span></span>
-                    <span className="bg-black text-primary text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
+                  <button onClick={() => openModal("Life Changer: ODD 1.50", "60,000")} className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all group/btn text-left">
+                    <span className="flex items-center gap-3 text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-[#D4AF37] shadow-[0_0_10px_rgba(212,175,55,0.8)] shrink-0"></div> <span className="truncate">ODD 1.50</span></span>
+                    <span className="bg-[#D4AF37] text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
                   </button>
-                  <button onClick={() => openModal("Life Changer: ODD 1.50", "50,000")} className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-black/10 hover:bg-black/20 border border-black/10 transition-colors group/btn text-left">
-                    <span className="flex items-center gap-2 text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-black shadow-[0_0_10px_rgba(0,0,0,0.5)] shrink-0"></div> <span className="truncate">ODD 1.50</span></span>
-                    <span className="bg-black text-primary text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
+                  <button onClick={() => openModal("Life Changer: ODD 2", "100,000")} className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all group/btn text-left">
+                    <span className="flex items-center gap-3 text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-[#D4AF37] shadow-[0_0_10px_rgba(212,175,55,0.8)] shrink-0"></div> <span className="truncate">ODD 2</span></span>
+                    <span className="bg-[#D4AF37] text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
+                  </button>
+                  <button onClick={() => openModal("Life Changer: ODD 3", "200,000")} className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all group/btn text-left">
+                    <span className="flex items-center gap-3 text-sm xl:text-base truncate pr-2"><div className="w-2 h-2 rounded-full bg-[#D4AF37] shadow-[0_0_10px_rgba(212,175,55,0.8)] shrink-0"></div> <span className="truncate">ODD 3</span></span>
+                    <span className="bg-[#D4AF37] text-black text-[10px] xl:text-xs font-black px-3 py-1.5 rounded-lg shadow-lg group-hover/btn:scale-105 transition-transform shrink-0 whitespace-nowrap">BUY NOW</span>
                   </button>
                 </div>
               </div>
-              <div className="z-10 flex items-center justify-between mt-auto">
-                <div className="hidden md:block text-right text-6xl text-black/10 font-light pr-8 transform scale-y-[2]">{'}'}</div>
-                <div className="text-5xl font-black text-black drop-shadow-[0_2px_5px_rgba(0,0,0,0.2)] ml-auto md:ml-0">50K</div>
+              <div className="z-10 flex items-center justify-between">
+                <div className="hidden md:block text-right text-6xl text-white/5 font-light pr-8 transform scale-y-[2]">{'}'}</div>
+                <div className="text-5xl font-black text-[#D4AF37] drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-auto md:ml-0">150K</div>
               </div>
             </div>
 

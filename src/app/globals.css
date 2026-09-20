@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #0B041C;
-  --color-foreground: #F4F4F5;
-  --color-primary: #EAB308;
-  --color-primary-dark: #CA8A04;
-  --color-accent: #D946EF;
-  --color-card: #18112C;
-  --color-card-border: #2D234A;
-  --font-sans: var(--font-inter), sans-serif;
-  --font-heading: var(--font-outfit), sans-serif;
+  --color-background: #0A0A0F;
+  --color-foreground: #F8F8F8;
+  --color-primary: #D4AF37;
+  --color-primary-dark: #B5952F;
+  --color-accent: #00F0FF;
+  --color-card: #111116;
+  --color-card-border: #1F1F27;
+  --font-sans: var(--font-outfit), sans-serif;
+  --font-heading: var(--font-space), sans-serif;
 }
 
 body {
@@ -24,11 +24,15 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Glassmorphism utility */
 .glass-panel {
-  background: rgba(24, 17, 44, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  background: rgba(17, 17, 22, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+.glow-text {
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
 }
 
 /* Texture Overlay */

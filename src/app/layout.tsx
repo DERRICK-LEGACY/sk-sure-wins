@@ -1,18 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Outfit, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Preloader } from "@/components/Preloader";
 import { PWA } from "@/components/PWA";
 import { InstallPWA } from "@/components/InstallPWA";
 import { Analytics } from "@vercel/analytics/react";
 
-const inter = Inter({
-  variable: "--font-inter",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
 });
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space",
   subsets: ["latin"],
 });
 
@@ -54,9 +54,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${outfit.variable} h-full antialiased overflow-x-hidden`}
+      className={`${outfit.variable} ${spaceGrotesk.variable} h-full antialiased overflow-x-hidden`}
     >
-      <body className="w-full max-w-[100vw] min-h-full flex flex-col font-sans bg-background text-foreground relative overflow-x-hidden">
+      <body className="w-full max-w-[100vw] min-h-full flex flex-col font-sans bg-background text-foreground relative overflow-x-hidden selection:bg-[#D4AF37]/30 selection:text-white">
         <PWA />
         <InstallPWA />
         <Preloader />
