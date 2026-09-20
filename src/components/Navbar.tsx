@@ -23,7 +23,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-2 sm:gap-3 relative z-50 group">
             <div className="relative shrink-0 transition-transform group-hover:scale-105">
               <div className="absolute inset-0 bg-[#D4AF37] rounded-full blur opacity-30 group-hover:opacity-60 transition-opacity"></div>
-              <Image src="/sklogo.jpeg" alt="Logo" width={60} height={60} className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover relative z-10 border-2 border-white/10 shadow-lg bg-black" />
+              <Image src="/sklogo.jpeg" alt="Logo" width={50} height={50} className="w-10 h-10 sm:w-14 sm:h-14 rounded-full object-cover relative z-10 border-2 border-white/10 shadow-lg bg-black" />
             </div>
             <div className="shrink-0">
               <h1 className="font-extrabold text-sm sm:text-lg md:text-xl tracking-tight text-white leading-none group-hover:text-[#FFF8D6] transition-colors">SK SURE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FFF8D6] glow-text">WINS</span></h1>
