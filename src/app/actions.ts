@@ -26,6 +26,9 @@ if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
 
 const VIP_COOKIE = "sk_vip_session";
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+if (IS_PRODUCTION && !process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET is required in production environment.");
+}
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'sk-sure-wins-super-secret-key-2026');
 
 // Basic In-Memory Rate Limiter
@@ -95,11 +98,11 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
   });
 
   // 3. Call MarzPay to initiate collection
-  const apiKey = 'marz_clTJGirR1HYLFRUt';
-  const apiSecret = 'NoNkshqQ9IkznuUbWb9G0F2nPaM9XETh';
+  const apiKey = process.env.MARZPAY_API_KEY;
+  const apiSecret = process.env.MARZPAY_API_SECRET;
   
   if (!apiKey || !apiSecret) {
-    return { success: false, error: "MarzPay API Keys are missing in Vercel Production environment." };
+    return { success: false, error: "MarzPay API Keys are missing in environment variables." };
   }
 
   if (pkg.price < 500) {
@@ -405,10 +408,11 @@ export async function getAdminPassword() {
   if (admin?.pin) return admin.pin;
   
   const defaultPin = process.env.ADMIN_PASSWORD || 'SK2026!';
+  const hashedPin = await bcrypt.hash(defaultPin, 10);
   
   // Auto-seed admin user and packages if missing (for fresh Neon branches)
   await prisma.user.create({
-    data: { phone: 'ADMIN', name: 'Super Admin', pin: defaultPin, role: 'ADMIN', status: 'ACTIVE' }
+    data: { phone: 'ADMIN', name: 'Super Admin', pin: hashedPin, role: 'ADMIN', status: 'ACTIVE' }
   });
   
   await prisma.package.createMany({
@@ -448,7 +452,7 @@ export async function getAdminPassword() {
     skipDuplicates: true
   });
 
-  return defaultPin;
+  return hashedPin;
 }
 
 const loginAttempts = new Map<string, { count: number, lockedUntil: number }>();
@@ -464,8 +468,13 @@ export async function loginAdmin(password: string) {
     return { success: false, error: `Too many attempts. Try again in ${waitTime} minutes.` };
   }
 
-  const currentPassword = await getAdminPassword();
-  if (password === currentPassword) {
+  const currentPasswordHash = await getAdminPassword();
+  
+  const isMatch = currentPasswordHash.startsWith('$2a$') || currentPasswordHash.startsWith('$2b$')
+    ? await bcrypt.compare(password, currentPasswordHash)
+    : password === currentPasswordHash;
+
+  if (isMatch) {
     loginAttempts.delete(ip);
     const token = await new SignJWT({ role: 'admin' })
       .setProtectedHeader({ alg: 'HS256' })
@@ -475,7 +484,7 @@ export async function loginAdmin(password: string) {
 
     const cookieStore = await cookies();
     cookieStore.set(ADMIN_COOKIE, token, {
-      httpOnly: false, secure: IS_PRODUCTION, sameSite: "lax", maxAge: 24 * 60 * 60, path: "/"
+      httpOnly: true, secure: IS_PRODUCTION, sameSite: "lax", maxAge: 24 * 60 * 60, path: "/"
     });
     
     await logAudit('LOGIN', { status: 'SUCCESS' });
@@ -552,7 +561,7 @@ export async function extendAdminSession(adminToken?: string) {
 
     const cookieStore = await cookies();
     cookieStore.set(ADMIN_COOKIE, token, {
-      httpOnly: false, secure: IS_PRODUCTION, sameSite: "lax", maxAge: 24 * 60 * 60, path: "/"
+      httpOnly: true, secure: IS_PRODUCTION, sameSite: "lax", maxAge: 24 * 60 * 60, path: "/"
     });
     return { success: true };
   }
@@ -563,11 +572,12 @@ export async function updateAdminCredentials(newPassword: string, adminToken?: s
   const isAuthed = await checkAdminAuth(adminToken);
   if (!isAuthed) return { error: "Unauthorized" };
   
+  const hashedPin = await bcrypt.hash(newPassword, 10);
   const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
   if (admin) {
-    await prisma.user.update({ where: { id: admin.id }, data: { pin: newPassword } });
+    await prisma.user.update({ where: { id: admin.id }, data: { pin: hashedPin } });
   } else {
-    await prisma.user.create({ data: { phone: 'ADMIN', name: 'Super Admin', pin: newPassword, role: 'ADMIN', status: 'ACTIVE' } });
+    await prisma.user.create({ data: { phone: 'ADMIN', name: 'Super Admin', pin: hashedPin, role: 'ADMIN', status: 'ACTIVE' } });
   }
   
   await logAudit('UPDATE_CREDENTIALS', {});
