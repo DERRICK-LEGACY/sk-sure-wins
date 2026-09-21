@@ -13,7 +13,7 @@ import {
 import { 
   Search, UserX, Edit2, Trash2, X, Plus, 
   Image as ImageIcon, LogOut, Trophy, AlertTriangle, 
-  Settings, Users, Activity, Star, ShieldCheck, Menu
+  Settings, Users, Activity, Star, ShieldCheck, Menu, LineChart
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -371,6 +371,7 @@ export default function AdminDashboard({
         <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2 custom-scrollbar">
           <p className="px-4 text-xs font-bold text-gray-600 uppercase tracking-widest mb-2">Overview</p>
           {renderSidebarItem("dashboard", Activity, "Dashboard")}
+          {renderSidebarItem("analytics", LineChart, "Live Analytics")}
           
           <p className="px-4 text-xs font-bold text-gray-600 uppercase tracking-widest mt-6 mb-2">Ticket Management</p>
           {renderSidebarItem("premium", Trophy, "Premium Slips")}
@@ -419,6 +420,42 @@ export default function AdminDashboard({
                   <StatCard title="Active VIPs" value={stats.activeUsers} icon={Activity} color="#10b981" subtitle="Currently active subscriptions" />
                   <StatCard title="Premium Slips" value={stats.premiumTicketsCount} icon={Trophy} color="#d4af37" subtitle="Total VIP tickets uploaded" />
                   <StatCard title="Pending Reviews" value={stats.pendingReviews} icon={Star} color="#f59e0b" subtitle="Testimonials awaiting approval" />
+                </div>
+              </motion.div>
+            )}
+
+            {/* ANALYTICS */}
+            {activeTab === "analytics" && (
+              <motion.div key="analytics" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-8 flex flex-col min-h-[80vh]">
+                <div>
+                  <h2 className="text-3xl font-black mb-2 flex items-center gap-3"><LineChart className="text-[#d4af37]" /> Live Traffic Analytics</h2>
+                  <p className="text-gray-400 font-medium">To embed your live Google Analytics here, generate a public Looker Studio embed URL and replace the placeholder below.</p>
+                </div>
+                
+                <div className="flex-1 w-full bg-[#15151a] border border-white/5 rounded-3xl p-6 shadow-xl flex flex-col relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#d4af37] to-blue-500"></div>
+                  
+                  {/* Instructions if embed URL is empty */}
+                  <div className="flex-1 w-full min-h-[500px] flex flex-col items-center justify-center text-center p-8 bg-[#0d0d12] rounded-2xl border border-dashed border-white/10">
+                    <div className="w-16 h-16 bg-[#d4af37]/10 rounded-full flex items-center justify-center mb-6">
+                      <LineChart size={32} className="text-[#d4af37]" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-4">Analytics Embed Not Configured</h3>
+                    <p className="text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed">
+                      To view live Google Analytics directly inside this dashboard, we need to connect it via Google Looker Studio:
+                      <br /><br />
+                      1. Go to <a href="https://lookerstudio.google.com/" target="_blank" className="text-[#d4af37] hover:underline font-bold">Google Looker Studio</a> and connect your Google Analytics property.
+                      <br />
+                      2. Build your traffic dashboard and click <strong>File &gt; Embed Report</strong>.
+                      <br />
+                      3. Enable embedding and copy the Embed URL.
+                      <br />
+                      4. Update this component in the source code with your actual URL.
+                    </p>
+                    
+                    {/* Placeholder for the Iframe (Developer: Paste URL here) */}
+                    {/* <iframe width="100%" height="600" src="YOUR_LOOKER_STUDIO_EMBED_URL_HERE" frameBorder="0" style={{ border: 0 }} allowFullScreen></iframe> */}
+                  </div>
                 </div>
               </motion.div>
             )}
