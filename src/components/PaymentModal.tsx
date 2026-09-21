@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { initiatePaymentByName, autoLoginAfterPayment } from "@/app/actions";
 import Image from "next/image";
+import { COUNTRY_CODES } from "@/lib/countryCodes";
 interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -21,6 +22,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
   const [step, setStep] = useState<Step>("network");
   const [network, setNetwork] = useState<"MTN" | "AIRTEL" | "CARD">("MTN");
   const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+256");
   const [pin, setPin] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState("");
@@ -67,6 +69,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
     setTimeout(() => {
       setStep("network");
       setPhone("");
+      setCountryCode("+256");
       setPin("");
       setName("");
       setError("");
@@ -139,7 +142,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
 
     try {
       // 1. Quietly create pending account and order
-      const res = await initiatePaymentByName(phone, selectedPkgName, pin, name.trim(), network);
+      const res = await initiatePaymentByName(network === 'CARD' ? `${countryCode}${phone}` : phone, selectedPkgName, pin, name.trim(), network);
 
       if (!res.success || !res.referenceId) {
         setStep("failed");
@@ -353,7 +356,27 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   <div>
                     <label className="block text-xs font-bold mb-2 text-gray-400 uppercase tracking-widest">{network === 'CARD' ? 'Phone Number' : network + ' Phone Number'}</label>
                     <div className="flex bg-[#0a0a0a]/50 border border-white/5 rounded-xl overflow-hidden focus-within:border-[#D4AF37] focus-within:ring-1 focus-within:ring-[#D4AF37] transition-all">
-                      <span className="flex items-center pl-5 pr-2 text-gray-400 font-bold text-lg border-r border-white/10 bg-white/5">+256</span>
+                      {network === 'CARD' ? (
+                        <select
+                          value={countryCode}
+                          onChange={(e) => setCountryCode(e.target.value)}
+                          className="flex items-center pl-4 pr-8 py-3.5 bg-white/5 border-r border-white/10 text-white font-bold text-lg outline-none appearance-none cursor-pointer max-w-[140px] truncate hover:bg-white/10 transition-colors"
+                          style={{
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'right 0.75rem center',
+                            backgroundSize: '1em'
+                          }}
+                        >
+                          {COUNTRY_CODES.map((country) => (
+                            <option key={country.name + country.code} value={country.code} className="bg-gray-900 text-white">
+                              {country.name} ({country.code})
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <span className="flex items-center pl-5 pr-2 text-gray-400 font-bold text-lg border-r border-white/10 bg-white/5">+256</span>
+                      )}
                       <input
                         type="tel"
                         placeholder={network === "MTN" ? "770 000 000" : network === "AIRTEL" ? "750 000 000" : "700 000 000"}

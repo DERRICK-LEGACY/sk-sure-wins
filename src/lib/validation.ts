@@ -46,6 +46,11 @@ export function validatePhone(phone: string): { valid: boolean; error?: string }
 }
 
 export function normalizePhone(phone: string): string {
+  const isExplicitInternational = phone.startsWith('+') && !phone.startsWith('+256');
+  if (isExplicitInternational) {
+    return '+' + phone.replace(/[^0-9]/g, '');
+  }
+
   let cleaned = phone.replace(/[^0-9]/g, '');
   if (cleaned.startsWith('256')) cleaned = cleaned.slice(3);
   if (cleaned.startsWith('0')) cleaned = cleaned.slice(1);
