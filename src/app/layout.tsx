@@ -5,6 +5,7 @@ import { Preloader } from "@/components/Preloader";
 import { PWA } from "@/components/PWA";
 import { InstallPWA } from "@/components/InstallPWA";
 import { Analytics } from "@vercel/analytics/react";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -57,6 +58,9 @@ export default function RootLayout({
       className={`${outfit.variable} ${spaceGrotesk.variable} h-full antialiased overflow-x-hidden`}
     >
       <body className="w-full max-w-[100vw] min-h-full flex flex-col font-sans bg-background text-foreground relative overflow-x-hidden selection:bg-[#D4AF37]/30 selection:text-white">
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
         <PWA />
         <InstallPWA />
         <Preloader />
