@@ -26,9 +26,6 @@ if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
 
 const VIP_COOKIE = "sk_vip_session";
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-if (IS_PRODUCTION && !process.env.JWT_SECRET) {
-  throw new Error("JWT_SECRET is required in production environment.");
-}
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'sk-sure-wins-super-secret-key-2026');
 
 // Basic In-Memory Rate Limiter
