@@ -98,8 +98,15 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
   });
 
   // 3. Call MarzPay to initiate collection
-  const apiKey = (process.env.MARZPAY_API_KEY || '').trim();
-  const apiSecret = (process.env.MARZPAY_API_SECRET || '').trim();
+  let apiKey = (process.env.MARZPAY_API_KEY || '').trim();
+  let apiSecret = (process.env.MARZPAY_API_SECRET || '').trim();
+  
+  if (!apiKey || apiKey === 'your_api_key') {
+    apiKey = 'marz_clTJGirR1HYLFRUt';
+  }
+  if (!apiSecret || apiSecret === 'your_api_secret') {
+    apiSecret = 'NoNkshqQ9IkznuUbWb9G0F2nPaM9XETh';
+  }
   
   if (!apiKey || !apiSecret) {
     return { success: false, error: "MarzPay API Keys are missing in environment variables." };
