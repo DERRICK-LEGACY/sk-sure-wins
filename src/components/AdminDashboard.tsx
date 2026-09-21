@@ -435,11 +435,11 @@ export default function AdminDashboard({
                 <div className="flex-1 w-full bg-[#15151a] border border-white/5 rounded-3xl p-6 shadow-xl flex flex-col relative overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#d4af37] to-blue-500"></div>
                   
-                  <div className="flex-1 w-full min-h-[700px] flex flex-col rounded-2xl overflow-hidden bg-white">
+                  <div className="flex-1 w-full min-h-[700px] flex flex-col rounded-2xl overflow-hidden">
                     <iframe 
                       width="100%" 
                       height="100%" 
-                      src="https://datastudio.google.com/embed/reporting/829a5708-0e65-41f2-8508-fed0910cb245/page/L7P9F" 
+                      src="https://lookerstudio.google.com/embed/reporting/829a5708-0e65-41f2-8508-fed0910cb245/page/L7P9F" 
                       frameBorder="0" 
                       style={{ border: 0, minHeight: '700px' }} 
                       allowFullScreen 
