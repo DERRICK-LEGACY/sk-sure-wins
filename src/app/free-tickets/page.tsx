@@ -40,7 +40,7 @@ export default async function FreeTicketsPage() {
               </div>
               
               {hook.imageUrl && !hook.imageUrl.includes('Upload+Failed') && !hook.imageUrl.includes('placehold.co') && (
-                <Image src={hook.imageUrl} alt="Free Ticket" width={800} height={500} className="w-full h-auto object-cover rounded-xl border border-white/5 max-h-[500px]" />
+                <Image src={hook.imageUrl} alt="Free Ticket" width={800} height={500} className="w-full h-auto object-contain bg-black/40 rounded-xl border border-white/5 max-h-[500px]" />
               )}
               
               {hook.description && (

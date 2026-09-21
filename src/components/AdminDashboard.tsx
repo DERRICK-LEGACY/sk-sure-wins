@@ -621,7 +621,7 @@ export default function AdminDashboard({
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Ticket Image</label>
                         {editingPremium && editingPremium.imageUrl && (
                           <div className="mb-3 relative rounded-xl overflow-hidden border border-white/10 w-fit">
-                            <Image src={editingPremium.imageUrl} alt="Current Slip" width={400} height={96} className="h-24 w-auto object-cover opacity-70" />
+                            <Image src={editingPremium.imageUrl} alt="Current Slip" width={400} height={96} className="h-24 w-auto object-contain bg-black/40 opacity-70" />
                             <div className="absolute inset-0 flex items-center justify-center bg-black/50 pointer-events-none">
                               <span className="text-xs font-bold text-white uppercase tracking-wider">Current</span>
                             </div>
@@ -662,7 +662,7 @@ export default function AdminDashboard({
                       <button type="button" onClick={() => toggleSelection(t.id, selectedPremium, setSelectedPremium)} className="absolute top-4 left-4 z-10 w-6 h-6 rounded-md border border-white/20 bg-black/50 backdrop-blur-sm flex items-center justify-center hover:border-[#d4af37] transition-colors">
                         {selectedPremium.includes(t.id) && <div className="w-3 h-3 bg-[#d4af37] rounded-sm"></div>}
                       </button>
-                      {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-cover border-b border-white/5" />}
+                      {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-contain bg-black/40 border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
                           <span className="inline-block bg-[#d4af37]/10 text-[#d4af37] text-xs font-black px-3 py-1 rounded mb-3 uppercase tracking-wider">{t.audiences?.[0]?.package?.name}</span>
@@ -738,7 +738,7 @@ export default function AdminDashboard({
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Ticket Image</label>
                         {editingFree && editingFree.imageUrl && (
                           <div className="mb-3 relative rounded-xl overflow-hidden border border-white/10 w-fit">
-                            <Image src={editingFree.imageUrl} alt="Current Slip" width={400} height={96} className="h-24 w-auto object-cover opacity-70" />
+                            <Image src={editingFree.imageUrl} alt="Current Slip" width={400} height={96} className="h-24 w-auto object-contain bg-black/40 opacity-70" />
                           </div>
                         )}
                         <input name="image" type="file" accept="image/*" required={!editingFree} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-[#d4af37]/10 file:text-[#d4af37] hover:file:bg-[#d4af37]/20" />
@@ -775,7 +775,7 @@ export default function AdminDashboard({
                       <button type="button" onClick={() => toggleSelection(t.id, selectedFree, setSelectedFree)} className="absolute top-4 left-4 z-10 w-6 h-6 rounded-md border border-white/20 bg-black/50 backdrop-blur-sm flex items-center justify-center hover:border-[#d4af37] transition-colors">
                         {selectedFree.includes(t.id) && <div className="w-3 h-3 bg-[#d4af37] rounded-sm"></div>}
                       </button>
-                      {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-cover border-b border-white/5" />}
+                      {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-contain bg-black/40 border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
                           <p className="text-gray-400 text-sm mb-4">Uploaded: {new Date(t.createdAt).toLocaleDateString()}</p>
@@ -816,7 +816,7 @@ export default function AdminDashboard({
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Ticket Image</label>
                         {editingWon && editingWon.imageUrl && (
                           <div className="mb-3 relative rounded-xl overflow-hidden border border-white/10 w-fit">
-                            <Image src={editingWon.imageUrl} alt="Current Slip" width={400} height={96} className="h-24 w-auto object-cover opacity-70" />
+                            <Image src={editingWon.imageUrl} alt="Current Slip" width={400} height={96} className="h-24 w-auto object-contain bg-black/40 opacity-70" />
                           </div>
                         )}
                         <input name="image" type="file" accept="image/*" required={!editingWon} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-[#d4af37]/10 file:text-[#d4af37] hover:file:bg-[#d4af37]/20" />
@@ -853,7 +853,7 @@ export default function AdminDashboard({
                       <button type="button" onClick={() => toggleSelection(t.id, selectedWon, setSelectedWon)} className="absolute top-4 left-4 z-10 w-6 h-6 rounded-md border border-white/20 bg-black/50 backdrop-blur-sm flex items-center justify-center hover:border-[#d4af37] transition-colors">
                         {selectedWon.includes(t.id) && <div className="w-3 h-3 bg-[#d4af37] rounded-sm"></div>}
                       </button>
-                      {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-cover border-b border-white/5" />}
+                      {t.imageUrl && <Image src={t.imageUrl} alt="Slip" width={800} height={192} className="w-full h-48 object-contain bg-black/40 border-b border-white/5" />}
                       <div className="p-6 flex-1 flex flex-col justify-between">
                         <div>
                           <p className="text-gray-400 text-sm mb-4">Uploaded: {new Date(t.createdAt).toLocaleDateString()}</p>

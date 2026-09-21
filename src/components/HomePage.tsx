@@ -456,7 +456,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             {freeHooks.slice(0, 2).map((hook: FreeHook) => (
               <div key={hook.id} className="bg-black/50 p-4 rounded-2xl border border-white/5 backdrop-blur flex flex-col gap-4">
                 {hook.imageUrl && (
-                  <Image src={hook.imageUrl} alt="Free Ticket" width={500} height={500} className="w-full h-auto rounded-xl border border-white/10 object-cover" />
+                  <Image src={hook.imageUrl} alt="Free Ticket" width={500} height={500} className="w-full h-auto rounded-xl border border-white/10 object-contain bg-black/40" />
                 )}
                 {hook.description && (
                   <div className="text-white text-lg font-bold">
@@ -491,7 +491,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             {wonTickets.slice(0, 2).map((ticket: WonTicket) => (
               <div key={ticket.id} className="bg-black/60 p-4 rounded-xl border border-primary/10 flex flex-col sm:flex-row gap-4">
                 {ticket.imageUrl && (
-                  <Image src={ticket.imageUrl} alt="Receipt" width={500} height={500} className="w-full sm:w-24 h-24 object-cover rounded-lg border border-white/10 shrink-0" />
+                  <Image src={ticket.imageUrl} alt="Receipt" width={500} height={500} className="w-full sm:w-24 h-24 object-contain bg-black/40 rounded-lg border border-white/10 shrink-0" />
                 )}
                 <div className="flex-1 flex flex-col justify-center">
                   <div className="text-white font-bold">
