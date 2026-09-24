@@ -19,7 +19,7 @@ export const DEFAULT_CARD_PAYMENT_LINK =
  */
 export const PRICE_CARD_PAYMENT_LINKS: Record<number, string> = {
   10000: "https://wallet.wearemarz.com/pay/b2d0ffd5-0a0b-4579-87d0-14a37a2b36b2", // 10,000 UGX Fixed Link
-  20000: "", // 20,000 UGX Fixed Link
+  20000: "https://wallet.wearemarz.com/pay/5fe5b951-4048-4f7f-b786-fb079a8d2331", // 20,000 UGX Fixed Link
   30000: "", // 30,000 UGX Fixed Link
   40000: "", // 40,000 UGX Fixed Link
   50000: "", // 50,000 UGX Fixed Link
