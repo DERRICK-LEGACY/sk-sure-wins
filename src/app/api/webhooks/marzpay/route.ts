@@ -127,6 +127,21 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: "Order already processed" }, { status: 200 });
       }
 
+      // Verify payment amount to prevent underpayment / tampering
+      const rawPaidAmount = data.amount || data.transaction?.amount || data.total_amount;
+      if (rawPaidAmount !== undefined && rawPaidAmount !== null) {
+        const paidAmount = Number(rawPaidAmount);
+        if (paidAmount < order.amount) {
+          console.error(`[Underpayment Blocked] Order ${order.referenceId} requires ${order.amount} UGX but paid ${paidAmount} UGX`);
+          await prisma.order.update({
+            where: { id: order.id },
+            data: { status: 'FAILED' }
+          });
+          await sendTelegramNotification(`⚠️ <b>Underpayment Attempt Blocked!</b>\n\nOrder: ${order.referenceId}\nRequired: ${order.amount} UGX\nPaid: ${paidAmount} UGX\nPhone: ${order.phone}`);
+          return NextResponse.json({ error: "Underpayment: Amount paid is less than package price" }, { status: 400 });
+        }
+      }
+
       // Update Order
       await prisma.order.update({
         where: { id: order.id },
