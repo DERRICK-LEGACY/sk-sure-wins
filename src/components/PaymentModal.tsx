@@ -26,6 +26,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
   const [pin, setPin] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState("");
+  const [cardRedirectUrl, setCardRedirectUrl] = useState<string | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const router = useRouter();
 
@@ -73,6 +74,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
       setPin("");
       setName("");
       setError("");
+      setCardRedirectUrl(null);
     }, 300);
   }, [stopPolling, onClose]);
 
@@ -151,6 +153,7 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
       }
       
       if (network === 'CARD' && res.redirectUrl) {
+        setCardRedirectUrl(res.redirectUrl);
         window.location.href = res.redirectUrl;
         return;
       }
@@ -447,10 +450,12 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   <div className="flex justify-center mb-6">
                     <Loader2 className="animate-spin text-[#D4AF37]" size={48} />
                   </div>
-                  <h4 className="text-xl font-bold text-white mb-2">Check your phone!</h4>
+                  <h4 className="text-xl font-bold text-white mb-2">
+                    {network === 'CARD' ? "Connecting to Card Payment..." : "Check your phone!"}
+                  </h4>
                   <p className="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">
                     {network === 'CARD' ? (
-                      <>You will be redirected to the <span className="font-bold text-white">Pegasus / MarzPay</span> secure gateway to enter your card details.</>
+                      <>You are being redirected to the secure <span className="font-bold text-white">MarzPay</span> payment gateway to complete your card transaction.</>
                     ) : (
                       <>
                         A prompt has been sent to <span className="font-bold text-white">+256 {phone}</span>.
@@ -466,9 +471,22 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D4AF37] opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D4AF37]"></span>
                       </span>
-                      {network === 'CARD' ? 'Connecting to payment gateway...' : 'Waiting for payment confirmation...'}
+                      {network === 'CARD' ? 'Redirecting to MarzPay Checkout...' : 'Waiting for payment confirmation...'}
                     </p>
                   </div>
+
+                  {network === 'CARD' && cardRedirectUrl && (
+                    <div className="mt-4">
+                      <a
+                        href={cardRedirectUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-[#D4AF37] hover:underline font-semibold bg-[#D4AF37]/10 border border-[#D4AF37]/30 px-3 py-1.5 rounded-lg"
+                      >
+                        Click here if not redirected automatically →
+                      </a>
+                    </div>
+                  )}
 
                   <p className="text-[11px] text-gray-600 mt-4">Do not close this window</p>
                 </motion.div>

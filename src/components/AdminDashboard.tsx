@@ -564,7 +564,7 @@ export default function AdminDashboard({
                                 <button title="Revoke Access" onClick={() => confirmAndDelete(`Revoke all access for ${client.name}?`, () => wrapAction(() => deleteClient(client.id, adminToken), "Client revoked successfully!"))} className="w-8 h-8 flex items-center justify-center bg-yellow-500/10 text-yellow-500 rounded-lg hover:bg-yellow-500 hover:text-white transition-colors">
                                   <UserX size={16} />
                                 </button>
-                                <button title="Delete User Completely" onClick={() => confirmAndDelete(`Delete ${client.name} completely from the system? This cannot be undone.`, () => wrapAction(() => completelydeleteClient(client.id, adminToken), "Client deleted successfully!"))} className="w-8 h-8 flex items-center justify-center bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors">
+                                <button title="Delete User Completely" onClick={() => confirmAndDelete(`Delete ${client.name} completely from the system? This cannot be undone.`, () => wrapAction(() => completelyDeleteClient(client.id, adminToken), "Client deleted successfully!"))} className="w-8 h-8 flex items-center justify-center bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors">
                                   <Trash2 size={16} />
                                 </button>
                               </td>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { sendTelegramNotification } from "@/lib/notifications";
+import { normalizePhone } from "@/lib/validation";
 import crypto from 'crypto';
 
 export async function POST(req: NextRequest) {
@@ -54,7 +55,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 1. Try to parse JSON. If it fails, try URL-encoded.
-    let data: Record<string, unknown> = {};
+    let data: Record<string, any> = {};
     try {
       data = JSON.parse(rawBody);
     } catch {
@@ -94,10 +95,28 @@ export async function POST(req: NextRequest) {
     const isSuccess = ['completed', 'successful', 'success', 'paid', 'approved', '1', 'true'].includes(statusStr);
 
     if (isSuccess) {
-      const order = await prisma.order.findUnique({
+      let order = await prisma.order.findUnique({
         where: { referenceId: transactionId },
         include: { package: true }
       });
+
+      // If not found by referenceId, try to find the latest PENDING order by customer phone
+      if (!order) {
+        const rawPhone = (data.phone_number || data.phone || data.msisdn || data.customer_phone || (data.customer as any)?.phone || data.payer_phone) as string | undefined;
+        if (rawPhone) {
+          const normalizedPhone = normalizePhone(String(rawPhone));
+          if (normalizedPhone) {
+            order = await prisma.order.findFirst({
+              where: { phone: normalizedPhone, status: 'PENDING' },
+              orderBy: { createdAt: 'desc' },
+              include: { package: true }
+            });
+            if (order) {
+              console.log(`[Webhook] Matched payment link order ${order.referenceId} via phone ${normalizedPhone}`);
+            }
+          }
+        }
+      }
 
       if (!order) {
         console.error("Webhook received for unknown transaction:", transactionId);

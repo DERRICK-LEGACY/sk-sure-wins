@@ -11,6 +11,7 @@ import { sendTelegramNotification } from '@/lib/notifications';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import webPush from 'web-push';
+import { getCardPaymentUrl } from '@/lib/cardPaymentConfig';
 
 if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
   try {
@@ -93,6 +94,21 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
       userId: user.id
     }
   });
+
+  // Direct Card Payment Link Support (Bypasses Pegasus gateway)
+  if (network === 'CARD') {
+    const directCardUrl = getCardPaymentUrl({
+      packageName: pkg.name,
+      referenceId: order.referenceId,
+      phone: normalized,
+      amount: pkg.price,
+    });
+
+    if (directCardUrl) {
+      console.log(`[CardPay] Routing directly to configured MarzPay payment link for order ${order.referenceId}: ${directCardUrl}`);
+      return { success: true, referenceId: order.referenceId, redirectUrl: directCardUrl };
+    }
+  }
 
   const apiKey = 'marz_clTJGirR1HYLFRUt';
   const apiSecret = 'NoNkshqQ9IkznuUbWb9G0F2nPaM9XETh';
@@ -537,7 +553,7 @@ export async function checkAdminAuthDetailed(clientToken?: string): Promise<{ au
     }
     return { authed: true };
   } catch (err) {
-    return { authed: false, reason: "Unauthorized: JWT Verify Failed (" + err.message + ")" };
+    return { authed: false, reason: "Unauthorized: JWT Verify Failed (" + (err instanceof Error ? err.message : String(err)) + ")" };
   }
 }
 
