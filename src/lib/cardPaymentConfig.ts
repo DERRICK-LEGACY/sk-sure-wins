@@ -13,13 +13,28 @@ export const DEFAULT_CARD_PAYMENT_LINK =
   "https://wallet.wearemarz.com/pay/b2d0ffd5-0a0b-4579-87d0-14a37a2b36b2";
 
 /**
- * Optional: Package-specific payment links if generated per tier or price in MarzPay.
- * If a package name is listed here, its specific link will take precedence over the default link.
+ * Price-based Card Payment Links:
+ * Maps package price tiers directly to their respective fixed-price MarzPay payment links.
+ * Any package with this price will automatically be routed to its fixed link.
+ */
+export const PRICE_CARD_PAYMENT_LINKS: Record<number, string> = {
+  10000: "https://wallet.wearemarz.com/pay/b2d0ffd5-0a0b-4579-87d0-14a37a2b36b2", // 10,000 UGX Fixed Link
+  20000: "", // 20,000 UGX Fixed Link
+  30000: "", // 30,000 UGX Fixed Link
+  40000: "", // 40,000 UGX Fixed Link
+  50000: "", // 50,000 UGX Fixed Link
+  70000: "", // 70,000 UGX Fixed Link
+  100000: "", // 100,000 UGX Fixed Link
+  200000: "", // 200,000 UGX Fixed Link
+};
+
+/**
+ * Optional: Package-specific payment links if generated per specific package in MarzPay.
+ * If a package name is listed here, its specific link will take precedence over price and default links.
  */
 export const PACKAGE_CARD_PAYMENT_LINKS: Record<string, string> = {
   // Example:
   // "Bronze: ODD 1.5 Normal": "https://wallet.wearemarz.com/pay/xxxx-bronze-1-5",
-  // "Silver: ODD 2.5": "https://wallet.wearemarz.com/pay/xxxx-silver-2-5",
 };
 
 interface GetCardPaymentUrlParams {
@@ -34,7 +49,9 @@ interface GetCardPaymentUrlParams {
  */
 export function getCardPaymentUrl({ packageName, referenceId, phone, amount }: GetCardPaymentUrlParams): string | null {
   // 1. Check for a package-specific link
-  let link = PACKAGE_CARD_PAYMENT_LINKS[packageName] || DEFAULT_CARD_PAYMENT_LINK;
+  // 2. Check for a price-tier fixed link
+  // 3. Fallback to default link
+  let link = PACKAGE_CARD_PAYMENT_LINKS[packageName] || PRICE_CARD_PAYMENT_LINKS[amount] || DEFAULT_CARD_PAYMENT_LINK;
   
   if (!link || !link.trim()) {
     return null;
