@@ -66,7 +66,7 @@ export default function RootLayout({
         <InstallPWA />
         <Preloader />
         {/* Toggle maintenance mode by commenting/uncommenting the line below or controlling it via state/env */}
-        {/* <MaintenanceOverlay /> */}
+        <MaintenanceOverlay />
         {children}
         <Analytics />
       </body>
