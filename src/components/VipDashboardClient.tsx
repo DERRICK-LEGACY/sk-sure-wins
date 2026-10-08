@@ -40,7 +40,7 @@ export default function VipDashboardClient({
               <Image src="/sklogo.jpeg" alt="SK Sure Wins Logo" width={40} height={40} className="w-10 h-10 object-contain rounded-lg relative z-10 border border-white/10 shadow-lg bg-black" />
             </div>
             <div>
-              <h1 className="font-bold text-lg md:text-xl leading-tight tracking-tight text-white glow-text">VIP Dashboard</h1>
+              <h1 className="font-bold text-lg md:text-xl leading-tight tracking-tight text-white ">VIP Dashboard</h1>
               <p className="text-[10px] text-red-500 uppercase tracking-widest font-bold">EXPIRED</p>
             </div>
           </div>
@@ -49,12 +49,12 @@ export default function VipDashboardClient({
           </button>
         </header>
         <main className="flex-1 flex items-center justify-center p-6">
-          <div className="glass-panel border border-red-500/20 rounded-[2rem] p-10 text-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-w-lg w-full relative overflow-hidden">
+          <div className="glass-panel border border-red-500/20 rounded-[2rem] p-10 text-center shadow-2xl max-w-lg w-full relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-50"></div>
             <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-red-500/30">
               <Clock className="text-red-500" size={40} />
             </div>
-            <h2 className="text-3xl font-black text-white mb-3 glow-text">Subscription Expired</h2>
+            <h2 className="text-3xl font-black text-white mb-3 ">Subscription Expired</h2>
             <p className="text-gray-400 mb-8 leading-relaxed">
               Your VIP access has expired. Please renew your subscription to regain access to our premium odds and tickets.
             </p>
@@ -77,7 +77,7 @@ export default function VipDashboardClient({
             <Image src="/sklogo.jpeg" alt="SK Sure Wins Logo" width={40} height={40} className="w-10 h-10 object-contain rounded-lg relative z-10 border border-white/10 shadow-lg bg-black" />
           </div>
           <div>
-            <h1 className="font-bold text-lg md:text-xl leading-tight tracking-tight text-white glow-text">VIP Dashboard</h1>
+            <h1 className="font-bold text-lg md:text-xl leading-tight tracking-tight text-white ">VIP Dashboard</h1>
             <p className="text-[10px] text-[#25D366] uppercase tracking-widest font-bold drop-shadow-[0_0_5px_rgba(37,211,102,0.5)]">VIP MEMBER</p>
           </div>
         </div>
@@ -103,12 +103,12 @@ export default function VipDashboardClient({
         )}
 
         {/* WELCOME BANNER */}
-        <div className="glass-panel border border-white/10 rounded-[2rem] p-8 mb-10 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        <div className="glass-panel border border-white/10 rounded-[2rem] p-8 mb-10 relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#25D366] to-transparent opacity-50"></div>
-          <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#25D366]/20 blur-[60px] rounded-full pointer-events-none"></div>
+          <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#25D366]/20 blur-[100px] opacity-30 rounded-full pointer-events-none"></div>
           
           <h2 className="text-3xl font-black mb-2 flex items-center gap-3 text-white">
-            Welcome back, {user.name} <span className="text-[#25D366] drop-shadow-[0_0_10px_rgba(37,211,102,0.8)]">👋</span>
+            Welcome back, {user.name} <span className="text-[#25D366] drop-shadow-sm">👋</span>
           </h2>
           <p className="text-gray-400 max-w-lg mb-6">
             You are currently subscribed to {subscriptions.length} active package(s). Below are your premium tickets.
@@ -170,11 +170,11 @@ export default function VipDashboardClient({
             ))}
           </div>
         ) : (
-          <div className="glass-panel border border-white/5 rounded-[2rem] p-10 text-center shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+          <div className="glass-panel border border-white/5 rounded-[2rem] p-10 text-center shadow-2xl">
             <div className="w-20 h-20 bg-yellow-400/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-yellow-400/30">
               <CheckCircle className="text-yellow-400" size={40} />
             </div>
-            <h4 className="text-2xl font-black text-white mb-3 glow-text">Tickets are being finalized!</h4>
+            <h4 className="text-2xl font-black text-white mb-3 ">Tickets are being finalized!</h4>
             <p className="text-gray-400 max-w-md mx-auto leading-relaxed">
               Our expert analysts are currently verifying the safest odds for your packages. The premium slips will appear here shortly. Please check back in a few hours.
             </p>

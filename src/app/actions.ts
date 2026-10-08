@@ -1188,24 +1188,27 @@ export async function sendChatMessage(sessionId: string, content: string, adminT
       }
     });
     
-    // Simple Chatbot logic for guests
+    // Advanced Chatbot logic for guests
     let botReply = "";
     if (!isAdmin) {
       const lowerContent = content.toLowerCase();
       
-      // Vocabulary expansion
-      if (lowerContent.match(/\b(pay|deposit|buy|purchase|how to pay|payment)\b/)) {
-        botReply = "To make a payment, please go to the Home page and select a VIP package. You can easily pay via MTN Mobile Money or Airtel Money. Let us know if you face any issues!";
+      if (lowerContent.match(/\b(pay|deposit|buy|purchase|how to pay|payment|subscribe)\b/)) {
+        botReply = "To make a payment and unlock premium VIP access, please navigate to our Packages section on the Home page. We support secure and instant payments via MTN Mobile Money and Airtel Money through Marzpay. Once you select a package (Bronze, Silver, Gold, or Premium VIP), you will be guided through a simple checkout process. Upon successful payment, your account is immediately activated, and you can view your premium tickets on your dashboard. Let us know if you need help choosing a package!";
       } else if (lowerContent.match(/\b(hello|hi|hey|greetings|morning|afternoon|evening)\b/)) {
-        botReply = "Hello! Welcome to SK Sure Wins support. How can we assist you today?";
+        botReply = "Hello! Welcome to SK Sure Wins, Uganda's most trusted sports analytics platform. I am your automated support assistant, here to help you navigate our ecosystem, understand our VIP packages, and answer any questions you might have about our betting tips. How can I assist you today?";
       } else if (lowerContent.match(/\b(free|ticket|games|odds)\b/)) {
-        botReply = "You can find our free tickets on the Free Tickets page. For massive odds and guaranteed wins, check out our VIP packages!";
+        botReply = "We offer a selection of highly analyzed Free Tickets to help you get started and experience our accuracy. You can access these directly on the 'Free Tickets' page. However, for maximum profitability, consistent massive odds, and our highest confidence picks, we highly recommend upgrading to one of our VIP packages. VIP subscribers receive daily premium slips with a proven 95% win rate.";
+      } else if (lowerContent.match(/\b(package|packages|bronze|silver|gold|premium|vip)\b/)) {
+        botReply = "Our ecosystem offers several tiers to suit different betting strategies:\n\n1. Bronze VIP: Great for beginners, offering consistent daily odds.\n2. Silver VIP: Higher odds with increased confidence for serious bettors.\n3. Gold VIP: Premium selections designed for maximum weekly profit.\n4. Premium VIP: The ultimate tier, featuring our most guarded high-stakes predictions.\n\nAll packages guarantee access to expertly analyzed matches. Which tier are you interested in?";
       } else if (lowerContent.match(/\b(how|work|start|register|join|process)\b/)) {
-        botReply = "It's simple! You buy a VIP package, and we give you access to our premium well-analyzed betting slips directly on your dashboard. Choose a package to get started!";
-      } else if (lowerContent.match(/\b(scam|trust|sure|guarantee|real)\b/)) {
-        botReply = "We are a trusted sports analytics platform with many VIP subscribers. You can check our 'Won Tickets' section or 'Reviews' to see our track record of success!";
+        botReply = "Getting started with SK Sure Wins is simple and secure. Here is how it works:\n\n1. Browse our VIP Packages on the Home page and select the one that fits your goals.\n2. Proceed to checkout using MTN or Airtel Mobile Money.\n3. Your account is automatically created and activated the moment your payment is verified.\n4. Log in to your VIP Dashboard to view your daily premium slips, booking codes, and match predictions.\n\nEverything is transparent, and you can track our past performance on the 'Won Tickets' page.";
+      } else if (lowerContent.match(/\b(scam|trust|sure|guarantee|real|fake|prove)\b/)) {
+        botReply = "We understand that transparency is critical in sports betting. SK Sure Wins is built on trust, which is why we proudly display our verifiable past success on the 'Won Tickets' page. Our team of expert analysts consistently maintains a 95% win rate. While sports inherently carry unpredictability, our long-term members enjoy consistent profitability. Feel free to review our free tickets first to test our accuracy before committing to a VIP package.";
+      } else if (lowerContent.match(/\b(admin|agent|human|person|help|support)\b/)) {
+        botReply = "I understand you'd like to speak with a human administrator. I am transferring this chat directly to our live support team. They will review your query and respond shortly. Thank you for your patience!";
       } else {
-        botReply = "Thank you for reaching out! Let me transfer this chat to an administrator to help you further. They will reply shortly.";
+        botReply = "Thank you for reaching out to SK Sure Wins! As an AI assistant, I can provide information on our VIP packages, payment methods, and how our system works. For this specific query, I will transfer you to an administrator who can provide personalized assistance. They will reply to this chat shortly.";
       }
     }
     

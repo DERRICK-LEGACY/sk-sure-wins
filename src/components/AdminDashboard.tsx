@@ -259,16 +259,36 @@ export default function AdminDashboard({
   const handleAddWonTicket = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const file = (form.elements.namedItem('image') as HTMLInputElement)?.files?.[0];
-    const imageBase64 = file ? await fileToBase64(file) : undefined;
-    const imageName = file?.name;
+    const files = (form.elements.namedItem('image') as HTMLInputElement)?.files;
     const description = (form.elements.namedItem('description') as HTMLInputElement).value;
 
+    if (editingWon) {
+      const file = files?.[0];
+      const imageBase64 = file ? await fileToBase64(file) : undefined;
+      const imageName = file?.name;
+      wrapAction(async () => {
+        const payload = stripUndefined({ description, imageBase64, imageName, adminToken });
+        const res = await editWonTicket(editingWon.id, payload); 
+        setEditingWon(null); 
+        return res;
+      }, "Won ticket successfully updated!").then(() => form.reset());
+      return;
+    }
+
+    if (!files || files.length === 0) return;
+    const maxFiles = Math.min(files.length, 5);
+    
     wrapAction(async () => {
-      const payload = stripUndefined({ description, imageBase64, imageName, adminToken });
-      if (editingWon) { const res = await editWonTicket(editingWon.id, payload); setEditingWon(null); return res; } 
-      else { return await addWonTicket(payload); }
-    }, "Won ticket successfully posted!")
+      let lastRes;
+      for (let i = 0; i < maxFiles; i++) {
+        const file = files[i];
+        const imageBase64 = await fileToBase64(file);
+        const imageName = file.name;
+        const payload = stripUndefined({ description, imageBase64, imageName, adminToken });
+        lastRes = await addWonTicket(payload);
+      }
+      return lastRes;
+    }, `${maxFiles} Won ticket(s) successfully posted!`)
     .then(() => form.reset());
   };
 
@@ -819,7 +839,8 @@ export default function AdminDashboard({
                             <Image src={editingWon.imageUrl} alt="Current Slip" width={400} height={96} className="h-24 w-auto object-contain bg-black/40 opacity-70" />
                           </div>
                         )}
-                        <input name="image" type="file" accept="image/*" required={!editingWon} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-[#d4af37]/10 file:text-[#d4af37] hover:file:bg-[#d4af37]/20" />
+                        <input name="image" type="file" accept="image/*" multiple={!editingWon} required={!editingWon} className="w-full bg-[#0d0d12] border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-[#d4af37] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-[#d4af37]/10 file:text-[#d4af37] hover:file:bg-[#d4af37]/20" />
+                        {!editingWon && <p className="text-xs text-gray-500 mt-2">You can upload up to 5 tickets at once.</p>}
                       </div>
                     </div>
                     <div className="flex justify-end gap-3 pt-4">

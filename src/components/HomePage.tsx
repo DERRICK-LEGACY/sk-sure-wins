@@ -113,24 +113,32 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
   };
 
   const renderPackageBtn = (name: string, price: string, label: string, colorClass: string, badgeBgClass: string, textColorClass: string = 'text-black', subtext?: string) => (
-    <button onClick={() => openModal(name, price)} className="relative w-full flex justify-between items-center mb-3 px-4 py-3 rounded-2xl bg-black/40 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 group overflow-hidden shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-      {/* Hover glow effect */}
+    <button onClick={() => openModal(name, price)} className="relative w-full flex justify-between items-center mb-4 px-5 py-4 rounded-2xl bg-[#08080A]/60 hover:bg-[#111116] border border-white/5 hover:border-white/20 transition-all duration-300 group overflow-hidden shadow-2xl backdrop-blur-sm">
+      {/* Laser line on hover */}
+      <motion.div 
+        className={`absolute bottom-0 left-0 h-[2px] w-0 ${badgeBgClass} group-hover:w-full transition-all duration-500 z-20`}
+      />
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none"></div>
       
       <div className="flex flex-col text-left pr-2 relative z-10">
         <span className={`text-xs xl:text-sm font-black uppercase flex items-center gap-2 leading-tight mb-1 ${colorClass}`}>
-          <Zap size={14} className={`shrink-0 ${colorClass}`} /> <span>{label}</span>
+          <motion.div
+            animate={{ rotate: [0, 15, -15, 0] }}
+            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          >
+            <Zap size={14} className={`shrink-0 ${colorClass}`} />
+          </motion.div>
+          <span className="tracking-widest">{label}</span>
         </span>
-        <span className={`font-black text-white text-base xl:text-lg flex items-center gap-2`}>
-          {price} {subtext && <span className="text-[10px] text-gray-400 font-medium normal-case tracking-wide bg-white/5 px-2 py-0.5 rounded-full">{subtext}</span>}
+        <span className={`font-black text-white text-base xl:text-lg flex items-center gap-2 font-mono`}>
+          {price} 
+          {subtext && <span className="text-[10px] text-gray-500 font-medium normal-case tracking-wide bg-white/5 px-2 py-0.5 rounded-full border border-white/10">{subtext}</span>}
         </span>
       </div>
       
-      <div className={`${badgeBgClass} ${textColorClass} flex items-center justify-center w-10 h-10 rounded-xl group-hover:w-auto group-hover:px-4 transition-all duration-300 shadow-[0_0_15px_rgba(0,0,0,0.5)] relative z-10`}>
-        <ShoppingCart size={18} className="group-hover:hidden" />
-        <span className="hidden group-hover:flex items-center gap-2 text-xs font-black tracking-widest uppercase">
-          <ShoppingCart size={14} /> Buy
-        </span>
+      <div className={`${badgeBgClass} ${textColorClass} flex items-center justify-center w-12 h-12 rounded-xl group-hover:scale-110 transition-transform duration-500 shadow-[0_0_20px_rgba(0,0,0,0.8)] relative z-10 overflow-hidden`}>
+        <div className="absolute inset-0 bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <ShoppingCart size={18} className="relative z-10" />
       </div>
     </button>
   );
@@ -147,98 +155,89 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
 
       <main className="flex-1 w-full flex flex-col items-center pb-16">
 
-        {/* HERO SECTION WITH VIDEO BACKGROUND */}
-        <section className="relative w-full flex flex-col items-center justify-center py-28 px-6 text-center overflow-hidden min-h-[85vh]">
+                {/* PREMIUM HERO SECTION */}
+        <section className="relative w-full flex flex-col items-center justify-center pt-40 pb-32 px-6 text-center overflow-hidden min-h-[85vh]">
           {/* VIDEO BACKGROUND */}
           <video autoPlay loop muted playsInline className="absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
             <source src="/hero-video.mp4" type="video/mp4" />
           </video>
-          {/* LIGHT OVERLAY */}
-          <div className="absolute inset-0 bg-black/70 z-0"></div>
+          {/* GRADIENT OVERLAY */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-[#0A0A0F] z-0"></div>
 
-          <div className="relative z-10 flex flex-col items-center w-full max-w-6xl mx-auto mt-8">
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="inline-block px-4 py-1.5 rounded-full glass-panel text-primary text-xs font-bold tracking-widest mb-8 uppercase shadow-lg">
-              Uganda&apos;s Most Trusted Tipster
+          <div className="relative z-10 flex flex-col items-center w-full max-w-5xl mx-auto mt-4">
+            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-panel border border-white/10 text-white/80 text-[10px] md:text-xs font-black tracking-[0.2em] mb-10 uppercase shadow-xl backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse"></span>
+              Uganda's Most Trusted Sports Analysts
             </motion.div>
 
-            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight leading-tight text-white drop-shadow-2xl">
-              Pay Your Way, <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#FFF8D6] to-[#B5952F] glow-text">We Deliver Wins.</span>
-            </motion.h2>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl lg:text-[5.5rem] font-black mb-8 tracking-tighter leading-[1.05] text-white">
+              Data-Driven <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F4E3A6] to-[#B5952F]">Premium Analytics.</span>
+            </motion.h1>
+
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-gray-400 max-w-2xl text-lg md:text-xl font-medium mb-12">
+              Join thousands of serious bettors who trust our expert insights, transparent track record, and guaranteed VIP packages to maximize their weekly profit.
+            </motion.p>
 
             {/* JOIN CHANNELS FUNNEL */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              className="mt-6 mb-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-2xl"
+              transition={{ delay: 0.3 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full max-w-xl"
             >
               <a
                 href="https://whatsapp.com/channel/0029Vb8yLOm1yT2CHUu2k70o"
                 target="_blank"
-                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-extrabold py-3.5 px-8 rounded-full shadow-[0_0_30px_rgba(37,211,102,0.4)] hover:shadow-[0_0_30px_rgba(37,211,102,0.8)] border border-white/20 hover:scale-105 active:scale-95 transition-all relative overflow-hidden group"
+                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-[#25D366] text-black font-black py-4 px-8 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.15)] hover:shadow-[0_0_30px_rgba(37,211,102,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
-                <div className="absolute inset-0 bg-white/20 blur-md group-hover:opacity-100 opacity-0 transition-opacity"></div>
-                <div className="bg-white p-2 rounded-full shadow-lg relative z-10 flex items-center justify-center">
-                  <WhatsAppIcon className="w-5 h-5 text-[#25D366]" />
-                </div>
-                <span className="text-base tracking-tight relative z-10">WhatsApp Channel</span>
+                <WhatsAppIcon className="w-5 h-5" />
+                <span className="text-[15px] tracking-wide">Join WhatsApp</span>
               </a>
 
               <a
                 href="https://t.me/+Gd917QQhofRiZGVk"
                 target="_blank"
-                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-gradient-to-r from-[#0088cc] to-[#0077b5] text-white font-extrabold py-3.5 px-8 rounded-full shadow-[0_0_30px_rgba(0,136,204,0.4)] hover:shadow-[0_0_30px_rgba(0,136,204,0.8)] border border-white/20 hover:scale-105 active:scale-95 transition-all relative overflow-hidden group"
+                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-[#1A1A24] text-white border border-white/10 font-bold py-4 px-8 rounded-full hover:bg-white/5 hover:border-white/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
-                <div className="absolute inset-0 bg-white/20 blur-md group-hover:opacity-100 opacity-0 transition-opacity"></div>
-                <div className="bg-white p-2 rounded-full shadow-lg relative z-10 flex items-center justify-center">
-                  <TelegramIcon className="w-5 h-5 text-[#0088cc]" />
-                </div>
-                <span className="text-base tracking-tight relative z-10">Telegram Channel</span>
+                <TelegramIcon className="w-5 h-5 text-[#0088cc]" />
+                <span className="text-[15px] tracking-wide">Join Telegram</span>
               </a>
             </motion.div>
           </div>
         </section>
 
-        {/* SPECIAL OFFER BANNER (If Active) */}
+        {/* PREMIUM SPECIAL OFFER BANNER (If Active) */}
         {specialOffer && (
-          <div className="w-full max-w-4xl mx-auto px-6 mb-10 -mt-16 relative z-20">
+          <div className="w-full max-w-5xl mx-auto px-6 mb-16 -mt-10 relative z-20">
             <motion.div 
               initial={{ opacity: 0, y: 20 }} 
               animate={{ opacity: 1, y: 0 }} 
-              className="bg-gradient-to-r from-[#d4af37]/20 via-[#ffd700]/30 to-[#d4af37]/20 p-1 rounded-3xl shadow-[0_0_50px_rgba(255,215,0,0.6),0_0_100px_rgba(212,175,55,0.4)] animate-pulse border-2 border-[#ffd700]/60 relative"
+              className="bg-[#111116] rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-8 border border-[#d4af37]/30 shadow-2xl relative overflow-hidden group"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-[#ffd700]/10 via-[#ffffff]/20 to-[#ffd700]/10 blur-xl z-0 rounded-3xl"></div>
-              <div className="bg-[#0f0a14]/80 backdrop-blur-xl rounded-[22px] p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-[#ffd700]/40 relative overflow-hidden group z-10">
-                
-                {/* Glow behind */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-gradient-to-r from-transparent via-[#ffd700]/30 to-transparent rotate-45 blur-3xl pointer-events-none group-hover:via-[#ffd700]/50 transition-all duration-700"></div>
-
-                <div className="flex-1 text-center md:text-left relative z-10">
-                  <div className="inline-block bg-gradient-to-r from-[#D4AF37] to-[#FFF8D6] text-black text-[10px] sm:text-xs font-black uppercase tracking-widest py-1 px-3 rounded-full mb-3 shadow-[0_0_20px_rgba(212,175,55,0.6)] border border-white/40">
-                    🔥 LIMITED TIME OFFER
-                  </div>
-                  <h3 className="text-2xl sm:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#ffffff] via-[#FFF8D6] to-[#D4AF37] uppercase tracking-tighter mb-2 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]">
-                    {specialOffer.name}
-                  </h3>
-                  <p className="text-[#D4AF37] text-sm sm:text-base font-bold drop-shadow-[0_0_5px_rgba(212,175,55,0.2)]">
-                    Exclusive VIP Access • Instant Win • {specialOffer.durationDays} Days
-                  </p>
+              <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-[#d4af37]/5 rounded-full blur-[80px] pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
+              <div className="flex-1 text-center md:text-left relative z-10">
+                <div className="inline-block bg-[#1A1A24] border border-white/10 text-[#d4af37] text-[10px] sm:text-xs font-black uppercase tracking-widest py-1.5 px-4 rounded-full mb-4">
+                  🔥 LIMITED TIME OFFER
                 </div>
-
-                <div className="flex flex-col items-center gap-3 relative z-10 shrink-0 w-full md:w-auto">
-                  <div className="text-3xl sm:text-5xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]">
-                    {specialOffer.price.toLocaleString()} UGX
-                  </div>
-                  <button 
-                    onClick={() => openModal(specialOffer.name, `${Math.floor(specialOffer.price / 1000)}k`)} 
-                    className="w-full md:w-auto bg-gradient-to-r from-[#ffd700] to-[#d4af37] hover:from-[#ffffff] hover:to-[#ffd700] text-black font-black py-4 px-10 rounded-2xl shadow-[0_0_30px_rgba(255,215,0,0.8)] hover:shadow-[0_0_50px_rgba(255,215,0,1)] hover:scale-110 active:scale-95 transition-all uppercase tracking-widest flex items-center justify-center gap-2 group/btn"
-                  >
-                    <span>BUY NOW</span>
-                    <Send size={18} className="group-hover/btn:translate-x-1 transition-transform" />
-                  </button>
+                <h3 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tighter mb-2">
+                  {specialOffer.name}
+                </h3>
+                <p className="text-gray-400 text-sm sm:text-base font-medium">
+                  Exclusive VIP Access • Instant Win • {specialOffer.durationDays} Days
+                </p>
+              </div>
+              <div className="flex flex-col items-center gap-4 relative z-10 shrink-0 w-full md:w-auto">
+                <div className="text-4xl sm:text-5xl font-black text-[#d4af37]">
+                  {specialOffer.price.toLocaleString()} UGX
                 </div>
-
+                <button 
+                  onClick={() => openModal(specialOffer.name, `${Math.floor(specialOffer.price / 1000)}k`)} 
+                  className="w-full md:w-auto bg-[#d4af37] text-black font-black py-4 px-10 rounded-xl hover:bg-[#F4E3A6] transition-colors uppercase tracking-widest flex items-center justify-center gap-2 group/btn"
+                >
+                  <span>BUY NOW</span>
+                  <Send size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+                </button>
               </div>
             </motion.div>
           </div>
@@ -297,22 +296,15 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
           {isPackagesLoading ? <PackagesSkeleton /> : (
             <>
               <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 px-4 md:px-0">
+            {/* VIP TIERS */}
             {/* BRONZE */}
-            <motion.div whileHover={{ y: -10, scale: 1.02 }} variants={itemVariants} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/40 shadow-[0_0_30px_rgba(205,127,50,0.1)] hover:shadow-[0_0_40px_rgba(205,127,50,0.2)] transition-all duration-300">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#cd7f32] to-transparent opacity-50"></div>
-              <div className="absolute top-4">
-                <span className="text-5xl drop-shadow-[0_0_15px_rgba(205,127,50,0.8)]">👑</span>
-              </div>
-
-              <div className="mt-8 w-full text-center">
-                <h3 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#eeb98c] to-[#cd7f32] tracking-widest uppercase mb-1">BRONZE VIP</h3>
-                <p className="text-gray-400 text-sm font-medium mb-6">2 Weeks Subscription</p>
-              </div>
-
-              <div className="w-full bg-black/40 rounded-2xl p-3 mb-4 text-left border border-white/5 backdrop-blur-md flex-1">
-                {renderPackageBtn("Bronze: ODD 1.5 Normal", "10k", "ODD 1.5 Normal", "text-[#cd7f32]", "bg-[#cd7f32]")}
-                {renderPackageBtn("Bronze: ODD 2", "20k", "ODD 2", "text-[#cd7f32]", "bg-[#cd7f32]")}
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-8 pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/20 hover:border-[#cd7f32]/40 bg-[#0A0A0F]/60 backdrop-blur-md transition-all duration-300">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#cd7f32] to-[#8c5622] flex items-center justify-center text-2xl shadow-lg mb-6 text-black">🥉</div>
+              <h3 className="text-2xl font-black text-white tracking-widest uppercase mb-1">BRONZE VIP</h3>
+              <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-6">1 Week Subscription</p>
+              <div className="w-full bg-[#111116] rounded-2xl p-4 text-left border border-white/5 flex-1 space-y-1">
                 {renderPackageBtn("Bronze: ODD 1.5 Lifechanger", "30k", "ODD 1.5 Lifechanger", "text-[#cd7f32]", "bg-[#cd7f32]")}
+                {renderPackageBtn("Bronze: ODD 2", "20k", "ODD 2", "text-[#cd7f32]", "bg-[#cd7f32]")}
                 {renderPackageBtn("Bronze: ODD 3", "30k", "ODD 3", "text-[#cd7f32]", "bg-[#cd7f32]")}
                 {renderPackageBtn("Bronze: ODD 4", "40k", "ODD 4", "text-[#cd7f32]", "bg-[#cd7f32]")}
                 {renderPackageBtn("Bronze: ODD 5", "50k", "ODD 5", "text-[#cd7f32]", "bg-[#cd7f32]")}
@@ -320,18 +312,11 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             </motion.div>
 
             {/* SILVER */}
-            <motion.div whileHover={{ y: -10, scale: 1.02 }} variants={itemVariants} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden group border border-[#c0c0c0]/40 shadow-[0_0_30px_rgba(192,192,192,0.1)] hover:shadow-[0_0_40px_rgba(192,192,192,0.2)] transition-all duration-300">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#c0c0c0] to-transparent opacity-50"></div>
-              <div className="absolute top-4">
-                <span className="text-5xl grayscale brightness-150 drop-shadow-[0_0_15px_rgba(192,192,192,0.8)]">👑</span>
-              </div>
-
-              <div className="mt-8 w-full text-center">
-                <h3 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#ffffff] to-[#808080] tracking-widest uppercase mb-1">SILVER VIP</h3>
-                <p className="text-gray-400 text-sm font-medium mb-6">2 Weeks Subscription</p>
-              </div>
-
-              <div className="w-full bg-black/40 rounded-2xl p-3 mb-4 text-left border border-white/5 backdrop-blur-md flex-1">
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-8 pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#c0c0c0]/30 hover:border-[#c0c0c0]/50 bg-[#0A0A0F]/80 backdrop-blur-md transition-all duration-300 shadow-xl">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#ffffff] to-[#808080] flex items-center justify-center text-2xl shadow-lg mb-6 text-black">🥈</div>
+              <h3 className="text-2xl font-black text-white tracking-widest uppercase mb-1">SILVER VIP</h3>
+              <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-6">2 Weeks Subscription</p>
+              <div className="w-full bg-[#111116] rounded-2xl p-4 text-left border border-white/5 flex-1 space-y-1">
                 {renderPackageBtn("Silver: VIP", "50k", "VIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
                 {renderPackageBtn("Silver: AKATAMBULA", "50k", "AKATAMBULA", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black", "(1 Month)")}
                 {renderPackageBtn("Silver: ODD 8-10", "60k", "ODD 8-10", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
@@ -341,33 +326,25 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             </motion.div>
 
             {/* GOLD */}
-            <motion.div whileHover={{ y: -10, scale: 1.05 }} variants={itemVariants} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden group border border-[#d4af37]/60 shadow-[0_0_40px_rgba(212,175,55,0.2)] hover:shadow-[0_0_60px_rgba(212,175,55,0.4)] md:scale-105 z-10 transition-all duration-300">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent opacity-80"></div>
-              <div className="absolute top-6 -right-10 bg-gradient-to-b from-[#FFF8D6] to-[#D4AF37] text-black text-[10px] font-black tracking-widest py-1 px-10 transform rotate-45 shadow-lg">
-                MOST EXCLUSIVE
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-8 pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#d4af37]/50 hover:border-[#d4af37]/80 bg-[#111116] backdrop-blur-md transition-all duration-300 shadow-2xl md:scale-[1.02] z-10">
+              <div className="absolute top-5 -right-12 bg-[#d4af37] text-black text-[9px] font-black tracking-widest py-1 px-12 transform rotate-45 shadow-lg">
+                EXCLUSIVE
               </div>
-
-              <div className="absolute top-4">
-                <span className="text-5xl drop-shadow-[0_0_20px_rgba(212,175,55,0.8)] hue-rotate-30">👑</span>
-              </div>
-
-              <div className="mt-8 w-full text-center">
-                <h3 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-b from-[#FFF8D6] to-[#D4AF37] tracking-widest uppercase mb-1 glow-text">GOLD VIP</h3>
-                <p className="text-gray-400 text-sm font-medium mb-6">Monthly Subscription</p>
-              </div>
-
-              <div className="w-full bg-black/40 rounded-2xl p-3 mb-4 text-left border border-white/5 backdrop-blur-md flex-1">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FFF8D6] to-[#d4af37] flex items-center justify-center text-2xl shadow-lg mb-6 text-black">👑</div>
+              <h3 className="text-2xl font-black text-[#d4af37] tracking-widest uppercase mb-1">GOLD VIP</h3>
+              <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-6">Monthly Subscription</p>
+              <div className="w-full bg-[#1A1A24] rounded-2xl p-4 text-left border border-[#d4af37]/10 flex-1 space-y-1">
                 {renderPackageBtn("Gold: Akatafa/Akatemu", "50k", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: FAMILY", "80k", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: BIG STAKERS", "100k", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: ALL PACKAGES", "300k", "ALL PACKAGES", "text-[#00F0FF]", "bg-[#00F0FF]", "text-black")}
+                {renderPackageBtn("Gold: ALL PACKAGES", "300k", "ALL PACKAGES", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: SK Counter Attack", "350k", "SK Counter Attack", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: Account Management", "500k", "Account Management", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
               </div>
             </motion.div>
           </motion.div>
 
-            {/* BOTTOM PREMIUM SPLIT BANNER */}
+          {/* BOTTOM PREMIUM SPLIT BANNER */}
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="w-full max-w-5xl grid md:grid-cols-2 rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 relative mb-16 mx-4 md:mx-auto">
 
             {/* BALL ICON IN CENTER */}
