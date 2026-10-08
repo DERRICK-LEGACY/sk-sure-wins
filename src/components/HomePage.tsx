@@ -317,10 +317,10 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               <h3 className="text-2xl font-black text-white tracking-widest uppercase mb-1">SILVER VIP</h3>
               <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-6">2 Weeks Subscription</p>
               <div className="w-full bg-[#111116] rounded-2xl p-4 text-left border border-white/5 flex-1 space-y-1">
-                {renderPackageBtn("Silver: VIP", "50k", "VIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
                 {renderPackageBtn("Silver: AKATAMBULA", "50k", "AKATAMBULA", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black", "(1 Month)")}
-                {renderPackageBtn("Silver: ODD 8-10", "60k", "ODD 8-10", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
+                {renderPackageBtn("Silver: VIP", "60k", "VIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
                 {renderPackageBtn("Silver: VVIP", "70k", "VVIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
+                {renderPackageBtn("Silver: ODD 8-10", "80k", "ODD 8-10", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
                 {renderPackageBtn("Silver: ODD 20", "100k", "ODD 20", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
               </div>
             </motion.div>
