@@ -1,0 +1,21 @@
+const crypto = require('crypto');
+const apiKey = 'marz_clTJGirR1HYLFRUt';
+const apiSecret = 'NoNkshqQ9IkznuUbWb9G0F2nPaM9XETh';
+const apiBase = 'https://wallet.wearemarz.com/api/v1';
+const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
+
+fetch(`${apiBase}/collect-money`, {
+  method: 'POST',
+  headers: {
+    'Authorization': `Basic ${auth}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    amount: 5000,
+    phone_number: "+256712345678",
+    reference: crypto.randomUUID(),
+    country: "UG",
+    description: "Order #1042",
+    callback_url: "https://your-app.com/webhooks/marzpay"
+  })
+}).then(res => res.text()).then(text => console.log('old keys response:', text)).catch(err => console.error(err));

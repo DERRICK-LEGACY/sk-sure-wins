@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Outfit, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Preloader } from "@/components/Preloader";
+import { MaintenanceOverlay } from "@/components/MaintenanceOverlay";
 import { PWA } from "@/components/PWA";
 import { InstallPWA } from "@/components/InstallPWA";
 import { Analytics } from "@vercel/analytics/react";
@@ -64,6 +65,8 @@ export default function RootLayout({
         <PWA />
         <InstallPWA />
         <Preloader />
+        {/* Toggle maintenance mode by commenting/uncommenting the line below or controlling it via state/env */}
+        <MaintenanceOverlay />
         {children}
         <Analytics />
       </body>

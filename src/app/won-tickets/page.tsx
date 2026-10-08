@@ -22,20 +22,20 @@ export default async function WonTicketsPage() {
   return (
     <div className="min-h-screen bg-[#0f0a14] text-white flex flex-col">
       <Navbar />
-      
+
       <main className="flex-1 w-full max-w-4xl mx-auto py-24 px-6">
         <h1 className="text-4xl md:text-5xl font-black mb-12 text-center">
           Winning <span className="text-primary">Receipts</span>
         </h1>
-        
+
         <div className="grid gap-8">
           {tickets.map((ticket: any) => (
             <div key={ticket.id} className="bg-gradient-to-br from-[#2a133d] to-[#12071a] p-8 rounded-2xl border border-primary/20 flex flex-col gap-6 shadow-[0_10px_30px_rgba(234,179,8,0.1)]">
               <div className="w-full flex justify-between items-center mb-2">
-                 <span className="bg-[#25D366]/20 text-[#25D366] text-xs font-bold px-3 py-1 rounded-md uppercase border border-[#25D366]/30">Winning Ticket</span>
+                <span className="bg-[#25D366]/20 text-[#25D366] text-xs font-bold px-3 py-1 rounded-md uppercase border border-[#25D366]/30">Winning Ticket</span>
                 <span className="text-gray-500 text-sm">{new Date(ticket.createdAt).toLocaleDateString()}</span>
               </div>
-              
+
               {ticket.imageUrl && !ticket.imageUrl.includes('Upload+Failed') && !ticket.imageUrl.includes('placehold.co') ? (
                 <Image src={ticket.imageUrl} alt="Receipt" width={800} height={500} className="w-full h-auto object-contain bg-black/40 rounded-xl border border-white/10 max-h-[500px]" />
               ) : (
@@ -43,7 +43,7 @@ export default async function WonTicketsPage() {
                   <Trophy size={48} className="text-primary/50" />
                 </div>
               )}
-              
+
               {(ticket.bookingCode || ticket.description) && (
                 <div className="w-full mt-4 text-white text-xl font-bold bg-black/30 p-6 rounded-xl border border-white/5 text-center flex justify-center">
                   {((ticket.bookingCode || ticket.description).startsWith('http://') || (ticket.bookingCode || ticket.description).startsWith('https://')) ? (
@@ -60,6 +60,7 @@ export default async function WonTicketsPage() {
 
           {tickets.length === 0 && (
             <div className="text-gray-400 font-bold text-center p-12 bg-black/30 rounded-xl border border-white/5">
+              <div className="text-pink-300 font-bold text-end p-12 bg-pink/30 rounded-x1 border border-grey">This is the api update of the system  </div>
               No winning receipts have been uploaded yet.
             </div>
           )}
