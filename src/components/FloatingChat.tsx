@@ -288,21 +288,31 @@ export default function FloatingChat() {
         )}
       </AnimatePresence>
 
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="h-12 w-12 sm:h-14 sm:w-14 bg-[#111116] hover:bg-[#1A1A24] text-[#d4af37] rounded-full shadow-[0_0_20px_rgba(212,175,55,0.25)] flex items-center justify-center transition-all hover:scale-110 active:scale-95 relative border border-[#d4af37]/50 group z-50 glass-panel"
-      >
-        {isOpen ? (
-          <X size={24} className="sm:w-7 sm:h-7" />
-        ) : (
-          <MessageCircle size={24} className="sm:w-7 sm:h-7 stroke-[2]" />
+      <div className="flex items-center gap-3">
+        {!isOpen && (
+          <div className="bg-[#111116] border border-[#d4af37]/30 text-[#d4af37] px-4 py-2 rounded-full font-black text-sm tracking-widest uppercase shadow-[0_0_15px_rgba(212,175,55,0.2)] animate-pulse hidden sm:block">
+            Support
+          </div>
         )}
-        {!isOpen && unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] sm:text-xs font-black w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full border-2 border-[#111116] shadow-lg">
-            {unreadCount}
-          </span>
-        )}
-      </button>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="h-14 w-14 sm:h-16 sm:w-16 bg-[#111116] hover:bg-[#1A1A24] text-[#d4af37] rounded-full shadow-[0_0_20px_rgba(212,175,55,0.3)] flex items-center justify-center transition-all hover:scale-110 active:scale-95 relative border border-[#d4af37]/50 group z-50 glass-panel"
+        >
+          {isOpen ? (
+            <X size={26} className="sm:w-8 sm:h-8" />
+          ) : (
+            <div className="flex items-center justify-center relative">
+              <MessageCircle size={26} className="sm:w-8 sm:h-8 stroke-[2]" />
+              <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase tracking-wider text-[#d4af37] sm:hidden">Support</span>
+            </div>
+          )}
+          {!isOpen && unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs sm:text-sm font-black w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full border-2 border-[#111116] shadow-lg">
+              {unreadCount}
+            </span>
+          )}
+        </button>
+      </div>
     </div>
   );
 }

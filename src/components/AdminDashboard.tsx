@@ -51,19 +51,21 @@ function ConfirmDialog({ message, onConfirm, onCancel }: { message: string, onCo
 // --- Main Component ---
 
 const StatCard = ({ title, value, icon: Icon, color, subtitle }: { title: string, value: number, icon: React.ElementType, color: string, subtitle: string }) => (
-  <div className="bg-[#15151a] border border-white/5 p-6 rounded-3xl relative overflow-hidden group hover:border-white/10 transition-colors">
-    <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full blur-[40px] opacity-20 pointer-events-none transition-opacity group-hover:opacity-40`} style={{ backgroundColor: color }}></div>
-    <div className="flex justify-between items-start mb-4 relative z-10">
+  <div className="bg-[#0A0A0F]/80 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-[2.5rem] relative overflow-hidden group hover:border-white/20 transition-all shadow-[0_15px_40px_rgba(0,0,0,0.4)]">
+    <div className={`absolute -right-4 -top-4 w-32 h-32 rounded-full blur-[60px] opacity-20 pointer-events-none transition-opacity group-hover:opacity-40`} style={{ backgroundColor: color }}></div>
+    <div className="flex justify-between items-start mb-6 relative z-10">
       <div>
-        <p className="text-gray-400 text-sm font-bold tracking-wider uppercase mb-1">{title}</p>
-        <h4 className="text-3xl font-black text-white">{value}</h4>
+        <p className="text-gray-400 text-xs font-black tracking-widest uppercase mb-2">{title}</p>
+        <h4 className="text-4xl font-black text-white tracking-tight">{value}</h4>
       </div>
-      <div className="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/5 shadow-inner" style={{ backgroundColor: `${color}15`, color: color }}>
-        <Icon size={24} />
+      <div className="w-14 h-14 rounded-2xl flex items-center justify-center border border-white/10 shadow-lg" style={{ backgroundColor: `${color}15`, color: color }}>
+        <Icon size={28} strokeWidth={1.5} />
       </div>
     </div>
-    <p className="text-xs text-gray-500 font-medium relative z-10">{subtitle}</p>
-
+    <p className="text-sm text-gray-500 font-medium relative z-10 flex items-center gap-2">
+      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: color }}></span>
+      {subtitle}
+    </p>
   </div>
 );
 
@@ -346,7 +348,10 @@ export default function AdminDashboard({
   );
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-white flex font-sans">
+    <div className="min-h-screen bg-[#050505] text-white flex font-sans relative overflow-hidden">
+      {/* Background Glows */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[300px] bg-red-600/10 blur-[150px] pointer-events-none rounded-full" />
+      
       <AnimatePresence>
         {confirmDelete && <ConfirmDialog message={confirmDelete.message} onConfirm={() => { confirmDelete.action(); setConfirmDelete(null); }} onCancel={() => setConfirmDelete(null)} />}
         {toast && (
@@ -371,25 +376,28 @@ export default function AdminDashboard({
       )}
 
       {/* --- SIDEBAR --- */}
-      <aside className={`fixed inset-y-0 left-0 w-72 bg-[#0d0d12] border-r border-white/5 flex flex-col z-50 transition-transform duration-300 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-        <div className="h-24 flex items-center justify-between px-8 border-b border-white/5 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#d4af37] to-[#f9d976]"></div>
-          <div className="flex items-center gap-3 relative z-10">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#d4af37] to-[#8c5622] flex items-center justify-center">
-              <ShieldCheck className="text-black" size={20} />
+      <aside className={`fixed inset-y-0 left-0 w-72 bg-[#0A0A0F]/90 backdrop-blur-2xl border-r border-white/10 flex flex-col z-50 transition-transform duration-300 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 shadow-[20px_0_50px_rgba(0,0,0,0.5)]`}>
+        <div className="h-28 flex items-center justify-between px-8 border-b border-white/10 relative overflow-hidden shrink-0">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-red-800"></div>
+          <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-red-600/20 blur-[40px] rounded-full pointer-events-none"></div>
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center shadow-[0_0_20px_rgba(239,68,68,0.3)] border border-red-500/30">
+              <ShieldCheck className="text-white" size={24} strokeWidth={1.5} />
             </div>
             <div>
-              <h1 className="text-xl font-black text-white leading-none">SK Admin</h1>
-              <span className="text-[10px] uppercase tracking-widest text-[#d4af37] font-bold">VIP Portal</span>
+              <h1 className="text-2xl font-black text-white leading-none tracking-tight">Admin</h1>
+              <span className="text-[10px] uppercase tracking-widest text-red-500 font-bold flex items-center gap-1.5 mt-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Security Portal
+              </span>
             </div>
           </div>
-          <button onClick={() => setMobileMenuOpen(false)} className="lg:hidden text-gray-400 hover:text-white relative z-10 p-2">
-            <X size={24} />
+          <button onClick={() => setMobileMenuOpen(false)} className="lg:hidden text-gray-400 hover:text-white relative z-10 p-2 bg-white/5 rounded-xl border border-white/10">
+            <X size={20} />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2 custom-scrollbar">
-          <p className="px-4 text-xs font-bold text-gray-600 uppercase tracking-widest mb-2">Overview</p>
+        <div className="flex-1 overflow-y-auto py-8 px-4 space-y-2 custom-scrollbar relative z-10">
+          <p className="px-4 text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4">Overview</p>
           {renderSidebarItem("dashboard", Activity, "Dashboard")}
           {renderSidebarItem("analytics", LineChart, "Live Analytics")}
           
@@ -406,26 +414,25 @@ export default function AdminDashboard({
           {renderSidebarItem("settings", Settings, "Settings")}
         </div>
 
-        <div className="p-4 border-t border-white/5">
-          <button onClick={async () => { await logoutAdmin(); router.refresh(); }} className="w-full flex justify-center gap-2 text-red-500 bg-red-500/10 px-4 py-3 rounded-xl font-bold">
-            <LogOut size={18} /> Sign Out
+        <div className="p-6 border-t border-white/10 relative z-10 bg-[#0A0A0F]">
+          <button onClick={async () => { await logoutAdmin(); router.refresh(); }} className="w-full flex items-center justify-center gap-3 text-red-500 bg-red-500/10 hover:bg-red-500/20 px-4 py-4 rounded-2xl font-bold transition-colors border border-red-500/20">
+            <LogOut size={20} /> Secure Logout
           </button>
         </div>
       </aside>
 
       {/* --- MAIN CONTENT --- */}
-      <main className="flex-1 lg:ml-72 min-h-[100dvh] flex flex-col relative overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#d4af37]/5 blur-[120px] rounded-full pointer-events-none"></div>
-
-        <header className="lg:hidden h-20 bg-[#0d0d12] flex justify-between px-6 items-center sticky top-0 z-30 border-b border-white/5">
+      <main className="flex-1 lg:ml-72 min-h-[100dvh] flex flex-col relative overflow-hidden z-10">
+        
+        <header className="lg:hidden h-24 bg-[#0A0A0F]/80 backdrop-blur-xl flex justify-between px-6 items-center sticky top-0 z-30 border-b border-white/10">
           <div className="flex items-center gap-4">
-            <button onClick={() => setMobileMenuOpen(true)} className="text-white p-2 bg-white/5 rounded-lg"><Menu size={24} /></button>
-            <h1 className="text-xl font-black">SK Admin</h1>
+            <button onClick={() => setMobileMenuOpen(true)} className="text-white p-3 bg-white/5 border border-white/10 rounded-xl"><Menu size={24} /></button>
+            <h1 className="text-xl font-black tracking-tight">System Admin</h1>
           </div>
-          <button onClick={async () => { await logoutAdmin(); router.refresh(); }} className="text-red-500 p-2"><LogOut size={20} /></button>
+          <button onClick={async () => { await logoutAdmin(); router.refresh(); }} className="text-red-500 p-3 bg-red-500/10 border border-red-500/20 rounded-xl"><LogOut size={20} /></button>
         </header>
 
-        <div className="flex-1 p-6 md:p-10 z-10 relative">
+        <div className="flex-1 p-6 md:p-12 relative">
           <AnimatePresence mode="wait">
             
             {activeTab === "dashboard" && (
