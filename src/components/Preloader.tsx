@@ -2,12 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export function Preloader() {
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(0);
+  const pathname = usePathname();
 
   useEffect(() => {
+    // Reset state on route change
+    setIsLoading(true);
+    setCount(0);
+
     // Number counter animation
     let current = 0;
     const interval = setInterval(() => {
@@ -17,18 +23,18 @@ export function Preloader() {
       if (current === 100) {
         clearInterval(interval);
       }
-    }, 30);
+    }, 30); // Or speed it up for route changes if desired
 
     // Hide preloader after animation completes
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2500);
+    }, 1500); // reduced from 2500 for a slightly faster route transition
 
     return () => {
       clearInterval(interval);
       clearTimeout(timer);
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <AnimatePresence>
