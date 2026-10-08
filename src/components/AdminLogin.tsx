@@ -4,6 +4,7 @@ import { useState } from "react";
 import { LockKeyhole, ArrowRight } from "lucide-react";
 import { loginAdmin } from "@/app/actions";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 export default function AdminLogin() {
@@ -31,53 +32,85 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-[#0f0a14] text-white flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#1a1525] border border-white/10 p-8 rounded-3xl shadow-2xl relative overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-40 h-40 bg-red-500/10 blur-[60px] rounded-full pointer-events-none"></div>
+    <div className="min-h-[100dvh] bg-[#050505] text-white flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Hyper Background for Admin */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-red-600/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#D4AF37]/5 rounded-full blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5" />
+      </div>
 
-        <div className="text-center mb-8 relative z-10">
-          <div className="w-16 h-16 bg-gradient-to-br from-red-500/30 to-transparent rounded-2xl flex items-center justify-center mx-auto mb-6 border border-red-500/40 shadow-[0_0_20px_rgba(239,68,68,0.2)]">
-            <LockKeyhole className="text-red-400" size={32} />
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="w-full max-w-md bg-[#0A0A0F]/80 backdrop-blur-2xl border border-white/10 p-8 md:p-10 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.8)] relative z-10"
+      >
+        <div className="text-center mb-8 relative">
+          <motion.div 
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+            className="w-20 h-20 bg-gradient-to-br from-red-600/20 to-transparent rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/30 shadow-[0_0_30px_rgba(239,68,68,0.2)] relative"
+          >
+            <div className="absolute inset-0 bg-red-500/10 rounded-full animate-ping opacity-30"></div>
+            <LockKeyhole className="text-red-500" size={36} strokeWidth={1.5} />
+          </motion.div>
+          <h1 className="text-3xl font-black text-white tracking-tight mb-3">System Admin</h1>
+          <div className="flex items-center justify-center gap-2 text-sm text-red-400 bg-red-500/10 w-max mx-auto px-3 py-1 rounded-full border border-red-500/20">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+            <span className="font-semibold tracking-widest uppercase text-xs">Restricted Access</span>
           </div>
-          <h1 className="text-3xl font-black text-white tracking-tight mb-2">Admin Access</h1>
-          <p className="text-gray-400">Enter admin password to continue</p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6 relative z-10">
-          <div>
-            <input
-              type="password"
-              placeholder="Enter password"
-              className="w-full bg-black/50 border border-white/10 px-5 py-4 rounded-xl outline-none text-lg text-white focus:border-red-400 focus:ring-1 focus:ring-red-400 transition-all"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Master Password</label>
+            <div className="flex bg-black/40 border border-white/10 rounded-2xl overflow-hidden focus-within:border-red-500/50 focus-within:bg-white/[0.02] transition-all">
+              <input
+                type="password"
+                placeholder="Enter master key"
+                className="w-full bg-transparent px-5 py-4 outline-none text-lg text-white font-medium"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
           </div>
 
           {error && (
-            <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
-              <p className="text-sm text-red-400 font-bold">{error}</p>
-            </div>
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              className="p-4 bg-red-500/5 border border-red-500/20 rounded-2xl overflow-hidden"
+            >
+              <p className="text-sm text-red-400 font-bold text-center">{error}</p>
+            </motion.div>
           )}
 
-          <button
+          <motion.button
+            whileHover={{ scale: password ? 1.02 : 1 }}
+            whileTap={{ scale: password ? 0.98 : 1 }}
             disabled={!password || loading}
             type="submit"
-            className="w-full py-4 rounded-xl bg-gradient-to-r from-red-500 to-red-700 text-white font-extrabold transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_5px_15px_rgba(239,68,68,0.2)] flex items-center justify-center gap-2"
+            className="w-full py-4 rounded-2xl bg-gradient-to-r from-red-600 to-red-800 text-white font-extrabold transition-all disabled:opacity-30 disabled:grayscale shadow-[0_5px_20px_rgba(239,68,68,0.3)] flex items-center justify-center gap-3 text-lg"
           >
             {loading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
             ) : (
-              <>LOGIN <ArrowRight size={20} /></>
+              <>
+                AUTHORIZE <ArrowRight size={22} strokeWidth={2.5} />
+              </>
             )}
-          </button>
+          </motion.button>
         </form>
 
         <div className="mt-8 text-center relative z-10">
-          <Link href="/" className="text-gray-500 hover:text-gray-400 text-sm">Return to Homepage</Link>
+          <Link href="/" className="text-gray-500 hover:text-white transition-colors text-sm font-semibold flex items-center justify-center gap-2">
+            <ArrowRight size={14} className="rotate-180" /> Back to Safety
+          </Link>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

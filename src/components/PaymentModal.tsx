@@ -230,23 +230,24 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                   initial={{ x: 20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   exit={{ x: -20, opacity: 0 }}
-                  className="relative z-10 space-y-4"
+                  className="relative z-10 space-y-5"
                 >
-                  <p className="text-center text-gray-400 mb-6 text-sm">Select your mobile money provider</p>
+                  <p className="text-center text-gray-400 font-medium mb-8 text-sm tracking-wide">Select your preferred payment method</p>
                   
                   <button
                     onClick={() => {
                       setNetwork("MTN");
                       setStep("details");
                     }}
-                    className="w-full flex items-center p-4 rounded-xl border border-yellow-400/30 bg-yellow-400/5 hover:bg-yellow-400/10 transition-colors group"
+                    className="w-full flex items-center p-5 rounded-2xl border border-[#ffcc00]/20 bg-gradient-to-r from-[#ffcc00]/5 to-transparent hover:from-[#ffcc00]/10 hover:border-[#ffcc00]/50 transition-all duration-300 group shadow-lg relative overflow-hidden"
                   >
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-white border border-[#ffcc00]/50 shadow-[0_0_15px_rgba(255,204,0,0.2)]">
-                      <Image src="/MTNLOGO.jpg" alt="MTN" width={48} height={48} className="w-full h-full object-cover scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#ffcc00]/10 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none"></div>
+                    <div className="w-14 h-14 rounded-full overflow-hidden flex items-center justify-center mr-5 group-hover:scale-110 transition-transform bg-white border-2 border-[#ffcc00] shadow-[0_0_20px_rgba(255,204,0,0.4)] relative z-10">
+                      <Image src="/MTNLOGO.jpg" alt="MTN" width={56} height={56} className="w-full h-full object-cover scale-110" />
                     </div>
-                    <div className="text-left flex-1">
-                      <h4 className="text-white font-bold text-lg">MTN Mobile Money</h4>
-                      <p className="text-gray-400 text-xs">Instant Access via MTN</p>
+                    <div className="text-left flex-1 relative z-10">
+                      <h4 className="text-white font-black text-xl tracking-tight">MTN Mobile Money</h4>
+                      <p className="text-[#ffcc00]/80 font-semibold text-xs tracking-wider uppercase mt-1">Instant Activation</p>
                     </div>
                   </button>
 
@@ -255,14 +256,15 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                       setNetwork("AIRTEL");
                       setStep("details");
                     }}
-                    className="w-full flex items-center p-4 rounded-xl border border-red-500/30 bg-red-500/5 hover:bg-red-500/10 transition-colors group"
+                    className="w-full flex items-center p-5 rounded-2xl border border-[#ff0000]/20 bg-gradient-to-r from-[#ff0000]/5 to-transparent hover:from-[#ff0000]/10 hover:border-[#ff0000]/50 transition-all duration-300 group shadow-lg relative overflow-hidden"
                   >
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-white border border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
-                      <Image src="/AIRTELLOGO.png" alt="Airtel" width={48} height={48} className="w-full h-full object-cover scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#ff0000]/10 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none"></div>
+                    <div className="w-14 h-14 rounded-full overflow-hidden flex items-center justify-center mr-5 group-hover:scale-110 transition-transform bg-white border-2 border-[#ff0000] shadow-[0_0_20px_rgba(255,0,0,0.4)] relative z-10">
+                      <Image src="/AIRTELLOGO.png" alt="Airtel" width={56} height={56} className="w-full h-full object-cover scale-110" />
                     </div>
-                    <div className="text-left">
-                      <h4 className="text-white font-bold text-lg">Airtel Money</h4>
-                      <p className="text-gray-400 text-xs">Instant Access via Airtel</p>
+                    <div className="text-left relative z-10">
+                      <h4 className="text-white font-black text-xl tracking-tight">Airtel Money</h4>
+                      <p className="text-[#ff0000]/80 font-semibold text-xs tracking-wider uppercase mt-1">Instant Activation</p>
                     </div>
                   </button>
 
@@ -271,14 +273,15 @@ export default function PaymentModal({ isOpen, onClose, packageName, price, tier
                       setNetwork("CARD");
                       setStep("details");
                     }}
-                    className="w-full flex items-center p-4 rounded-xl border border-blue-500/30 bg-blue-500/5 hover:bg-blue-500/10 transition-colors group mt-2"
+                    className="w-full flex items-center p-5 rounded-2xl border border-blue-500/20 bg-gradient-to-r from-blue-500/5 to-transparent hover:from-blue-500/10 hover:border-blue-500/50 transition-all duration-300 group shadow-lg relative overflow-hidden mt-4"
                   >
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center mr-4 group-hover:scale-105 transition-transform bg-blue-500/20 border border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
-                      <CreditCard className="text-blue-400 w-6 h-6" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/10 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none"></div>
+                    <div className="w-14 h-14 rounded-full overflow-hidden flex items-center justify-center mr-5 group-hover:scale-110 transition-transform bg-blue-500/20 border-2 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.4)] relative z-10">
+                      <CreditCard className="text-blue-400 w-7 h-7" />
                     </div>
-                    <div className="text-left">
-                      <h4 className="text-white font-bold text-lg">Credit / Debit Card</h4>
-                      <p className="text-gray-400 text-xs">Visa, Mastercard (International)</p>
+                    <div className="text-left relative z-10">
+                      <h4 className="text-white font-black text-xl tracking-tight">Credit / Debit Card</h4>
+                      <p className="text-blue-400/80 font-semibold text-xs tracking-wider uppercase mt-1">Global Payments</p>
                     </div>
                   </button>
                 </motion.div>

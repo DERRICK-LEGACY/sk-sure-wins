@@ -428,9 +428,8 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                 <div className="space-y-3 text-base font-black text-white/90 md:pl-6">
                   {[
                     { name: "Life Changer: ODD 1.20", price: "50,000", label: "ODD 1.20" },
-                    { name: "Life Changer: ODD 1.50", price: "60,000", label: "ODD 1.50" },
-                    { name: "Life Changer: ODD 2", price: "100,000", label: "ODD 2" },
-                    { name: "Life Changer: ODD 3", price: "200,000", label: "ODD 3" }
+                    { name: "Life Changer: ODD 1.30", price: "50,000", label: "ODD 1.30" },
+                    { name: "Life Changer: ODD 1.50", price: "50,000", label: "ODD 1.50" }
                   ].map((pkg, idx) => (
                     <button key={idx} onClick={() => openModal(pkg.name, pkg.price)} className="relative w-full flex justify-between items-center px-5 py-4 rounded-2xl bg-[#08080A]/60 hover:bg-[#111116] border border-white/5 hover:border-[#D4AF37]/30 transition-all duration-300 group/btn overflow-hidden shadow-2xl backdrop-blur-sm">
                       <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#D4AF37] group-hover/btn:w-full transition-all duration-500 z-20"></div>
@@ -458,7 +457,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               </div>
               <div className="z-10 flex items-center justify-between mt-auto">
                 <div className="hidden md:block text-right text-6xl text-white/5 font-light pr-8 transform scale-y-[2]">{'}'}</div>
-                <div className="text-5xl font-black text-[#D4AF37] drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-auto md:ml-0">150K</div>
+                <div className="text-5xl font-black text-[#D4AF37] drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-auto md:ml-0">50K</div>
               </div>
             </div>
 
