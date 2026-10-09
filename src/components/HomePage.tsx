@@ -297,7 +297,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             {/* BRONZE */}
             <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-8 pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/20 hover:border-[#cd7f32]/40 bg-[#0A0A0F]/60 backdrop-blur-md transition-all duration-300">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#cd7f32] to-[#8c5622] flex items-center justify-center text-2xl shadow-lg mb-6 text-black">🥉</div>
-              <h3 className="text-2xl font-black text-white tracking-widest uppercase mb-1">BRONZE VIP</h3>
+              <h3 className="text-2xl font-extrabold text-white uppercase mb-1">BRONZE VIP</h3>
               <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-6">1 Week Subscription</p>
               <div className="w-full bg-[#111116] rounded-2xl p-4 text-left border border-white/5 flex-1 space-y-1">
                 {renderPackageBtn("Bronze: ODD 1.5 Lifechanger", "30k", "ODD 1.5 Lifechanger", "text-[#cd7f32]", "bg-[#cd7f32]")}
@@ -311,7 +311,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             {/* SILVER */}
             <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-8 pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#c0c0c0]/30 hover:border-[#c0c0c0]/50 bg-[#0A0A0F]/80 backdrop-blur-md transition-all duration-300 shadow-xl">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#ffffff] to-[#808080] flex items-center justify-center text-2xl shadow-lg mb-6 text-black">🥈</div>
-              <h3 className="text-2xl font-black text-white tracking-widest uppercase mb-1">SILVER VIP</h3>
+              <h3 className="text-2xl font-extrabold text-white uppercase mb-1">SILVER VIP</h3>
               <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-6">2 Weeks Subscription</p>
               <div className="w-full bg-[#111116] rounded-2xl p-4 text-left border border-white/5 flex-1 space-y-1">
                 {renderPackageBtn("Silver: AKATAMBULA", "50k", "AKATAMBULA", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black", "(1 Month)")}
@@ -328,7 +328,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                 EXCLUSIVE
               </div>
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FFF8D6] to-[#d4af37] flex items-center justify-center text-2xl shadow-lg mb-6 text-black">👑</div>
-              <h3 className="text-2xl font-black text-[#d4af37] tracking-widest uppercase mb-1">GOLD VIP</h3>
+              <h3 className="text-2xl font-extrabold text-[#d4af37] uppercase mb-1">GOLD VIP</h3>
               <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-6">Monthly Subscription</p>
               <div className="w-full bg-[#1A1A24] rounded-2xl p-4 text-left border border-[#d4af37]/10 flex-1 space-y-1">
                 {renderPackageBtn("Gold: Akatafa/Akatemu", "50k", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
@@ -367,9 +367,9 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               <div className="z-10 mb-8 flex-1">
                 <div className="flex items-center gap-3 mb-2 justify-center md:justify-start border-b border-white/10 pb-4">
                   <Zap className="text-blue-400" size={28} />
-                  <h3 className="text-white text-3xl font-black uppercase tracking-widest text-center md:text-left drop-shadow-[0_0_10px_rgba(96,165,250,0.5)]">PREMIUM OFFER</h3>
+                  <h3 className="text-white text-3xl font-extrabold uppercase text-center md:text-left drop-shadow-[0_0_10px_rgba(96,165,250,0.5)]">PREMIUM OFFER</h3>
                 </div>
-                <p className="text-blue-400/80 text-sm font-black mb-6 text-center md:text-left tracking-widest uppercase">3 Weeks Subscription</p>
+                <p className="text-blue-400/80 text-xs font-bold mb-6 text-center md:text-left uppercase">3 Weeks Subscription</p>
                 <div className="space-y-3 text-base font-bold text-gray-200">
                   {[
                     { name: "Premium: Rent Project", price: "50,000", label: "Rent Project" },
@@ -419,9 +419,9 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               <div className="z-10 mb-8 flex-1">
                 <div className="flex items-center gap-3 mb-2 justify-center md:justify-start border-b border-white/10 pb-4 md:pl-6">
                   <Trophy className="text-[#D4AF37]" size={28} />
-                  <h3 className="text-white text-3xl font-black uppercase tracking-widest text-center md:text-left drop-shadow-[0_0_10px_rgba(212,175,55,0.5)]">LIFE CHANGER</h3>
+                  <h3 className="text-white text-3xl font-extrabold uppercase text-center md:text-left drop-shadow-[0_0_10px_rgba(212,175,55,0.5)]">LIFE CHANGER</h3>
                 </div>
-                <p className="text-[#D4AF37]/80 text-sm font-black mb-6 text-center md:text-left tracking-widest uppercase md:pl-6">2 Weeks Subscription</p>
+                <p className="text-[#D4AF37]/80 text-xs font-bold mb-6 text-center md:text-left uppercase md:pl-6">2 Weeks Subscription</p>
                 <div className="space-y-3 text-base font-black text-white/90 md:pl-6">
                   {[
                     { name: "Life Changer: ODD 1.20", price: "50,000", label: "ODD 1.20" },
