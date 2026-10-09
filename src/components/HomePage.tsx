@@ -113,32 +113,33 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
   };
 
   const renderPackageBtn = (name: string, price: string, label: string, colorClass: string, badgeBgClass: string, textColorClass: string = 'text-black', subtext?: string) => (
-    <button onClick={() => openModal(name, price)} className="relative w-full flex justify-between items-center mb-4 px-5 py-4 rounded-2xl bg-[#08080A]/60 hover:bg-[#111116] border border-white/5 hover:border-white/20 transition-all duration-300 group overflow-hidden shadow-2xl backdrop-blur-sm">
+    <button onClick={() => openModal(name, price)} className="relative w-full flex justify-between items-center mb-3 px-3.5 py-3 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl bg-[#08080A]/70 hover:bg-[#111116] border border-white/5 hover:border-white/20 transition-all duration-300 group overflow-hidden shadow-xl backdrop-blur-sm">
       {/* Laser line on hover */}
       <motion.div 
         className={`absolute bottom-0 left-0 h-[2px] w-0 ${badgeBgClass} group-hover:w-full transition-all duration-500 z-20`}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none"></div>
       
-      <div className="flex flex-col text-left pr-2 relative z-10">
-        <span className={`text-xs xl:text-sm font-black uppercase flex items-center gap-2 leading-tight mb-1 ${colorClass}`}>
+      <div className="flex flex-col text-left pr-2 relative z-10 min-w-0 flex-1">
+        <span className={`text-[11px] sm:text-xs xl:text-sm font-extrabold uppercase flex items-center gap-1.5 leading-tight mb-1 ${colorClass} truncate`}>
           <motion.div
             animate={{ rotate: [0, 15, -15, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+            className="shrink-0"
           >
-            <Zap size={14} className={`shrink-0 ${colorClass}`} />
+            <Zap size={13} className={`shrink-0 ${colorClass}`} />
           </motion.div>
-          <span className="tracking-widest">{label}</span>
+          <span className="truncate">{label}</span>
         </span>
-        <span className={`font-black text-white text-base xl:text-lg flex items-center gap-2 font-mono`}>
+        <span className={`font-black text-white text-sm sm:text-base xl:text-lg flex items-center gap-1.5 font-mono flex-wrap`}>
           {price} 
-          {subtext && <span className="text-[10px] text-gray-500 font-medium normal-case tracking-wide bg-white/5 px-2 py-0.5 rounded-full border border-white/10">{subtext}</span>}
+          {subtext && <span className="text-[9px] sm:text-[10px] text-gray-400 font-medium normal-case tracking-normal bg-white/5 px-1.5 py-0.5 rounded-full border border-white/10 shrink-0">{subtext}</span>}
         </span>
       </div>
       
-      <div className={`${badgeBgClass} ${textColorClass} flex items-center justify-center w-12 h-12 rounded-xl group-hover:scale-110 transition-transform duration-500 shadow-[0_0_20px_rgba(0,0,0,0.8)] relative z-10 overflow-hidden`}>
+      <div className={`${badgeBgClass} ${textColorClass} flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(0,0,0,0.8)] relative z-10 overflow-hidden shrink-0 ml-1`}>
         <div className="absolute inset-0 bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <ShoppingCart size={18} className="relative z-10" />
+        <ShoppingCart size={16} className="relative z-10 shrink-0" />
       </div>
     </button>
   );
@@ -295,11 +296,11 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 px-4 md:px-0">
             {/* VIP TIERS */}
             {/* BRONZE */}
-            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-8 pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/20 hover:border-[#cd7f32]/40 bg-[#0A0A0F]/60 backdrop-blur-md transition-all duration-300">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#cd7f32] to-[#8c5622] flex items-center justify-center text-2xl shadow-lg mb-6 text-black">🥉</div>
-              <h3 className="text-2xl font-extrabold text-white uppercase mb-1">BRONZE VIP</h3>
-              <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-6">1 Week Subscription</p>
-              <div className="w-full bg-[#111116] rounded-2xl p-4 text-left border border-white/5 flex-1 space-y-1">
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-4 pt-6 sm:p-6 sm:pt-8 md:p-8 md:pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/20 hover:border-[#cd7f32]/40 bg-[#0A0A0F]/60 backdrop-blur-md transition-all duration-300">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#cd7f32] to-[#8c5622] flex items-center justify-center text-xl sm:text-2xl shadow-lg mb-4 sm:mb-6 text-black">🥉</div>
+              <h3 className="text-xl sm:text-2xl font-extrabold text-white uppercase mb-1">BRONZE VIP</h3>
+              <p className="text-gray-400 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6">1 Week Subscription</p>
+              <div className="w-full bg-[#111116] rounded-2xl p-2.5 sm:p-4 text-left border border-white/5 flex-1 space-y-1">
                 {renderPackageBtn("Bronze: ODD 1.5 Lifechanger", "30k", "ODD 1.5 Lifechanger", "text-[#cd7f32]", "bg-[#cd7f32]")}
                 {renderPackageBtn("Bronze: ODD 2", "20k", "ODD 2", "text-[#cd7f32]", "bg-[#cd7f32]")}
                 {renderPackageBtn("Bronze: ODD 3", "30k", "ODD 3", "text-[#cd7f32]", "bg-[#cd7f32]")}
@@ -309,11 +310,11 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             </motion.div>
 
             {/* SILVER */}
-            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-8 pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#c0c0c0]/30 hover:border-[#c0c0c0]/50 bg-[#0A0A0F]/80 backdrop-blur-md transition-all duration-300 shadow-xl">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#ffffff] to-[#808080] flex items-center justify-center text-2xl shadow-lg mb-6 text-black">🥈</div>
-              <h3 className="text-2xl font-extrabold text-white uppercase mb-1">SILVER VIP</h3>
-              <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-6">2 Weeks Subscription</p>
-              <div className="w-full bg-[#111116] rounded-2xl p-4 text-left border border-white/5 flex-1 space-y-1">
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-4 pt-6 sm:p-6 sm:pt-8 md:p-8 md:pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#c0c0c0]/30 hover:border-[#c0c0c0]/50 bg-[#0A0A0F]/80 backdrop-blur-md transition-all duration-300 shadow-xl">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#ffffff] to-[#808080] flex items-center justify-center text-xl sm:text-2xl shadow-lg mb-4 sm:mb-6 text-black">🥈</div>
+              <h3 className="text-xl sm:text-2xl font-extrabold text-white uppercase mb-1">SILVER VIP</h3>
+              <p className="text-gray-400 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6">2 Weeks Subscription</p>
+              <div className="w-full bg-[#111116] rounded-2xl p-2.5 sm:p-4 text-left border border-white/5 flex-1 space-y-1">
                 {renderPackageBtn("Silver: AKATAMBULA", "50k", "AKATAMBULA", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black", "(1 Month)")}
                 {renderPackageBtn("Silver: VIP", "60k", "VIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
                 {renderPackageBtn("Silver: VVIP", "70k", "VVIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
@@ -323,14 +324,14 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             </motion.div>
 
             {/* GOLD */}
-            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-8 pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#d4af37]/50 hover:border-[#d4af37]/80 bg-[#111116] backdrop-blur-md transition-all duration-300 shadow-2xl md:scale-[1.02] z-10">
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-4 pt-6 sm:p-6 sm:pt-8 md:p-8 md:pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#d4af37]/50 hover:border-[#d4af37]/80 bg-[#111116] backdrop-blur-md transition-all duration-300 shadow-2xl md:scale-[1.02] z-10">
               <div className="absolute top-5 -right-12 bg-[#d4af37] text-black text-[9px] font-black tracking-widest py-1 px-12 transform rotate-45 shadow-lg">
                 EXCLUSIVE
               </div>
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FFF8D6] to-[#d4af37] flex items-center justify-center text-2xl shadow-lg mb-6 text-black">👑</div>
-              <h3 className="text-2xl font-extrabold text-[#d4af37] uppercase mb-1">GOLD VIP</h3>
-              <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-6">Monthly Subscription</p>
-              <div className="w-full bg-[#1A1A24] rounded-2xl p-4 text-left border border-[#d4af37]/10 flex-1 space-y-1">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#FFF8D6] to-[#d4af37] flex items-center justify-center text-xl sm:text-2xl shadow-lg mb-4 sm:mb-6 text-black">👑</div>
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#d4af37] uppercase mb-1">GOLD VIP</h3>
+              <p className="text-gray-400 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6">Monthly Subscription</p>
+              <div className="w-full bg-[#1A1A24] rounded-2xl p-2.5 sm:p-4 text-left border border-[#d4af37]/10 flex-1 space-y-1">
                 {renderPackageBtn("Gold: Akatafa/Akatemu", "50k", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: FAMILY", "80k", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: BIG STAKERS", "100k", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
