@@ -208,31 +208,38 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
           <div className="w-full max-w-5xl mx-auto px-6 mb-16 -mt-10 relative z-20">
             <motion.div 
               initial={{ opacity: 0, y: 20 }} 
+        {/* PREMIUM SPECIAL OFFER BANNER (If Active) */}
+        {specialOffer && (
+          <div className="w-full max-w-4xl mx-auto px-4 mb-8 -mt-6 relative z-20">
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }} 
               animate={{ opacity: 1, y: 0 }} 
-              className="bg-[#111116] rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-8 border border-[#d4af37]/30 shadow-2xl relative overflow-hidden group"
+              className="bg-[#0b0b10]/90 backdrop-blur-md rounded-2xl p-4 sm:p-5 md:px-7 flex flex-col md:flex-row items-center justify-between gap-4 border border-[#d4af37]/35 shadow-[0_0_20px_rgba(212,175,55,0.18)] hover:shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:border-[#d4af37]/60 transition-all duration-300 relative overflow-hidden group"
             >
-              <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-[#d4af37]/5 rounded-full blur-[80px] pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
+              <div className="absolute -top-10 -right-10 w-48 h-48 bg-[#d4af37]/10 rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500"></div>
+              
               <div className="flex-1 text-center md:text-left relative z-10">
-                <div className="inline-block bg-[#1A1A24] border border-white/10 text-[#d4af37] text-[10px] sm:text-xs font-black uppercase tracking-widest py-1.5 px-4 rounded-full mb-4">
+                <div className="inline-flex items-center gap-1.5 bg-[#16161f] border border-[#d4af37]/30 text-[#d4af37] text-[10px] font-extrabold uppercase tracking-widest py-0.5 px-3 rounded-full mb-1.5">
                   🔥 LIMITED TIME OFFER
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tighter mb-2">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white uppercase tracking-tight mb-1">
                   {specialOffer.name}
                 </h3>
-                <p className="text-gray-400 text-sm sm:text-base font-medium">
+                <p className="text-gray-400 text-xs sm:text-sm font-medium">
                   Exclusive VIP Access • Instant Win • {specialOffer.durationDays} Days
                 </p>
               </div>
-              <div className="flex flex-col items-center gap-4 relative z-10 shrink-0 w-full md:w-auto">
-                <div className="text-4xl sm:text-5xl font-black text-[#d4af37]">
+
+              <div className="flex items-center gap-4 relative z-10 shrink-0 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-white/10 pt-3 md:pt-0">
+                <div className="text-xl sm:text-2xl font-black text-[#d4af37] drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]">
                   {specialOffer.price.toLocaleString()} UGX
                 </div>
                 <button 
                   onClick={() => openModal(specialOffer.name, `${Math.floor(specialOffer.price / 1000)}k`)} 
-                  className="w-full md:w-auto bg-[#d4af37] text-black font-black py-4 px-10 rounded-xl hover:bg-[#F4E3A6] transition-colors uppercase tracking-widest flex items-center justify-center gap-2 group/btn"
+                  className="bg-gradient-to-r from-[#d4af37] to-[#f4e3a6] hover:from-[#f4e3a6] hover:to-[#d4af37] text-black font-extrabold py-2.5 px-6 rounded-xl shadow-[0_0_12px_rgba(212,175,55,0.3)] hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] active:scale-95 transition-all text-xs sm:text-sm tracking-wide flex items-center justify-center gap-1.5 group/btn"
                 >
                   <span>BUY NOW</span>
-                  <Send size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+                  <Send size={14} className="group-hover/btn:translate-x-0.5 transition-transform" />
                 </button>
               </div>
             </motion.div>
@@ -243,41 +250,38 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
         <div className="w-full max-w-6xl mx-auto flex flex-col items-center px-6">
 
           {/* DAILY SPECIAL TICKET BANNER */}
-          <div className="w-full max-w-4xl mx-auto mb-16 relative z-20 mt-4">
+          <div className="w-full max-w-4xl mx-auto mb-10 relative z-20 mt-2">
             <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
+              initial={{ opacity: 0, y: 15 }} 
               whileInView={{ opacity: 1, y: 0 }} 
               viewport={{ once: true }}
-              className="bg-gradient-to-r from-blue-500/20 via-cyan-400/30 to-blue-500/20 p-1 rounded-3xl shadow-[0_0_40px_rgba(6,182,212,0.4)] border-2 border-cyan-400/50 relative overflow-hidden group"
+              className="bg-[#08121a]/95 backdrop-blur-md rounded-2xl p-4 sm:p-5 md:px-7 flex flex-col md:flex-row items-center justify-between gap-4 border border-cyan-400/35 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.35)] hover:border-cyan-400/60 transition-all duration-300 relative overflow-hidden group"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 via-white/10 to-cyan-400/10 blur-xl z-0 rounded-3xl"></div>
-              <div className="bg-[#0f172a]/90 backdrop-blur-xl rounded-[22px] p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 relative z-10 border border-cyan-400/30">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent rotate-45 blur-3xl pointer-events-none group-hover:via-cyan-400/40 transition-all duration-700"></div>
-                
-                <div className="flex-1 text-center md:text-left relative z-10">
-                  <div className="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 text-white text-[10px] sm:text-xs font-black uppercase tracking-widest py-1 px-3 rounded-full mb-3 shadow-[0_0_15px_rgba(6,182,212,0.6)] border border-white/20">
-                    ⚡ DAILY SPECIAL
-                  </div>
-                  <h3 className="text-2xl sm:text-4xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                    Daily Special Ticket
-                  </h3>
-                  <p className="text-cyan-300 text-sm sm:text-base font-bold drop-shadow-[0_0_5px_rgba(6,182,212,0.5)]">
-                    Guaranteed Wins • Expert Analysis • 24 Hours Access
-                  </p>
+              <div className="absolute -top-10 -left-10 w-48 h-48 bg-cyan-400/10 rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500"></div>
+              
+              <div className="flex-1 text-center md:text-left relative z-10">
+                <div className="inline-flex items-center gap-1.5 bg-cyan-950/60 border border-cyan-400/30 text-cyan-300 text-[10px] font-extrabold uppercase tracking-widest py-0.5 px-3 rounded-full mb-1.5">
+                  ⚡ DAILY SPECIAL
                 </div>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white uppercase tracking-tight mb-1">
+                  Daily Special Ticket
+                </h3>
+                <p className="text-cyan-300/80 text-xs sm:text-sm font-medium">
+                  Guaranteed Wins • Expert Analysis • 24 Hours Access
+                </p>
+              </div>
 
-                <div className="flex flex-col items-center gap-3 relative z-10 shrink-0 w-full md:w-auto">
-                  <div className="text-3xl sm:text-5xl font-black text-white drop-shadow-[0_0_15px_rgba(6,182,212,0.8)]">
-                    30,000 UGX
-                  </div>
-                  <button 
-                    onClick={() => openModal("Premium: Daily Special Ticket", "30k")} 
-                    className="w-full md:w-auto bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-black py-4 px-10 rounded-2xl shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:shadow-[0_0_40px_rgba(6,182,212,0.9)] hover:scale-110 active:scale-95 transition-all uppercase tracking-widest flex items-center justify-center gap-2 group/btn"
-                  >
-                    <span>BUY NOW</span>
-                    <Send size={18} className="group-hover/btn:translate-x-1 transition-transform" />
-                  </button>
+              <div className="flex items-center gap-4 relative z-10 shrink-0 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-white/10 pt-3 md:pt-0">
+                <div className="text-xl sm:text-2xl font-black text-white drop-shadow-[0_0_10px_rgba(6,182,212,0.6)]">
+                  30,000 UGX
                 </div>
+                <button 
+                  onClick={() => openModal("Premium: Daily Special Ticket", "30k")} 
+                  className="bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-white font-extrabold py-2.5 px-6 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.4)] hover:shadow-[0_0_22px_rgba(6,182,212,0.65)] active:scale-95 transition-all text-xs sm:text-sm tracking-wide flex items-center justify-center gap-1.5 group/btn"
+                >
+                  <span>BUY NOW</span>
+                  <Send size={14} className="group-hover/btn:translate-x-0.5 transition-transform" />
+                </button>
               </div>
             </motion.div>
           </div>
