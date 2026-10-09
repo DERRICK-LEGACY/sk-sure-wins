@@ -121,7 +121,8 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
     textColorClass: string = 'text-black', 
     subtext?: string,
     customBorderClass?: string,
-    badgeTag?: string
+    badgeTag?: string,
+    badgeStyleClass?: string
   ) => (
     <button 
       onClick={() => openModal(name, price)} 
@@ -146,7 +147,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             <span className="truncate">{label}</span>
           </span>
           {badgeTag && (
-            <span className="text-[9px] font-extrabold uppercase bg-pink-500/20 text-pink-300 border border-pink-500/40 px-1.5 py-0.5 rounded-full animate-pulse shrink-0">
+            <span className={`text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full animate-pulse shrink-0 ${badgeStyleClass || 'bg-pink-500/20 text-pink-300 border border-pink-500/40'}`}>
               {badgeTag}
             </span>
           )}
@@ -355,9 +356,9 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                 {renderPackageBtn("Gold: Akatafa/Akatemu", "50,000", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: FAMILY", "80,000", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: BIG STAKERS", "100,000", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: ALL PACKAGES", "300,000", "ALL PACKAGES", "text-pink-400", "bg-gradient-to-r from-pink-500 to-rose-500", "text-white", undefined, "border-pink-500/60 shadow-[0_0_20px_rgba(236,72,153,0.4)]", "🔥 BEST VALUE")}
-                {renderPackageBtn("Gold: SK Counter Attack", "350,000", "SK Counter Attack", "text-pink-400", "bg-gradient-to-r from-pink-500 to-rose-500", "text-white", undefined, "border-pink-500/60 shadow-[0_0_20px_rgba(236,72,153,0.4)]", "HOT")}
-                {renderPackageBtn("Gold: Account Management", "500,000", "Account Management", "text-pink-400", "bg-gradient-to-r from-pink-500 to-rose-500", "text-white", undefined, "border-pink-500/60 shadow-[0_0_20px_rgba(236,72,153,0.4)]", "👑 VIP PRO")}
+                {renderPackageBtn("Gold: ALL PACKAGES", "300,000", "ALL PACKAGES", "text-pink-400", "bg-gradient-to-r from-pink-500 to-rose-500", "text-white", undefined, "border-pink-500/60 shadow-[0_0_20px_rgba(236,72,153,0.4)]", "🔥 BEST VALUE", "bg-pink-500/20 text-pink-300 border border-pink-500/40")}
+                {renderPackageBtn("Gold: SK Counter Attack", "350,000", "SK Counter Attack", "text-lime-400", "bg-gradient-to-r from-lime-400 to-emerald-500", "text-black font-extrabold", undefined, "border-lime-400/60 shadow-[0_0_20px_rgba(163,230,53,0.4)]", "⚡ HOT", "bg-lime-500/20 text-lime-300 border border-lime-500/40")}
+                {renderPackageBtn("Gold: Account Management", "500,000", "Account Management", "text-sky-400", "bg-gradient-to-r from-sky-400 to-blue-600", "text-black font-extrabold", undefined, "border-sky-400/60 shadow-[0_0_20px_rgba(56,189,248,0.4)]", "👑 VIP PRO", "bg-sky-500/20 text-sky-300 border border-sky-500/40")}
               </div>
             </motion.div>
           </motion.div>
