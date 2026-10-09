@@ -131,7 +131,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
           </motion.div>
           <span className="truncate">{label}</span>
         </span>
-        <span className={`font-black text-white text-sm sm:text-base xl:text-lg flex items-center gap-1.5 font-mono flex-wrap`}>
+        <span className={`font-extrabold text-white text-sm sm:text-base xl:text-lg flex items-center gap-1.5 font-sans flex-wrap`}>
           {price} 
           {subtext && <span className="text-[9px] sm:text-[10px] text-gray-400 font-medium normal-case tracking-normal bg-white/5 px-1.5 py-0.5 rounded-full border border-white/10 shrink-0">{subtext}</span>}
         </span>
@@ -389,7 +389,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                           </motion.div>
                           <span className="truncate">{pkg.label}</span>
                         </span>
-                        <span className="font-black text-blue-400 text-base xl:text-lg flex items-center gap-2 font-mono">
+                        <span className="font-extrabold text-blue-400 text-base xl:text-lg flex items-center gap-2 font-sans">
                           {pkg.price}
                         </span>
                       </div>
@@ -440,7 +440,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                           </motion.div>
                           <span className="truncate">{pkg.label}</span>
                         </span>
-                        <span className="font-black text-[#D4AF37] text-base xl:text-lg flex items-center gap-2 font-mono">
+                        <span className="font-extrabold text-[#D4AF37] text-base xl:text-lg flex items-center gap-2 font-sans">
                           {pkg.price}
                         </span>
                       </div>
