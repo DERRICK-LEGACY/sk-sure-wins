@@ -112,8 +112,21 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
     setModalOpen(true);
   };
 
-  const renderPackageBtn = (name: string, price: string, label: string, colorClass: string, badgeBgClass: string, textColorClass: string = 'text-black', subtext?: string) => (
-    <button onClick={() => openModal(name, price)} className="relative w-full flex justify-between items-center mb-3 px-3.5 py-3 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl bg-[#08080A]/70 hover:bg-[#111116] border border-white/5 hover:border-white/20 transition-all duration-300 group overflow-hidden shadow-xl backdrop-blur-sm">
+  const renderPackageBtn = (
+    name: string, 
+    price: string, 
+    label: string, 
+    colorClass: string, 
+    badgeBgClass: string, 
+    textColorClass: string = 'text-black', 
+    subtext?: string,
+    customBorderClass?: string,
+    badgeTag?: string
+  ) => (
+    <button 
+      onClick={() => openModal(name, price)} 
+      className={`relative w-full flex justify-between items-center mb-3 px-3.5 py-3 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl bg-[#08080A]/70 hover:bg-[#111116] border ${customBorderClass || 'border-white/5 hover:border-white/20'} transition-all duration-300 group overflow-hidden shadow-xl backdrop-blur-sm`}
+    >
       {/* Laser line on hover */}
       <motion.div 
         className={`absolute bottom-0 left-0 h-[2px] w-0 ${badgeBgClass} group-hover:w-full transition-all duration-500 z-20`}
@@ -121,16 +134,23 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none"></div>
       
       <div className="flex flex-col text-left pr-2 relative z-10 min-w-0 flex-1">
-        <span className={`text-[11px] sm:text-xs xl:text-sm font-extrabold uppercase flex items-center gap-1.5 leading-tight mb-1 ${colorClass} truncate`}>
-          <motion.div
-            animate={{ rotate: [0, 15, -15, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            className="shrink-0"
-          >
-            <Zap size={13} className={`shrink-0 ${colorClass}`} />
-          </motion.div>
-          <span className="truncate">{label}</span>
-        </span>
+        <div className="flex items-center gap-2 mb-1 flex-wrap">
+          <span className={`text-[11px] sm:text-xs xl:text-sm font-extrabold uppercase flex items-center gap-1.5 leading-tight ${colorClass} truncate`}>
+            <motion.div
+              animate={{ rotate: [0, 15, -15, 0] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+              className="shrink-0"
+            >
+              <Zap size={13} className={`shrink-0 ${colorClass}`} />
+            </motion.div>
+            <span className="truncate">{label}</span>
+          </span>
+          {badgeTag && (
+            <span className="text-[9px] font-extrabold uppercase bg-pink-500/20 text-pink-300 border border-pink-500/40 px-1.5 py-0.5 rounded-full animate-pulse shrink-0">
+              {badgeTag}
+            </span>
+          )}
+        </div>
         <span className={`font-extrabold text-white text-sm sm:text-base xl:text-lg flex items-center gap-1.5 font-sans flex-wrap`}>
           {price} 
           {subtext && <span className="text-[9px] sm:text-[10px] text-gray-400 font-medium normal-case tracking-normal bg-white/5 px-1.5 py-0.5 rounded-full border border-white/10 shrink-0">{subtext}</span>}
@@ -335,9 +355,9 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                 {renderPackageBtn("Gold: Akatafa/Akatemu", "50,000", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: FAMILY", "80,000", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: BIG STAKERS", "100,000", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: ALL PACKAGES", "300,000", "ALL PACKAGES", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: SK Counter Attack", "350,000", "SK Counter Attack", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: Account Management", "500,000", "Account Management", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: ALL PACKAGES", "300,000", "ALL PACKAGES", "text-pink-400", "bg-gradient-to-r from-pink-500 to-rose-500", "text-white", undefined, "border-pink-500/60 shadow-[0_0_20px_rgba(236,72,153,0.4)]", "🔥 BEST VALUE")}
+                {renderPackageBtn("Gold: SK Counter Attack", "350,000", "SK Counter Attack", "text-pink-400", "bg-gradient-to-r from-pink-500 to-rose-500", "text-white", undefined, "border-pink-500/60 shadow-[0_0_20px_rgba(236,72,153,0.4)]", "HOT")}
+                {renderPackageBtn("Gold: Account Management", "500,000", "Account Management", "text-pink-400", "bg-gradient-to-r from-pink-500 to-rose-500", "text-white", undefined, "border-pink-500/60 shadow-[0_0_20px_rgba(236,72,153,0.4)]", "👑 VIP PRO")}
               </div>
             </motion.div>
           </motion.div>
