@@ -78,3 +78,51 @@ h1, h2, h3, h4, h5, h6 {
 .marquee-track:hover {
   animation-play-state: paused;
 }
+
+/* Electric Quick Deal Glows */
+@keyframes electric-glow-gold {
+  0%, 100% {
+    box-shadow: 0 0 18px rgba(212, 175, 55, 0.45), 0 0 35px rgba(212, 175, 55, 0.25), inset 0 0 15px rgba(212, 175, 55, 0.15);
+    border-color: rgba(212, 175, 55, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 38px rgba(212, 175, 55, 0.85), 0 0 65px rgba(212, 175, 55, 0.5), inset 0 0 25px rgba(212, 175, 55, 0.35);
+    border-color: rgba(244, 227, 166, 1);
+  }
+}
+
+@keyframes electric-glow-cyan {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.55), 0 0 40px rgba(6, 182, 212, 0.3), inset 0 0 18px rgba(6, 182, 212, 0.2);
+    border-color: rgba(6, 182, 212, 0.65);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(6, 182, 212, 0.95), 0 0 75px rgba(59, 130, 246, 0.6), inset 0 0 32px rgba(6, 182, 212, 0.45);
+    border-color: rgba(165, 243, 252, 1);
+  }
+}
+
+@keyframes electric-sweep {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  50% { transform: translateX(250%) rotate(25deg); }
+  100% { transform: translateX(250%) rotate(25deg); }
+}
+
+.electric-card-gold {
+  animation: electric-glow-gold 2.4s ease-in-out infinite;
+}
+
+.electric-card-cyan {
+  animation: electric-glow-cyan 2s ease-in-out infinite;
+}
+
+.electric-beam {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: electric-sweep 3.5s ease-in-out infinite;
+  pointer-events: none;
+}

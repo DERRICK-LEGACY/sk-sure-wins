@@ -214,12 +214,13 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             <motion.div 
               initial={{ opacity: 0, y: 15 }} 
               animate={{ opacity: 1, y: 0 }} 
-              className="bg-[#0b0b10]/90 backdrop-blur-md rounded-2xl p-4 sm:p-5 md:px-7 flex flex-col md:flex-row items-center justify-between gap-4 border border-[#d4af37]/35 shadow-[0_0_20px_rgba(212,175,55,0.18)] hover:shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:border-[#d4af37]/60 transition-all duration-300 relative overflow-hidden group"
+              className="bg-[#0b0b10]/90 backdrop-blur-md rounded-2xl p-4 sm:p-5 md:px-7 flex flex-col md:flex-row items-center justify-between gap-4 border electric-card-gold relative overflow-hidden group"
             >
+              <div className="electric-beam"></div>
               <div className="absolute -top-10 -right-10 w-48 h-48 bg-[#d4af37]/10 rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500"></div>
               
               <div className="flex-1 text-center md:text-left relative z-10">
-                <div className="inline-flex items-center gap-1.5 bg-[#16161f] border border-[#d4af37]/30 text-[#d4af37] text-[10px] font-extrabold uppercase tracking-widest py-0.5 px-3 rounded-full mb-1.5">
+                <div className="inline-flex items-center gap-1.5 bg-[#16161f] border border-[#d4af37]/40 text-[#d4af37] text-[10px] font-extrabold uppercase tracking-widest py-0.5 px-3 rounded-full mb-1.5 animate-pulse">
                   🔥 LIMITED TIME OFFER
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white uppercase tracking-tight mb-1">
@@ -231,12 +232,12 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               </div>
 
               <div className="flex items-center gap-4 relative z-10 shrink-0 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-white/10 pt-3 md:pt-0">
-                <div className="text-xl sm:text-2xl font-black text-[#d4af37] drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]">
+                <div className="text-xl sm:text-2xl font-black text-[#d4af37] drop-shadow-[0_0_12px_rgba(212,175,55,0.7)]">
                   {specialOffer.price.toLocaleString()} UGX
                 </div>
                 <button 
                   onClick={() => openModal(specialOffer.name, `${Math.floor(specialOffer.price / 1000)}k`)} 
-                  className="bg-gradient-to-r from-[#d4af37] to-[#f4e3a6] hover:from-[#f4e3a6] hover:to-[#d4af37] text-black font-extrabold py-2.5 px-6 rounded-xl shadow-[0_0_12px_rgba(212,175,55,0.3)] hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] active:scale-95 transition-all text-xs sm:text-sm tracking-wide flex items-center justify-center gap-1.5 group/btn"
+                  className="bg-gradient-to-r from-[#d4af37] via-[#f4e3a6] to-[#d4af37] hover:brightness-110 text-black font-extrabold py-2.5 px-6 rounded-xl shadow-[0_0_18px_rgba(212,175,55,0.6)] hover:shadow-[0_0_28px_rgba(212,175,55,0.9)] active:scale-95 transition-all text-xs sm:text-sm tracking-wide flex items-center justify-center gap-1.5 group/btn"
                 >
                   <span>BUY NOW</span>
                   <Send size={14} className="group-hover/btn:translate-x-0.5 transition-transform" />
@@ -255,29 +256,30 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               initial={{ opacity: 0, y: 15 }} 
               whileInView={{ opacity: 1, y: 0 }} 
               viewport={{ once: true }}
-              className="bg-[#08121a]/95 backdrop-blur-md rounded-2xl p-4 sm:p-5 md:px-7 flex flex-col md:flex-row items-center justify-between gap-4 border border-cyan-400/35 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.35)] hover:border-cyan-400/60 transition-all duration-300 relative overflow-hidden group"
+              className="bg-[#08121a]/95 backdrop-blur-md rounded-2xl p-4 sm:p-5 md:px-7 flex flex-col md:flex-row items-center justify-between gap-4 border electric-card-cyan relative overflow-hidden group"
             >
-              <div className="absolute -top-10 -left-10 w-48 h-48 bg-cyan-400/10 rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500"></div>
+              <div className="electric-beam"></div>
+              <div className="absolute -top-10 -left-10 w-48 h-48 bg-cyan-400/15 rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500"></div>
               
               <div className="flex-1 text-center md:text-left relative z-10">
-                <div className="inline-flex items-center gap-1.5 bg-cyan-950/60 border border-cyan-400/30 text-cyan-300 text-[10px] font-extrabold uppercase tracking-widest py-0.5 px-3 rounded-full mb-1.5">
+                <div className="inline-flex items-center gap-1.5 bg-cyan-950/80 border border-cyan-400/50 text-cyan-300 text-[10px] font-extrabold uppercase tracking-widest py-0.5 px-3 rounded-full mb-1.5 animate-pulse">
                   ⚡ DAILY SPECIAL
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white uppercase tracking-tight mb-1">
                   Daily Special Ticket
                 </h3>
-                <p className="text-cyan-300/80 text-xs sm:text-sm font-medium">
+                <p className="text-cyan-300/90 text-xs sm:text-sm font-medium">
                   Guaranteed Wins • Expert Analysis • 24 Hours Access
                 </p>
               </div>
 
               <div className="flex items-center gap-4 relative z-10 shrink-0 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-white/10 pt-3 md:pt-0">
-                <div className="text-xl sm:text-2xl font-black text-white drop-shadow-[0_0_10px_rgba(6,182,212,0.6)]">
+                <div className="text-xl sm:text-2xl font-black text-white drop-shadow-[0_0_15px_rgba(6,182,212,0.8)]">
                   30,000 UGX
                 </div>
                 <button 
                   onClick={() => openModal("Premium: Daily Special Ticket", "30k")} 
-                  className="bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-white font-extrabold py-2.5 px-6 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.4)] hover:shadow-[0_0_22px_rgba(6,182,212,0.65)] active:scale-95 transition-all text-xs sm:text-sm tracking-wide flex items-center justify-center gap-1.5 group/btn"
+                  className="bg-gradient-to-r from-cyan-400 via-cyan-300 to-blue-500 hover:brightness-110 text-white font-extrabold py-2.5 px-6 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.6)] hover:shadow-[0_0_30px_rgba(6,182,212,0.9)] active:scale-95 transition-all text-xs sm:text-sm tracking-wide flex items-center justify-center gap-1.5 group/btn"
                 >
                   <span>BUY NOW</span>
                   <Send size={14} className="group-hover/btn:translate-x-0.5 transition-transform" />
