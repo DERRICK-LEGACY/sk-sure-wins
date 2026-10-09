@@ -205,11 +205,6 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
 
         {/* PREMIUM SPECIAL OFFER BANNER (If Active) */}
         {specialOffer && (
-          <div className="w-full max-w-5xl mx-auto px-6 mb-16 -mt-10 relative z-20">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-        {/* PREMIUM SPECIAL OFFER BANNER (If Active) */}
-        {specialOffer && (
           <div className="w-full max-w-4xl mx-auto px-4 mb-8 -mt-6 relative z-20">
             <motion.div 
               initial={{ opacity: 0, y: 15 }} 
