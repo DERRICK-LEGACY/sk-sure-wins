@@ -301,11 +301,11 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               <h3 className="text-xl sm:text-2xl font-extrabold text-white uppercase mb-1">BRONZE VIP</h3>
               <p className="text-gray-400 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6">1 Week Subscription</p>
               <div className="w-full bg-[#111116] rounded-2xl p-2.5 sm:p-4 text-left border border-white/5 flex-1 space-y-1">
-                {renderPackageBtn("Bronze: ODD 1.5 Lifechanger", "30k", "ODD 1.5 Lifechanger", "text-[#cd7f32]", "bg-[#cd7f32]")}
-                {renderPackageBtn("Bronze: ODD 2", "20k", "ODD 2", "text-[#cd7f32]", "bg-[#cd7f32]")}
-                {renderPackageBtn("Bronze: ODD 3", "30k", "ODD 3", "text-[#cd7f32]", "bg-[#cd7f32]")}
-                {renderPackageBtn("Bronze: ODD 4", "40k", "ODD 4", "text-[#cd7f32]", "bg-[#cd7f32]")}
-                {renderPackageBtn("Bronze: ODD 5", "50k", "ODD 5", "text-[#cd7f32]", "bg-[#cd7f32]")}
+                {renderPackageBtn("Bronze: ODD 1.5 Lifechanger", "30,000", "ODD 1.5 Lifechanger", "text-[#cd7f32]", "bg-[#cd7f32]")}
+                {renderPackageBtn("Bronze: ODD 2", "20,000", "ODD 2", "text-[#cd7f32]", "bg-[#cd7f32]")}
+                {renderPackageBtn("Bronze: ODD 3", "30,000", "ODD 3", "text-[#cd7f32]", "bg-[#cd7f32]")}
+                {renderPackageBtn("Bronze: ODD 4", "40,000", "ODD 4", "text-[#cd7f32]", "bg-[#cd7f32]")}
+                {renderPackageBtn("Bronze: ODD 5", "50,000", "ODD 5", "text-[#cd7f32]", "bg-[#cd7f32]")}
               </div>
             </motion.div>
 
@@ -315,11 +315,11 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               <h3 className="text-xl sm:text-2xl font-extrabold text-white uppercase mb-1">SILVER VIP</h3>
               <p className="text-gray-400 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6">2 Weeks Subscription</p>
               <div className="w-full bg-[#111116] rounded-2xl p-2.5 sm:p-4 text-left border border-white/5 flex-1 space-y-1">
-                {renderPackageBtn("Silver: AKATAMBULA", "50k", "AKATAMBULA", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black", "(1 Month)")}
-                {renderPackageBtn("Silver: VIP", "60k", "VIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
-                {renderPackageBtn("Silver: VVIP", "70k", "VVIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
-                {renderPackageBtn("Silver: ODD 8-10", "80k", "ODD 8-10", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
-                {renderPackageBtn("Silver: ODD 20", "100k", "ODD 20", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
+                {renderPackageBtn("Silver: AKATAMBULA", "50,000", "AKATAMBULA", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black", "(1 Month)")}
+                {renderPackageBtn("Silver: VIP", "60,000", "VIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
+                {renderPackageBtn("Silver: VVIP", "70,000", "VVIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
+                {renderPackageBtn("Silver: ODD 8-10", "80,000", "ODD 8-10", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
+                {renderPackageBtn("Silver: ODD 20", "100,000", "ODD 20", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
               </div>
             </motion.div>
 
@@ -332,12 +332,12 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#d4af37] uppercase mb-1">GOLD VIP</h3>
               <p className="text-gray-400 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6">Monthly Subscription</p>
               <div className="w-full bg-[#1A1A24] rounded-2xl p-2.5 sm:p-4 text-left border border-[#d4af37]/10 flex-1 space-y-1">
-                {renderPackageBtn("Gold: Akatafa/Akatemu", "50k", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: FAMILY", "80k", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: BIG STAKERS", "100k", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: ALL PACKAGES", "300k", "ALL PACKAGES", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: SK Counter Attack", "350k", "SK Counter Attack", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: Account Management", "500k", "Account Management", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: Akatafa/Akatemu", "50,000", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: FAMILY", "80,000", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: BIG STAKERS", "100,000", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: ALL PACKAGES", "300,000", "ALL PACKAGES", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: SK Counter Attack", "350,000", "SK Counter Attack", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: Account Management", "500,000", "Account Management", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
               </div>
             </motion.div>
           </motion.div>
@@ -404,7 +404,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               </div>
               <div className="z-10 flex items-center justify-between mt-auto">
                 <div className="hidden md:block text-right text-6xl text-white/5 font-light pr-8 transform scale-y-[2]">{'}'}</div>
-                <div className="text-5xl font-black text-blue-400 drop-shadow-[0_0_15px_rgba(96,165,250,0.6)] ml-auto md:ml-0">50K</div>
+                <div className="text-4xl sm:text-5xl font-black text-blue-400 drop-shadow-[0_0_15px_rgba(96,165,250,0.6)] ml-auto md:ml-0">50,000</div>
               </div>
             </div>
 
@@ -446,7 +446,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                       </div>
                       
                       <div className="bg-gradient-to-r from-[#D4AF37] to-[#F9D976] text-black flex items-center justify-center w-12 h-12 rounded-xl group-hover/btn:scale-110 transition-transform duration-500 shadow-[0_0_20px_rgba(212,175,55,0.6)] relative z-10 overflow-hidden shrink-0">
-                        <div className="absolute inset-0 bg-white/20 blur-md opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-white/20 blur-md opacity-0 group-hover/opacity-100 transition-opacity duration-300"></div>
                         <ShoppingCart size={18} className="relative z-10" />
                       </div>
                     </button>
@@ -455,7 +455,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               </div>
               <div className="z-10 flex items-center justify-between mt-auto">
                 <div className="hidden md:block text-right text-6xl text-white/5 font-light pr-8 transform scale-y-[2]">{'}'}</div>
-                <div className="text-5xl font-black text-[#D4AF37] drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-auto md:ml-0">50K</div>
+                <div className="text-4xl sm:text-5xl font-black text-[#D4AF37] drop-shadow-[0_0_15px_rgba(212,175,55,0.4)] ml-auto md:ml-0">50,000</div>
               </div>
             </div>
 
