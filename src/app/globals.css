@@ -10,8 +10,8 @@
   --color-accent: #00F0FF;
   --color-card: var(--card);
   --color-card-border: var(--card-border);
-  --font-sans: var(--font-outfit), sans-serif;
-  --font-heading: var(--font-space), sans-serif;
+  --font-sans: var(--font-inter), sans-serif;
+  --font-heading: var(--font-outfit), sans-serif;
 }
 
 :root {

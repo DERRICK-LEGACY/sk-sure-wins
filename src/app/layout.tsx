@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit, Space_Grotesk } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { Preloader } from "@/components/Preloader";
 import { MaintenanceOverlay } from "@/components/MaintenanceOverlay";
@@ -8,13 +8,13 @@ import { InstallPWA } from "@/components/InstallPWA";
 import { Analytics } from "@vercel/analytics/react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
 });
 
@@ -56,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${spaceGrotesk.variable} h-full antialiased overflow-x-hidden`}
+      className={`${inter.variable} ${outfit.variable} h-full antialiased overflow-x-hidden`}
     >
       <body className="w-full max-w-[100vw] min-h-full flex flex-col font-sans bg-background text-foreground relative overflow-x-hidden selection:bg-[#D4AF37]/30 selection:text-white">
         {process.env.NEXT_PUBLIC_GA_ID && (
