@@ -170,14 +170,10 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               Uganda's Most Trusted Sports Analysts
             </motion.div>
 
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl lg:text-[5.5rem] font-black mb-8 tracking-tighter leading-[1.05] text-white">
-              Data-Driven <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F4E3A6] to-[#B5952F]">Premium Analytics.</span>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl lg:text-[5.5rem] font-black mb-6 tracking-tighter leading-[1.05] text-white">
+              PAY YOUR WAY <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F4E3A6] to-[#B5952F]">WE DELIVER WINS</span>
             </motion.h1>
-
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-gray-400 max-w-2xl text-lg md:text-xl font-medium mb-12">
-              Join thousands of serious bettors who trust our expert insights, transparent track record, and guaranteed VIP packages to maximize their weekly profit.
-            </motion.p>
 
             {/* JOIN CHANNELS FUNNEL */}
             <motion.div 
