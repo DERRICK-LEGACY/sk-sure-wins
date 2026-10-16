@@ -5,6 +5,8 @@ import { Preloader } from "@/components/Preloader";
 import { MaintenanceOverlay } from "@/components/MaintenanceOverlay";
 import { PWA } from "@/components/PWA";
 import { InstallPWA } from "@/components/InstallPWA";
+import { ScrollProgressBar } from "@/components/ScrollProgressBar";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { Analytics } from "@vercel/analytics/react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
@@ -56,18 +58,22 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${outfit.variable} h-full antialiased overflow-x-hidden`}
+      className={`${inter.variable} ${outfit.variable} h-full antialiased scroll-smooth scroll-pt-20 md:scroll-pt-24`}
     >
-      <body className="w-full max-w-[100vw] min-h-full flex flex-col font-sans bg-background text-foreground relative overflow-x-hidden selection:bg-[#D4AF37]/30 selection:text-white">
+      <body className="w-full max-w-[100vw] min-h-full flex flex-col font-sans bg-background text-foreground relative selection:bg-[#D4AF37]/30 selection:text-white">
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         )}
+        {/* Modern Top Scroll Progress Bar */}
+        <ScrollProgressBar />
         <PWA />
         <InstallPWA />
         <Preloader />
         {/* Toggle maintenance mode by commenting/uncommenting the line below or controlling it via state/env */}
         {/* <MaintenanceOverlay /> */}
         {children}
+        {/* Floating Scroll to Top Button with Progress Ring */}
+        <ScrollToTop />
         <Analytics />
       </body>
     </html>

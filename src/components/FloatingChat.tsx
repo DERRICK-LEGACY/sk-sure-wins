@@ -47,6 +47,10 @@ export default function FloatingChat() {
     }
   };
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     if (isOpen) {
       fetchMessages();
@@ -66,10 +70,6 @@ export default function FloatingChat() {
       fetchMessages();
     }
   }, [sessionId]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   useEffect(() => {
     scrollToBottom();

@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { MessageCircle, CheckCircle, Send, BellRing, X, ShoppingCart, Zap, Loader2, Trophy } from "lucide-react";
@@ -189,7 +187,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
           <div className="relative z-10 flex flex-col items-center w-full max-w-5xl mx-auto mt-4">
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-panel border border-white/10 text-white/80 text-[10px] md:text-xs font-black tracking-[0.2em] mb-10 uppercase shadow-xl backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse"></span>
-              Uganda's Most Trusted Sports Analysts
+              Uganda&apos;s Most Trusted Sports Analysts
             </motion.div>
 
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl lg:text-[5.5rem] font-black mb-6 tracking-tighter leading-[1.05] text-white">
@@ -222,6 +220,26 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
                 <span className="text-[15px] tracking-wide">Join Telegram</span>
               </a>
             </motion.div>
+
+            {/* SCROLL TO EXPLORE CUE */}
+            <motion.a
+              href="#packages"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="mt-10 sm:mt-14 inline-flex flex-col items-center gap-2 group text-white/50 hover:text-[#D4AF37] transition-all cursor-pointer select-none"
+            >
+              <span className="text-[10px] sm:text-xs font-black tracking-[0.25em] uppercase text-white/40 group-hover:text-[#D4AF37] transition-colors">
+                Scroll to Explore
+              </span>
+              <div className="w-5 h-8 sm:w-5 sm:h-9 rounded-full border-2 border-white/20 group-hover:border-[#D4AF37]/70 flex items-start justify-center p-1 transition-all shadow-[0_0_10px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                <motion.div
+                  animate={{ y: [0, 12, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+                  className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] shadow-[0_0_8px_#D4AF37]"
+                />
+              </div>
+            </motion.a>
           </div>
         </section>
 
@@ -306,7 +324,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
           </div>
 
           {/* PACKAGES SECTION HEADER */}
-          <div id="packages" className="w-full text-center mb-12 flex flex-col items-center pt-20 mt-[-80px]">
+          <div id="packages" className="w-full text-center mb-12 flex flex-col items-center pt-8 scroll-mt-24">
             <h2 className="text-3xl md:text-5xl font-extrabold mb-4 uppercase tracking-tight text-white drop-shadow-md">SK SUBSCRIPTION <br className="md:hidden" /><span className="text-[#D4AF37] glow-text">PACKAGE</span></h2>
             <div className="inline-block bg-[#D4AF37] text-black font-extrabold px-8 py-2 rounded-full text-2xl shadow-[0_0_20px_rgba(212,175,55,0.4)] uppercase tracking-wide border-2 border-black/20 transform -rotate-2 hover:rotate-0 transition-transform">JOIN US TODAY</div>
           </div>
@@ -846,7 +864,7 @@ function PackagesSkeleton() {
   return (
     <div className="w-full flex flex-col items-center">
       {/* Skeleton Header */}
-      <div className="w-full text-center mb-12 flex flex-col items-center pt-20 mt-[-80px]">
+      <div className="w-full text-center mb-12 flex flex-col items-center pt-8">
         <div className="h-12 w-64 bg-white/5 rounded-xl mb-4 animate-pulse"></div>
         <div className="h-10 w-48 bg-[#D4AF37]/20 rounded-full animate-pulse border border-[#D4AF37]/10"></div>
       </div>

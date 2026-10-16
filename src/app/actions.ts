@@ -790,7 +790,7 @@ export async function addTicket(data: any) {
     }
   });
 
-  let targetPackageIds = new Set<string>();
+  const targetPackageIds = new Set<string>();
   targetPackageIds.add(pkg.id);
 
   if (pkg.name.toLowerCase() === 'general ticket') {
@@ -916,7 +916,7 @@ export async function editTicket(id: string, data: any) {
   if (packageId) {
     const pkg = await prisma.package.findUnique({ where: { id: packageId } });
     if (pkg) {
-      let targetPackageIds = new Set<string>();
+      const targetPackageIds = new Set<string>();
       targetPackageIds.add(pkg.id);
 
       if (pkg.name.toLowerCase() === 'general ticket') {
