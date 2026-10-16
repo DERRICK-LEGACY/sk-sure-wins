@@ -26,7 +26,7 @@ export function ScrollProgressBar() {
 
   return (
     <div
-      className={`fixed top-0 left-0 right-0 h-[3px] z-[100] pointer-events-none transition-opacity duration-300 ${
+      className={`fixed top-0 left-0 right-0 w-full max-w-full overflow-hidden h-[3px] z-[100] pointer-events-none transition-opacity duration-300 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
       aria-hidden="true"

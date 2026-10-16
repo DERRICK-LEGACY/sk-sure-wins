@@ -29,35 +29,43 @@ html {
   -webkit-overflow-scrolling: touch;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
 }
 
-/* Custom Luxury Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+/* Custom Luxury Scrollbar - Desktop only so mobile keeps native touch gestures & 100% responsiveness */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
 
-::-webkit-scrollbar-track {
-  background: #0A0A0F;
-}
+  ::-webkit-scrollbar-track {
+    background: #0A0A0F;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #D4AF37 0%, #8c5622 100%);
-  border-radius: 9999px;
-  border: 2px solid #0A0A0F;
-}
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #D4AF37 0%, #8c5622 100%);
+    border-radius: 9999px;
+    border: 2px solid #0A0A0F;
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #FFF8D6 0%, #D4AF37 100%);
-}
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #FFF8D6 0%, #D4AF37 100%);
+  }
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(212, 175, 55, 0.45) #0A0A0F;
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 175, 55, 0.45) #0A0A0F;
+  }
 }
 
 /* Accessibility: Respect prefers-reduced-motion */

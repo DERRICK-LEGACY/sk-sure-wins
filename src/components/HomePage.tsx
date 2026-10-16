@@ -167,16 +167,16 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
     <div className="min-h-screen flex flex-col relative">
       <Navbar />
 
-      {/* BACKGROUND EFFECTS */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] -z-10 mix-blend-screen" />
-      <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[128px] -z-10 mix-blend-screen" />
+      {/* BACKGROUND EFFECTS - Strictly bounded to prevent horizontal mobile overflow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] mix-blend-screen" />
+        <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[128px] mix-blend-screen" />
+      </div>
 
+      <main className="flex-1 w-full flex flex-col items-center pb-16 overflow-x-hidden">
 
-
-      <main className="flex-1 w-full flex flex-col items-center pb-16">
-
-                {/* PREMIUM HERO SECTION */}
-        <section className="relative w-full flex flex-col items-center justify-center pt-40 pb-32 px-6 text-center overflow-hidden min-h-[85vh]">
+        {/* PREMIUM HERO SECTION */}
+        <section className="relative w-full flex flex-col items-center justify-center pt-28 pb-16 sm:pt-40 sm:pb-32 px-4 sm:px-6 text-center overflow-hidden min-h-[75vh] sm:min-h-[85vh]">
           {/* VIDEO BACKGROUND */}
           <video autoPlay loop muted playsInline className="absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
             <source src="/hero-video.mp4" type="video/mp4" />
@@ -184,13 +184,13 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
           {/* GRADIENT OVERLAY */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-[#0A0A0F] z-0"></div>
 
-          <div className="relative z-10 flex flex-col items-center w-full max-w-5xl mx-auto mt-4">
-            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-panel border border-white/10 text-white/80 text-[10px] md:text-xs font-black tracking-[0.2em] mb-10 uppercase shadow-xl backdrop-blur-md">
+          <div className="relative z-10 flex flex-col items-center w-full max-w-5xl mx-auto mt-2 sm:mt-4">
+            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="inline-flex items-center gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full glass-panel border border-white/10 text-white/80 text-[10px] md:text-xs font-black tracking-[0.2em] mb-6 sm:mb-10 uppercase shadow-xl backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse"></span>
               Uganda&apos;s Most Trusted Sports Analysts
             </motion.div>
 
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl lg:text-[5.5rem] font-black mb-6 tracking-tighter leading-[1.05] text-white">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black mb-6 tracking-tighter leading-[1.08] text-white">
               PAY YOUR WAY <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F4E3A6] to-[#B5952F]">WE DELIVER WINS</span>
             </motion.h1>
@@ -200,24 +200,24 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full max-w-xl"
+              className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-5 w-full max-w-xl px-2 sm:px-0"
             >
               <a
                 href="https://whatsapp.com/channel/0029Vb8yLOm1yT2CHUu2k70o"
                 target="_blank"
-                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-[#25D366] text-black font-black py-4 px-8 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.15)] hover:shadow-[0_0_30px_rgba(37,211,102,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all"
+                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-[#25D366] text-black font-black py-3.5 sm:py-4 px-6 sm:px-8 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.15)] hover:shadow-[0_0_30px_rgba(37,211,102,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 <WhatsAppIcon className="w-5 h-5" />
-                <span className="text-[15px] tracking-wide">Join WhatsApp</span>
+                <span className="text-[14px] sm:text-[15px] tracking-wide">Join WhatsApp</span>
               </a>
 
               <a
                 href="https://t.me/+Gd917QQhofRiZGVk"
                 target="_blank"
-                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-[#1A1A24] text-white border border-white/10 font-bold py-4 px-8 rounded-full hover:bg-white/5 hover:border-white/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                className="w-full sm:w-auto flex items-center justify-center gap-3 bg-[#1A1A24] text-white border border-white/10 font-bold py-3.5 sm:py-4 px-6 sm:px-8 rounded-full hover:bg-white/5 hover:border-white/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 <TelegramIcon className="w-5 h-5 text-[#0088cc]" />
-                <span className="text-[15px] tracking-wide">Join Telegram</span>
+                <span className="text-[14px] sm:text-[15px] tracking-wide">Join Telegram</span>
               </a>
             </motion.div>
 
@@ -227,14 +227,14 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="mt-10 sm:mt-14 inline-flex flex-col items-center gap-2 group text-white/50 hover:text-[#D4AF37] transition-all cursor-pointer select-none"
+              className="mt-6 sm:mt-10 md:mt-14 inline-flex flex-col items-center gap-1.5 sm:gap-2 group text-white/50 hover:text-[#D4AF37] transition-all cursor-pointer select-none"
             >
-              <span className="text-[10px] sm:text-xs font-black tracking-[0.25em] uppercase text-white/40 group-hover:text-[#D4AF37] transition-colors">
+              <span className="text-[9px] sm:text-[10px] md:text-xs font-black tracking-[0.25em] uppercase text-white/40 group-hover:text-[#D4AF37] transition-colors">
                 Scroll to Explore
               </span>
-              <div className="w-5 h-8 sm:w-5 sm:h-9 rounded-full border-2 border-white/20 group-hover:border-[#D4AF37]/70 flex items-start justify-center p-1 transition-all shadow-[0_0_10px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+              <div className="w-4 h-7 sm:w-5 sm:h-9 rounded-full border-2 border-white/20 group-hover:border-[#D4AF37]/70 flex items-start justify-center p-1 transition-all shadow-[0_0_10px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_15px_rgba(212,175,55,0.3)]">
                 <motion.div
-                  animate={{ y: [0, 12, 0] }}
+                  animate={{ y: [0, 10, 0] }}
                   transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
                   className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] shadow-[0_0_8px_#D4AF37]"
                 />

@@ -58,9 +58,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${outfit.variable} h-full antialiased scroll-smooth scroll-pt-20 md:scroll-pt-24`}
+      className={`${inter.variable} ${outfit.variable} h-full antialiased scroll-smooth scroll-pt-20 md:scroll-pt-24 overflow-x-hidden`}
     >
-      <body className="w-full max-w-[100vw] min-h-full flex flex-col font-sans bg-background text-foreground relative selection:bg-[#D4AF37]/30 selection:text-white">
+      <body className="w-full max-w-[100vw] min-h-full flex flex-col font-sans bg-background text-foreground relative overflow-x-hidden selection:bg-[#D4AF37]/30 selection:text-white">
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         )}

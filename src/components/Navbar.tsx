@@ -24,23 +24,57 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   return (
     <>
-      <div className={`fixed top-0 left-0 w-full z-[60] transition-all duration-300 ${scrolled ? "py-1" : "py-0"}`}>
-        <nav className={`relative w-full max-w-7xl mx-auto glass-panel transition-all duration-300 flex justify-between items-center shadow-lg ${scrolled ? "py-2 sm:py-3 px-4 sm:px-6 rounded-full border border-[var(--glass-border)] mt-2" : "py-3 sm:py-4 px-4 border-b border-[var(--glass-border)] rounded-none"}`}>
+      <div
+        className={`fixed top-0 left-0 w-full z-[60] transition-all duration-300 ${
+          scrolled ? "py-1.5 px-2.5 sm:px-6" : "py-0 px-0 sm:px-4"
+        }`}
+      >
+        <nav
+          className={`relative w-full max-w-7xl mx-auto glass-panel transition-all duration-300 flex justify-between items-center shadow-lg ${
+            scrolled
+              ? "py-2 sm:py-2.5 px-3 sm:px-6 rounded-2xl md:rounded-full border border-[var(--glass-border)] shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+              : "py-3 sm:py-4 px-3 sm:px-6 border-b border-[var(--glass-border)] rounded-none"
+          }`}
+        >
+          {/* Logo & Brand */}
           <div className="flex items-center gap-2 shrink-0">
             <Link href="/" className="flex items-center gap-2 sm:gap-3 relative z-50 group">
               <div className="relative shrink-0 transition-transform duration-300 group-hover:scale-105">
                 <div className="absolute inset-0 bg-[#D4AF37] rounded-full blur opacity-30 group-hover:opacity-60 transition-opacity"></div>
-                <Image src="/sklogo.jpeg" alt="Logo" width={50} height={50} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover relative z-10 border-2 border-[var(--glass-border)] shadow-lg bg-black" />
+                <Image
+                  src="/sklogo.jpeg"
+                  alt="Logo"
+                  width={48}
+                  height={48}
+                  className="w-9 h-9 sm:w-11 sm:h-11 rounded-full object-cover relative z-10 border-2 border-[var(--glass-border)] shadow-lg bg-black"
+                />
               </div>
               <div className="shrink-0 flex flex-col justify-center">
-                <h1 className="font-extrabold text-sm sm:text-lg md:text-xl tracking-tight text-foreground leading-none group-hover:text-[#D4AF37] transition-colors">SK SURE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FFF8D6] glow-text">WINS</span></h1>
-                <p className="text-[9px] text-[#D4AF37] uppercase tracking-widest font-bold hidden sm:block mt-1">Munakapapula</p>
+                <h1 className="font-extrabold text-xs sm:text-base md:text-xl tracking-tight text-foreground leading-tight group-hover:text-[#D4AF37] transition-colors whitespace-nowrap">
+                  SK SURE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#FFF8D6] glow-text">WINS</span>
+                </h1>
+                <p className="text-[8px] sm:text-[9px] text-[#D4AF37] uppercase tracking-widest font-bold hidden sm:block mt-0.5">
+                  Munakapapula
+                </p>
               </div>
             </Link>
           </div>
 
+          {/* Desktop Navigation Links */}
           <div className="hidden lg:flex items-center gap-8 text-sm font-bold uppercase tracking-wider text-muted-foreground">
             <Link href="/" className="hover:text-foreground hover:scale-105 transition-all">Home</Link>
             <Link href="/free-tickets" className="hover:text-foreground hover:scale-105 transition-all">Free Tickets</Link>
@@ -48,29 +82,48 @@ export default function Navbar() {
             <Link href="/#packages" className="hover:text-foreground hover:scale-105 transition-all">Packages</Link>
           </div>
 
+          {/* Desktop Right CTA */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            <Link href="/login" className="group flex items-center justify-center gap-2 bg-gradient-to-r from-[#111116] to-[#1a1a24] border border-[#D4AF37]/30 shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:border-[#D4AF37]/60 hover:scale-105 transition-all px-5 py-2.5 rounded-full relative overflow-hidden">
+            <Link
+              href="/login"
+              className="group flex items-center justify-center gap-2 bg-gradient-to-r from-[#111116] to-[#1a1a24] border border-[#D4AF37]/30 shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:border-[#D4AF37]/60 hover:scale-105 transition-all px-5 py-2.5 rounded-full relative overflow-hidden"
+            >
               <div className="absolute inset-0 bg-[#D4AF37]/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <Crown className="w-5 h-5 text-[#D4AF37] drop-shadow-[0_0_8px_rgba(212,175,55,0.8)] relative z-10" />
-              <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8D6] via-[#D4AF37] to-[#B5952F] tracking-widest uppercase text-sm drop-shadow-md relative z-10">VIP LOGIN</span>
+              <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8D6] via-[#D4AF37] to-[#B5952F] tracking-widest uppercase text-sm drop-shadow-md relative z-10">
+                VIP LOGIN
+              </span>
             </Link>
           </div>
 
-          <div className="md:hidden flex items-center gap-3 shrink-0">
-            <ThemeToggle />
-            <Link href="/login" className="group flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#111116] to-[#1a1a24] border border-[#D4AF37]/30 shadow-[0_0_15px_rgba(212,175,55,0.3)] active:scale-95 transition-all px-3 py-1.5 rounded-full relative z-50 overflow-hidden">
+          {/* Mobile Right Controls - Perfectly proportioned for 100% responsiveness */}
+          <div className="md:hidden flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            <div className="scale-90 origin-right">
+              <ThemeToggle />
+            </div>
+            <Link
+              href="/login"
+              className="group flex items-center justify-center gap-1 bg-gradient-to-r from-[#111116] to-[#1a1a24] border border-[#D4AF37]/30 shadow-[0_0_12px_rgba(212,175,55,0.25)] active:scale-95 transition-all px-2.5 py-1.5 rounded-full relative z-50 overflow-hidden"
+            >
               <div className="absolute inset-0 bg-[#D4AF37]/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <Crown className="w-4 h-4 text-[#D4AF37]" />
-              <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8D6] to-[#D4AF37] tracking-wider uppercase text-[10px] mt-0.5 relative z-10">LOGIN</span>
+              <Crown className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FFF8D6] to-[#D4AF37] tracking-wider uppercase text-[10px] relative z-10">
+                LOGIN
+              </span>
             </Link>
-            <button onClick={() => setIsOpen(!isOpen)} className="text-foreground relative z-50 p-2 rounded-full hover:bg-[var(--glass-border)] transition-colors">
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              className="text-foreground relative z-50 p-1.5 sm:p-2 rounded-full hover:bg-[var(--glass-border)] active:scale-90 transition-all cursor-pointer"
+            >
+              {isOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
             </button>
           </div>
         </nav>
       </div>
 
+      {/* Mobile Slide-Over Drawer */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -79,23 +132,90 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden"
+              className="fixed inset-0 bg-black/80 backdrop-blur-md z-[70] md:hidden"
             />
-            <motion.div 
+            <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[80vw] max-w-sm bg-card border-l border-[var(--glass-border)] z-50 flex flex-col p-8 md:hidden shadow-2xl"
+              transition={{ type: "spring", damping: 25, stiffness: 220 }}
+              className="fixed top-0 right-0 h-full w-[85vw] max-w-sm bg-[#0E0E14] border-l border-[var(--glass-border)] z-[80] flex flex-col p-6 sm:p-8 md:hidden shadow-2xl overflow-y-auto"
             >
-              <div className="flex flex-col gap-6 mt-16">
-                <Link href="/" onClick={() => setIsOpen(false)} className="text-2xl font-bold text-foreground hover:text-[#D4AF37] transition-colors border-b border-[var(--glass-border)] pb-4">Home</Link>
-                <Link href="/free-tickets" onClick={() => setIsOpen(false)} className="text-2xl font-bold text-foreground hover:text-[#D4AF37] transition-colors border-b border-[var(--glass-border)] pb-4">Free Tickets</Link>
-                <Link href="/won-tickets" onClick={() => setIsOpen(false)} className="text-2xl font-bold text-foreground hover:text-[#D4AF37] transition-colors border-b border-[var(--glass-border)] pb-4">Won Tickets</Link>
-                <Link href="/#packages" onClick={() => setIsOpen(false)} className="text-2xl font-bold text-foreground hover:text-[#D4AF37] transition-colors border-b border-[var(--glass-border)] pb-4">Packages</Link>
-                <a href="https://whatsapp.com/channel/0029Vb8yLOm1yT2CHUu2k70o" target="_blank" className="bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-bold px-6 py-4 rounded-xl text-lg mt-4 flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(37,211,102,0.3)] hover:scale-105 active:scale-95 transition-all">
-                  <WhatsAppIcon className="w-6 h-6 text-black" />
-                  Contact Us
+              {/* Drawer Top Header */}
+              <div className="flex items-center justify-between pb-4 border-b border-[var(--glass-border)]">
+                <div className="flex items-center gap-2.5">
+                  <Image
+                    src="/sklogo.jpeg"
+                    alt="Logo"
+                    width={36}
+                    height={36}
+                    className="w-8 h-8 rounded-full object-cover border border-[#D4AF37]/40 bg-black"
+                  />
+                  <span className="font-extrabold text-sm text-white">
+                    SK SURE <span className="text-[#D4AF37]">WINS</span>
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Close menu"
+                  className="p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Drawer Navigation Links */}
+              <div className="flex flex-col gap-4 mt-6 flex-1">
+                <Link
+                  href="/"
+                  onClick={() => setIsOpen(false)}
+                  className="text-xl font-extrabold text-foreground hover:text-[#D4AF37] transition-colors py-2 border-b border-white/5"
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/free-tickets"
+                  onClick={() => setIsOpen(false)}
+                  className="text-xl font-extrabold text-foreground hover:text-[#D4AF37] transition-colors py-2 border-b border-white/5"
+                >
+                  Free Tickets
+                </Link>
+                <Link
+                  href="/won-tickets"
+                  onClick={() => setIsOpen(false)}
+                  className="text-xl font-extrabold text-foreground hover:text-[#D4AF37] transition-colors py-2 border-b border-white/5"
+                >
+                  Won Tickets
+                </Link>
+                <Link
+                  href="/#packages"
+                  onClick={() => setIsOpen(false)}
+                  className="text-xl font-extrabold text-foreground hover:text-[#D4AF37] transition-colors py-2 border-b border-white/5"
+                >
+                  Packages
+                </Link>
+                <Link
+                  href="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="text-xl font-extrabold text-[#D4AF37] hover:text-[#FFF8D6] transition-colors py-2 border-b border-white/5 flex items-center gap-2"
+                >
+                  <Crown className="w-4 h-4 text-[#D4AF37]" />
+                  VIP Login
+                </Link>
+
+                <div className="pt-2 flex items-center justify-between py-2 border-b border-white/5">
+                  <span className="text-sm font-bold text-gray-400">Appearance</span>
+                  <ThemeToggle />
+                </div>
+
+                <a
+                  href="https://whatsapp.com/channel/0029Vb8yLOm1yT2CHUu2k70o"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gradient-to-r from-[#25D366] to-[#1da851] text-black font-extrabold px-5 py-3.5 rounded-xl text-base mt-4 flex items-center justify-center gap-2.5 shadow-[0_0_20px_rgba(37,211,102,0.3)] hover:scale-105 active:scale-95 transition-all text-center"
+                >
+                  <WhatsAppIcon className="w-5 h-5 text-black" />
+                  Join WhatsApp VIP
                 </a>
               </div>
             </motion.div>
