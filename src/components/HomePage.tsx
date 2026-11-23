@@ -124,7 +124,7 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
   ) => (
     <button 
       onClick={() => openModal(name, price)} 
-      className={`relative w-full flex justify-between items-center mb-3 px-3.5 py-3 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl bg-[#08080A]/70 hover:bg-[#111116] border ${customBorderClass || 'border-white/5 hover:border-white/20'} transition-all duration-300 group overflow-hidden shadow-xl backdrop-blur-sm`}
+      className={`relative w-full flex justify-between items-center mb-3 px-4 py-3.5 sm:px-5 sm:py-4 rounded-xl sm:rounded-2xl bg-[#08080A]/70 hover:bg-[#111116] border ${customBorderClass || 'border-white/5 hover:border-white/20'} transition-all duration-300 group overflow-hidden shadow-xl backdrop-blur-sm`}
     >
       {/* Laser line on hover */}
       <motion.div 
@@ -132,33 +132,39 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
       />
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700 pointer-events-none"></div>
       
-      <div className="flex flex-col text-left pr-2 relative z-10 min-w-0 flex-1">
+      <div className="flex flex-col text-left pr-3 relative z-10 min-w-0 flex-1">
         <div className="flex items-center gap-2 mb-1 flex-wrap">
-          <span className={`text-[11px] sm:text-xs xl:text-sm font-extrabold uppercase flex items-center gap-1.5 leading-tight ${colorClass} truncate`}>
+          <span className={`text-xs sm:text-sm font-extrabold uppercase flex items-center gap-1.5 leading-snug ${colorClass}`}>
             <motion.div
               animate={{ rotate: [0, 15, -15, 0] }}
               transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
               className="shrink-0"
             >
-              <Zap size={13} className={`shrink-0 ${colorClass}`} />
+              <Zap size={14} className={`shrink-0 ${colorClass}`} />
             </motion.div>
-            <span className="truncate">{label}</span>
+            <span>{label}</span>
           </span>
           {badgeTag && (
-            <span className={`text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full animate-pulse shrink-0 ${badgeStyleClass || 'bg-pink-500/20 text-pink-300 border border-pink-500/40'}`}>
+            <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full animate-pulse shrink-0 ${badgeStyleClass || 'bg-pink-500/20 text-pink-300 border border-pink-500/40'}`}>
               {badgeTag}
             </span>
           )}
         </div>
-        <span className={`font-extrabold text-white text-sm sm:text-base xl:text-lg flex items-center gap-1.5 font-sans flex-wrap`}>
-          {price} 
-          {subtext && <span className="text-[9px] sm:text-[10px] text-gray-400 font-medium normal-case tracking-normal bg-white/5 px-1.5 py-0.5 rounded-full border border-white/10 shrink-0">{subtext}</span>}
-        </span>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="font-extrabold text-white text-base sm:text-lg font-sans">
+            {price}
+          </span>
+          {subtext && (
+            <span className="text-[10px] sm:text-xs text-gray-300 font-medium normal-case tracking-normal bg-white/10 px-2 py-0.5 rounded-full border border-white/10 shrink-0">
+              {subtext}
+            </span>
+          )}
+        </div>
       </div>
       
-      <div className={`${badgeBgClass} ${textColorClass} flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(0,0,0,0.8)] relative z-10 overflow-hidden shrink-0 ml-1`}>
+      <div className={`${badgeBgClass} ${textColorClass} flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(0,0,0,0.8)] relative z-10 overflow-hidden shrink-0 ml-2`}>
         <div className="absolute inset-0 bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <ShoppingCart size={16} className="relative z-10 shrink-0" />
+        <ShoppingCart size={17} className="relative z-10 shrink-0" />
       </div>
     </button>
   );
@@ -332,14 +338,14 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
           {/* PACKAGES GRID */}
           {isPackagesLoading ? <PackagesSkeleton /> : (
             <>
-              <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 xl:gap-5 mb-16 px-4 md:px-0 max-w-7xl mx-auto">
-            {/* VIP TIERS */}
+              <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-16 px-4 md:px-0 max-w-5xl mx-auto">
+            {/* VIP TIERS — 2x2 Grid */}
             {/* 1. BRONZE VIP (1 WEEK) */}
-            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-3.5 pt-5 sm:p-5 sm:pt-7 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/25 hover:border-[#cd7f32]/60 bg-[#0A0A0F]/70 backdrop-blur-md transition-all duration-300 shadow-xl">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#cd7f32] to-[#8c5622] flex items-center justify-center text-lg sm:text-xl shadow-lg mb-3 sm:mb-4 text-black">🥉</div>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-white uppercase mb-1">BRONZE VIP</h3>
-              <p className="text-[#cd7f32] text-[10px] sm:text-xs font-black uppercase tracking-wider mb-3 sm:mb-4">1 Week Subscription</p>
-              <div className="w-full bg-[#111116] rounded-2xl p-2 sm:p-3 text-left border border-white/5 flex-1 space-y-1">
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-5 pt-6 sm:p-7 sm:pt-9 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/30 hover:border-[#cd7f32]/60 bg-[#0A0A0F]/70 backdrop-blur-md transition-all duration-300 shadow-xl">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#cd7f32] to-[#8c5622] flex items-center justify-center text-xl sm:text-2xl shadow-lg mb-4 text-black">🥉</div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white uppercase mb-1">BRONZE VIP</h3>
+              <p className="text-[#cd7f32] text-xs sm:text-sm font-black uppercase tracking-wider mb-5">1 Week Subscription</p>
+              <div className="w-full bg-[#111116] rounded-2xl p-3 sm:p-4 text-left border border-white/5 flex-1 space-y-1.5">
                 {renderPackageBtn("Bronze: ODD 1.5 Normal", "10,000", "ODD 1.5 Normal", "text-[#cd7f32]", "bg-[#cd7f32]")}
                 {renderPackageBtn("Bronze: ODD 2", "20,000", "ODD 2", "text-[#cd7f32]", "bg-[#cd7f32]")}
                 {renderPackageBtn("Bronze: ODD 3", "30,000", "ODD 3", "text-[#cd7f32]", "bg-[#cd7f32]")}
@@ -348,11 +354,11 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             </motion.div>
 
             {/* 2. SILVER VIP (2 WEEKS) */}
-            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-3.5 pt-5 sm:p-5 sm:pt-7 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#c0c0c0]/30 hover:border-[#c0c0c0]/60 bg-[#0A0A0F]/80 backdrop-blur-md transition-all duration-300 shadow-xl">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#ffffff] to-[#808080] flex items-center justify-center text-lg sm:text-xl shadow-lg mb-3 sm:mb-4 text-black">🥈</div>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-white uppercase mb-1">SILVER VIP</h3>
-              <p className="text-gray-300 text-[10px] sm:text-xs font-black uppercase tracking-wider mb-3 sm:mb-4">2 Weeks Subscription</p>
-              <div className="w-full bg-[#111116] rounded-2xl p-2 sm:p-3 text-left border border-white/5 flex-1 space-y-1">
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-5 pt-6 sm:p-7 sm:pt-9 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#c0c0c0]/35 hover:border-[#c0c0c0]/70 bg-[#0A0A0F]/80 backdrop-blur-md transition-all duration-300 shadow-xl">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#ffffff] to-[#808080] flex items-center justify-center text-xl sm:text-2xl shadow-lg mb-4 text-black">🥈</div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white uppercase mb-1">SILVER VIP</h3>
+              <p className="text-gray-300 text-xs sm:text-sm font-black uppercase tracking-wider mb-5">2 Weeks Subscription</p>
+              <div className="w-full bg-[#111116] rounded-2xl p-3 sm:p-4 text-left border border-white/5 flex-1 space-y-1.5">
                 {renderPackageBtn("Silver: Life Changer", "30,000", "Life Changer", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
                 {renderPackageBtn("Silver: ODD 4", "40,000", "ODD 4", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
                 {renderPackageBtn("Silver: ODD 5", "50,000", "ODD 5", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
@@ -361,11 +367,11 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             </motion.div>
 
             {/* 3. GOLD VIP (3 WEEKS) */}
-            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-3.5 pt-5 sm:p-5 sm:pt-7 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#d4af37]/40 hover:border-[#d4af37]/80 bg-[#111116] backdrop-blur-md transition-all duration-300 shadow-xl">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#FFF8D6] to-[#d4af37] flex items-center justify-center text-lg sm:text-xl shadow-lg mb-3 sm:mb-4 text-black">🥇</div>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[#d4af37] uppercase mb-1">GOLD VIP</h3>
-              <p className="text-[#d4af37] text-[10px] sm:text-xs font-black uppercase tracking-wider mb-3 sm:mb-4">3 Weeks Subscription</p>
-              <div className="w-full bg-[#1A1A24] rounded-2xl p-2 sm:p-3 text-left border border-[#d4af37]/10 flex-1 space-y-1">
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-5 pt-6 sm:p-7 sm:pt-9 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#d4af37]/45 hover:border-[#d4af37]/85 bg-[#111116] backdrop-blur-md transition-all duration-300 shadow-xl">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#FFF8D6] to-[#d4af37] flex items-center justify-center text-xl sm:text-2xl shadow-lg mb-4 text-black">🥇</div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#d4af37] uppercase mb-1">GOLD VIP</h3>
+              <p className="text-[#d4af37] text-xs sm:text-sm font-black uppercase tracking-wider mb-5">3 Weeks Subscription</p>
+              <div className="w-full bg-[#1A1A24] rounded-2xl p-3 sm:p-4 text-left border border-[#d4af37]/15 flex-1 space-y-1.5">
                 {renderPackageBtn("Gold: Akatafa/Akatemu", "50,000", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: VIP", "60,000", "VIP", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
                 {renderPackageBtn("Gold: VVIP", "70,000", "VVIP", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
@@ -374,14 +380,14 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
             </motion.div>
 
             {/* 4. PLATINUM VIP (1 MONTH) */}
-            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-3.5 pt-5 sm:p-5 sm:pt-7 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-cyan-400/40 hover:border-cyan-400/80 bg-[#0c1220] backdrop-blur-md transition-all duration-300 shadow-2xl relative z-10">
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-5 pt-6 sm:p-7 sm:pt-9 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-cyan-400/40 hover:border-cyan-400/80 bg-[#0c1220] backdrop-blur-md transition-all duration-300 shadow-2xl relative z-10">
               <div className="absolute top-4 -right-12 bg-gradient-to-r from-cyan-500 to-blue-500 text-black text-[9px] font-black tracking-widest py-1 px-12 transform rotate-45 shadow-lg">
                 EXCLUSIVE
               </div>
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-cyan-200 via-sky-400 to-blue-600 flex items-center justify-center text-lg sm:text-xl shadow-lg mb-3 sm:mb-4 text-black">💎</div>
-              <h3 className="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-cyan-300 via-white to-sky-300 bg-clip-text text-transparent uppercase mb-1">PLATINUM VIP</h3>
-              <p className="text-cyan-400 text-[10px] sm:text-xs font-black uppercase tracking-wider mb-3 sm:mb-4">1 Month Subscription</p>
-              <div className="w-full bg-[#11192b] rounded-2xl p-2 sm:p-3 text-left border border-cyan-400/20 flex-1 space-y-1">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-cyan-200 via-sky-400 to-blue-600 flex items-center justify-center text-xl sm:text-2xl shadow-lg mb-4 text-black">💎</div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-cyan-300 via-white to-sky-300 bg-clip-text text-transparent uppercase mb-1">PLATINUM VIP</h3>
+              <p className="text-cyan-400 text-xs sm:text-sm font-black uppercase tracking-wider mb-5">1 Month Subscription</p>
+              <div className="w-full bg-[#11192b] rounded-2xl p-3 sm:p-4 text-left border border-cyan-400/20 flex-1 space-y-1.5">
                 {renderPackageBtn("Platinum: AKATAMBULA", "50,000", "AKATAMBULA", "text-cyan-300", "bg-cyan-400", "text-black")}
                 {renderPackageBtn("Platinum: FAMILY", "80,000", "FAMILY", "text-cyan-300", "bg-cyan-400", "text-black")}
                 {renderPackageBtn("Platinum: BIG STAKERS", "90,000", "BIG STAKERS", "text-cyan-300", "bg-cyan-400", "text-black")}
@@ -881,7 +887,7 @@ function PackagesSkeleton() {
       </div>
       
       {/* Skeleton Grid */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 xl:gap-5 mb-16 px-4 md:px-0 max-w-7xl">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-16 px-4 md:px-0 max-w-5xl">
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden border border-white/5">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
