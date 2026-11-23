@@ -291,44 +291,6 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
         {/* PAGE CONTENT CONTAINER */}
         <div className="w-full max-w-6xl mx-auto flex flex-col items-center px-6">
 
-          {/* DAILY SPECIAL TICKET BANNER */}
-          <div className="w-full max-w-4xl mx-auto mb-10 relative z-20 mt-2">
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              viewport={{ once: true }}
-              className="bg-[#08121a]/95 backdrop-blur-md rounded-2xl p-4 sm:p-5 md:px-7 flex flex-col md:flex-row items-center justify-between gap-4 border electric-card-cyan relative overflow-hidden group"
-            >
-              <div className="electric-beam"></div>
-              <div className="absolute -top-10 -left-10 w-48 h-48 bg-cyan-400/15 rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500"></div>
-              
-              <div className="flex-1 text-center md:text-left relative z-10">
-                <div className="inline-flex items-center gap-1.5 bg-cyan-950/80 border border-cyan-400/50 text-cyan-300 text-[10px] font-extrabold uppercase tracking-widest py-0.5 px-3 rounded-full mb-1.5 animate-pulse">
-                  ⚡ DAILY SPECIAL
-                </div>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white uppercase tracking-tight mb-1">
-                  Daily Special Ticket
-                </h3>
-                <p className="text-cyan-300/90 text-xs sm:text-sm font-medium">
-                  Guaranteed Wins • Expert Analysis • 24 Hours Access
-                </p>
-              </div>
-
-              <div className="flex items-center gap-4 relative z-10 shrink-0 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-white/10 pt-3 md:pt-0">
-                <div className="text-xl sm:text-2xl font-black text-white drop-shadow-[0_0_15px_rgba(6,182,212,0.8)]">
-                  30,000 UGX
-                </div>
-                <button 
-                  onClick={() => openModal("Premium: Daily Special Ticket", "30k")} 
-                  className="bg-gradient-to-r from-cyan-400 via-cyan-300 to-blue-500 hover:brightness-110 text-white font-extrabold py-2.5 px-6 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.6)] hover:shadow-[0_0_30px_rgba(6,182,212,0.9)] active:scale-95 transition-all text-xs sm:text-sm tracking-wide flex items-center justify-center gap-1.5 group/btn"
-                >
-                  <span>BUY NOW</span>
-                  <Send size={14} className="group-hover/btn:translate-x-0.5 transition-transform" />
-                </button>
-              </div>
-            </motion.div>
-          </div>
-
           {/* PACKAGES SECTION HEADER */}
           <div id="packages" className="w-full text-center mb-12 flex flex-col items-center pt-8 scroll-mt-24">
             <h2 className="text-3xl md:text-5xl font-extrabold mb-4 uppercase tracking-tight text-white drop-shadow-md">SK SUBSCRIPTION <br className="md:hidden" /><span className="text-[#D4AF37] glow-text">PACKAGE</span></h2>
