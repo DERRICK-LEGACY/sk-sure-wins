@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SK Packages - More Options. More Wins</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #050608;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .poster-container {
+      width: 100%;
+      max-width: 900px;
+      aspect-ratio: 9 / 16;
+      background: radial-gradient(circle at 50% 15%, #181d28 0%, #08090d 50%, #030406 100%);
+      border: 3px solid rgba(212, 175, 55, 0.4);
+      border-radius: 32px;
+      position: relative;
+      overflow: hidden;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.9), 0 0 50px rgba(212, 175, 55, 0.15);
+    }
+    
+    /* Background lighting & stadium beams */
+    .beam-left, .beam-right {
+      position: absolute;
+      top: -100px;
+      width: 250px;
+      height: 600px;
+      opacity: 0.25;
+      filter: blur(50px);
+      pointer-events: none;
+    }
+    .beam-left {
+      left: -50px;
+      background: radial-gradient(ellipse at top, #ffd700, transparent 70%);
+      transform: rotate(25deg);
+    }
+    .beam-right {
+      right: -50px;
+      background: radial-gradient(ellipse at top, #00f2fe, transparent 70%);
+      transform: rotate(-25deg);
+    }
+    
+    /* Header */
+    .header {
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      margin-bottom: 24px;
+    }
+    .social-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 12px;
+    }
+    .main-title {
+      font-size: clamp(42px, 6vw, 68px);
+      font-weight: 900;
+      letter-spacing: 2px;
+      line-height: 1;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F5D77F 45%, #D4AF37 70%, #997819 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.8));
+      margin-bottom: 6px;
+    }
+    .sub-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(14px, 2vw, 19px);
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #e2c058;
+      text-shadow: 0 0 12px rgba(226, 192, 88, 0.4);
+    }
+
+    /* 2x2 Grid */
+    .grid-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+      flex: 1;
+      position: relative;
+      z-index: 10;
+      margin-bottom: 20px;
+    }
+
+    /* Card styling */
+    .card {
+      background: rgba(10, 12, 18, 0.85);
+      border-radius: 20px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .card-bronze {
+      border: 1.5px solid rgba(205, 127, 50, 0.4);
+      background: radial-gradient(circle at 50% 0%, rgba(205, 127, 50, 0.12) 0%, rgba(10, 12, 18, 0.9) 70%);
+    }
+    .card-silver {
+      border: 1.5px solid rgba(192, 192, 192, 0.4);
+      background: radial-gradient(circle at 50% 0%, rgba(192, 192, 192, 0.12) 0%, rgba(10, 12, 18, 0.9) 70%);
+    }
+    .card-gold {
+      border: 1.5px solid rgba(212, 175, 55, 0.5);
+      background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.15) 0%, rgba(10, 12, 18, 0.9) 70%);
+    }
+    .card-platinum {
+      border: 1.5px solid rgba(0, 242, 254, 0.45);
+      background: radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.12) 0%, rgba(8, 14, 25, 0.95) 70%);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .card-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+    .card-titles {
+      flex: 1;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .bronze-text { color: #e59850; }
+    .silver-text { color: #e2e8f0; }
+    .gold-text { color: #F5D77F; }
+    .platinum-text {
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .card-duration {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* List of odds/prices */
+    .package-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex: 1;
+      justify-content: center;
+    }
+    .package-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 12px;
+    }
+    .package-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .pkg-label {
+      font-weight: 700;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pkg-sub {
+      font-size: 9px;
+      color: #9ca3af;
+      font-weight: normal;
+    }
+    .pkg-price {
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+    .bronze-price { color: #f97316; }
+    .silver-price { color: #cbd5e1; }
+    .gold-price { color: #fbbf24; }
+    .platinum-price { color: #38bdf8; }
+
+    /* Floating Soccer Ball / Center Accent */
+    .center-ball-badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff1b8, #d4af37 60%, #5c4403 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      box-shadow: 0 0 35px rgba(212, 175, 55, 0.6), inset 0 2px 5px rgba(255, 255, 255, 0.8);
+      border: 3px solid #000;
+    }
+    .center-ball-badge svg {
+      width: 38px;
+      height: 38px;
+      fill: #1a1600;
+    }
+
+    /* Footer Banner */
+    .footer-banner {
+      background: linear-gradient(90deg, #d4af37 0%, #fae69e 50%, #d4af37 100%);
+      border-radius: 18px;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+      color: #0b0c10;
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.35);
+    }
+    .join-btn {
+      background: #000000;
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+    .contact-info {
+      text-align: right;
+    }
+    .contact-label {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(0, 0, 0, 0.7);
+    }
+    .contact-numbers {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #000000;
+    }
+
+    @media (max-width: 600px) {
+      .grid-2x2 {
+        grid-template-columns: 1fr;
+      }
+      .center-ball-badge {
+        display: none;
+      }
+      .footer-banner {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+      .contact-info {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="poster-container">
+    <div class="beam-left"></div>
+    <div class="beam-right"></div>
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="social-pill">
+        <span>📸 🎵 📱</span>
+        <span>@SK SUREWINS MUNAKAPAPULA</span>
+      </div>
+      <h1 class="main-title">SK PACKAGES</h1>
+      <p class="sub-title">"MORE OPTIONS. MORE WINS"</p>
+    </div>
+
+    <!-- 2x2 CARDS GRID -->
+    <div class="grid-2x2">
+
+      <!-- 1. BRONZE VIP -->
+      <div class="card card-bronze">
+        <div class="card-header">
+          <div class="card-icon">🥉</div>
+          <div class="card-titles">
+            <h2 class="card-title bronze-text">BRONZE VIP</h2>
+            <p class="card-duration">1 WEEK SUBSCRIPTION</p>
+          </div>
+        </div>
+        <div class="package-list">
+          <div class="package-item">
+            <span class="pkg-label">ODD 1.5 NORMAL</span>
+            <span class="pkg-price bronze-price">10,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">ODD 2</span>
+            <span class="pkg-price bronze-price">20,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">ODD 3</span>
+            <span class="pkg-price bronze-price">30,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">
+              DAILY COMBO
+              <span class="pkg-sub">(3/day)</span>
+            </span>
+            <span class="pkg-price bronze-price">30,000 UGX</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. SILVER VIP -->
+      <div class="card card-silver">
+        <div class="card-header">
+          <div class="card-icon">🥈</div>
+          <div class="card-titles">
+            <h2 class="card-title silver-text">SILVER VIP</h2>
+            <p class="card-duration">2 WEEKS SUBSCRIPTION</p>
+          </div>
+        </div>
+        <div class="package-list">
+          <div class="package-item">
+            <span class="pkg-label">LIFE CHANGER</span>
+            <span class="pkg-price silver-price">30,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">ODD 4</span>
+            <span class="pkg-price silver-price">40,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">ODD 5</span>
+            <span class="pkg-price silver-price">50,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">BALLISTIC STRAIGHT</span>
+            <span class="pkg-price silver-price">55,000 UGX</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER DECORATIVE BADGE -->
+      <div class="center-ball-badge">
+        <svg viewBox="0 0 512 512">
+          <path d="M256 0a256 256 0 1 0 0 512A256 256 0 1 0 256 0zM130.3 358L205 283.4 121.7 200l-63 87.2c16 31.7 39.8 59 69 79.1l2.5-8.2zm112.5-98.8L168.1 184.4l49.8-96c12-3.2 24.9-5.1 38.1-5.1 14.8 0 29.2 2.3 42.9 6.4l43.8 91.5-99.9 78zm138.8 80l-85.1 53-83.3-88.6 98.7-77 69.7 112.5zm19.6-32.9L334 198.5l90.3-81c25 21.6 44.5 49.3 56.4 81l-79.6 107.8zm-153.3 121L149 365l-6.2 20.3c31.6 20.8 69.3 33 109.4 34.6l-4.4-92.6z" />
+        </svg>
+      </div>
+
+      <!-- 3. GOLD VIP -->
+      <div class="card card-gold">
+        <div class="card-header">
+          <div class="card-icon">🥇</div>
+          <div class="card-titles">
+            <h2 class="card-title gold-text">GOLD VIP</h2>
+            <p class="card-duration">3 WEEKS SUBSCRIPTION</p>
+          </div>
+        </div>
+        <div class="package-list">
+          <div class="package-item">
+            <span class="pkg-label">AKATAFA / AKATEMU</span>
+            <span class="pkg-price gold-price">50,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">VIP</span>
+            <span class="pkg-price gold-price">60,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">VVIP</span>
+            <span class="pkg-price gold-price">70,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">ODD 10</span>
+            <span class="pkg-price gold-price">100,000 UGX</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. PLATINUM VIP -->
+      <div class="card card-platinum">
+        <div class="card-header">
+          <div class="card-icon">💎</div>
+          <div class="card-titles">
+            <h2 class="card-title platinum-text">PLATINUM VIP</h2>
+            <p class="card-duration">1 MONTH SUBSCRIPTION</p>
+          </div>
+        </div>
+        <div class="package-list">
+          <div class="package-item">
+            <span class="pkg-label">AKATAMBULA</span>
+            <span class="pkg-price platinum-price">50,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">FAMILY</span>
+            <span class="pkg-price platinum-price">80,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">BIG STAKERS</span>
+            <span class="pkg-price platinum-price">90,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">ODD 20</span>
+            <span class="pkg-price platinum-price">100,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">ALL PACKAGES</span>
+            <span class="pkg-price platinum-price">300,000 UGX</span>
+          </div>
+          <div class="package-item">
+            <span class="pkg-label">ACCOUNT MANAGEMENT</span>
+            <span class="pkg-price platinum-price">500,000 UGX</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER BANNER -->
+    <div class="footer-banner">
+      <div class="join-btn">JOIN US TODAY</div>
+      <div class="contact-info">
+        <div class="contact-label">PHONE & WHATSAPP</div>
+        <div class="contact-numbers">0703 743057 / 0785 478399</div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
