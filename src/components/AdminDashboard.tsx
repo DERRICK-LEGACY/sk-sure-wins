@@ -181,15 +181,17 @@ export default function AdminDashboard({
   const sortedPackages = useMemo(() => {
     const exactOrder = [
       // Bronze
-      "Bronze: ODD 1.5 Normal", "Bronze: ODD 2", "Bronze: ODD 1.5 Lifechanger", "Bronze: ODD 3", "Bronze: ODD 4", "Bronze: ODD 5",
-      "ODD 1.5 NORMAL", "ODD 1.5 LIFECHANGER", "ODD 2", "ODD 3", "ODD 4",
+      "Bronze: ODD 1.5 Normal", "Bronze: ODD 2", "Bronze: ODD 3", "Bronze: Daily Combo",
+      "ODD 1.5 NORMAL", "ODD 2", "ODD 3", "DAILY COMBO",
       // Silver
-      "Silver: VIP", "Silver: AKATAMBULA", "Silver: ODD 8-10", "Silver: VVIP", "Silver: ODD 20",
-      "VIP", "VVIP", "ODD 8-10", "ODD 20", "AKATAMBULA",
+      "Silver: Life Changer", "Silver: ODD 4", "Silver: ODD 5", "Silver: Ballistic Straight",
+      "LIFE CHANGER", "ODD 4", "ODD 5", "BALLISTIC STRAIGHT",
       // Gold
-      "Gold: Akatafa/Akatemu", "Gold: FAMILY", "Gold: BIG STAKERS", "Gold: ALL PACKAGES", "Gold: SK Counter Attack", "Gold: Account Management",
-      "AKATAFA/AKATEMU", "SK COUNTER ATTACK", "ACCOUNT MANAGEMENT", "FAMILY", "BIG STAKERS", "ALL PACKAGES",
-      "Gold: VIP", "Gold: VVIP", "Gold: ALL PACKAGE MONTHLY",
+      "Gold: Akatafa/Akatemu", "Gold: VIP", "Gold: VVIP", "Gold: ODD 10",
+      "AKATAFA/AKATEMU", "VIP", "VVIP", "ODD 10",
+      // Platinum
+      "Platinum: AKATAMBULA", "Platinum: FAMILY", "Platinum: BIG STAKERS", "Platinum: ODD 20", "Platinum: ALL PACKAGES", "Platinum: Account Management",
+      "AKATAMBULA", "FAMILY", "BIG STAKERS", "ODD 20", "ALL PACKAGES", "ACCOUNT MANAGEMENT",
       // Premium Offer
       "Premium: Rent Project", "Premium: Boda boda Project", "Premium: Back to school Project", "Premium: Daily Special Ticket", "Premium: 1M in 5 days",
       "Rent Project", "Boda boda Project", "Back to school", "Daily Special Ticket", "1M in 5 days",
@@ -205,6 +207,7 @@ export default function AdminDashboard({
       if (name.toLowerCase().includes('bronze')) return 100;
       if (name.toLowerCase().includes('silver')) return 200;
       if (name.toLowerCase().includes('gold')) return 300;
+      if (name.toLowerCase().includes('platinum')) return 350;
       if (name.toLowerCase().includes('premium')) return 400;
       if (name.toLowerCase().includes('life')) return 500;
       return 999;

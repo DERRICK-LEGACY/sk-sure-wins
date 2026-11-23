@@ -332,51 +332,62 @@ export default function HomePage({ freeHooks, wonTickets, testimonials = [], spe
           {/* PACKAGES GRID */}
           {isPackagesLoading ? <PackagesSkeleton /> : (
             <>
-              <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 px-4 md:px-0">
+              <motion.div variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 xl:gap-5 mb-16 px-4 md:px-0 max-w-7xl mx-auto">
             {/* VIP TIERS */}
-            {/* BRONZE */}
-            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-4 pt-6 sm:p-6 sm:pt-8 md:p-8 md:pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/20 hover:border-[#cd7f32]/40 bg-[#0A0A0F]/60 backdrop-blur-md transition-all duration-300">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#cd7f32] to-[#8c5622] flex items-center justify-center text-xl sm:text-2xl shadow-lg mb-4 sm:mb-6 text-black">🥉</div>
+            {/* 1. BRONZE VIP (1 WEEK) */}
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-3.5 pt-5 sm:p-5 sm:pt-7 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#cd7f32]/25 hover:border-[#cd7f32]/60 bg-[#0A0A0F]/70 backdrop-blur-md transition-all duration-300 shadow-xl">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#cd7f32] to-[#8c5622] flex items-center justify-center text-lg sm:text-xl shadow-lg mb-3 sm:mb-4 text-black">🥉</div>
               <h3 className="text-xl sm:text-2xl font-extrabold text-white uppercase mb-1">BRONZE VIP</h3>
-              <p className="text-gray-400 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6">1 Week Subscription</p>
-              <div className="w-full bg-[#111116] rounded-2xl p-2.5 sm:p-4 text-left border border-white/5 flex-1 space-y-1">
-                {renderPackageBtn("Bronze: ODD 1.5 Lifechanger", "30,000", "ODD 1.5 Lifechanger", "text-[#cd7f32]", "bg-[#cd7f32]")}
+              <p className="text-[#cd7f32] text-[10px] sm:text-xs font-black uppercase tracking-wider mb-3 sm:mb-4">1 Week Subscription</p>
+              <div className="w-full bg-[#111116] rounded-2xl p-2 sm:p-3 text-left border border-white/5 flex-1 space-y-1">
+                {renderPackageBtn("Bronze: ODD 1.5 Normal", "10,000", "ODD 1.5 Normal", "text-[#cd7f32]", "bg-[#cd7f32]")}
                 {renderPackageBtn("Bronze: ODD 2", "20,000", "ODD 2", "text-[#cd7f32]", "bg-[#cd7f32]")}
                 {renderPackageBtn("Bronze: ODD 3", "30,000", "ODD 3", "text-[#cd7f32]", "bg-[#cd7f32]")}
-                {renderPackageBtn("Bronze: ODD 4", "40,000", "ODD 4", "text-[#cd7f32]", "bg-[#cd7f32]")}
-                {renderPackageBtn("Bronze: ODD 5", "50,000", "ODD 5", "text-[#cd7f32]", "bg-[#cd7f32]")}
+                {renderPackageBtn("Bronze: Daily Combo", "30,000", "Daily Combo", "text-[#cd7f32]", "bg-[#cd7f32]", "text-black", "(3 tickets a day)")}
               </div>
             </motion.div>
 
-            {/* SILVER */}
-            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-4 pt-6 sm:p-6 sm:pt-8 md:p-8 md:pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#c0c0c0]/30 hover:border-[#c0c0c0]/50 bg-[#0A0A0F]/80 backdrop-blur-md transition-all duration-300 shadow-xl">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#ffffff] to-[#808080] flex items-center justify-center text-xl sm:text-2xl shadow-lg mb-4 sm:mb-6 text-black">🥈</div>
+            {/* 2. SILVER VIP (2 WEEKS) */}
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-3.5 pt-5 sm:p-5 sm:pt-7 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#c0c0c0]/30 hover:border-[#c0c0c0]/60 bg-[#0A0A0F]/80 backdrop-blur-md transition-all duration-300 shadow-xl">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#ffffff] to-[#808080] flex items-center justify-center text-lg sm:text-xl shadow-lg mb-3 sm:mb-4 text-black">🥈</div>
               <h3 className="text-xl sm:text-2xl font-extrabold text-white uppercase mb-1">SILVER VIP</h3>
-              <p className="text-gray-400 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6">2 Weeks Subscription</p>
-              <div className="w-full bg-[#111116] rounded-2xl p-2.5 sm:p-4 text-left border border-white/5 flex-1 space-y-1">
-                {renderPackageBtn("Silver: AKATAMBULA", "50,000", "AKATAMBULA", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black", "(1 Month)")}
-                {renderPackageBtn("Silver: VIP", "60,000", "VIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
-                {renderPackageBtn("Silver: VVIP", "70,000", "VVIP", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
-                {renderPackageBtn("Silver: ODD 8-10", "80,000", "ODD 8-10", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
-                {renderPackageBtn("Silver: ODD 20", "100,000", "ODD 20", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
+              <p className="text-gray-300 text-[10px] sm:text-xs font-black uppercase tracking-wider mb-3 sm:mb-4">2 Weeks Subscription</p>
+              <div className="w-full bg-[#111116] rounded-2xl p-2 sm:p-3 text-left border border-white/5 flex-1 space-y-1">
+                {renderPackageBtn("Silver: Life Changer", "30,000", "Life Changer", "text-[#c0c0c0]", "bg-[#c0c0c0]", "text-black")}
+                {renderPackageBtn("Silver: ODD 4", "40,000", "ODD 4", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
+                {renderPackageBtn("Silver: ODD 5", "50,000", "ODD 5", "text-[#c0c0c0]", "bg-[#c0c0c0]")}
+                {renderPackageBtn("Silver: Ballistic Straight", "55,000", "Ballistic Straight", "text-amber-400", "bg-gradient-to-r from-amber-400 to-yellow-500", "text-black font-extrabold", undefined, "border-amber-400/40 shadow-[0_0_15px_rgba(251,191,36,0.3)]", "⚡ TOP PICK", "bg-amber-400/20 text-amber-300 border border-amber-400/40")}
               </div>
             </motion.div>
 
-            {/* GOLD */}
-            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-4 pt-6 sm:p-6 sm:pt-8 md:p-8 md:pt-10 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#d4af37]/50 hover:border-[#d4af37]/80 bg-[#111116] backdrop-blur-md transition-all duration-300 shadow-2xl md:scale-[1.02] z-10">
-              <div className="absolute top-5 -right-12 bg-[#d4af37] text-black text-[9px] font-black tracking-widest py-1 px-12 transform rotate-45 shadow-lg">
+            {/* 3. GOLD VIP (3 WEEKS) */}
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-3.5 pt-5 sm:p-5 sm:pt-7 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-[#d4af37]/40 hover:border-[#d4af37]/80 bg-[#111116] backdrop-blur-md transition-all duration-300 shadow-xl">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#FFF8D6] to-[#d4af37] flex items-center justify-center text-lg sm:text-xl shadow-lg mb-3 sm:mb-4 text-black">🥇</div>
+              <h3 className="text-xl sm:text-2xl font-extrabold text-[#d4af37] uppercase mb-1">GOLD VIP</h3>
+              <p className="text-[#d4af37] text-[10px] sm:text-xs font-black uppercase tracking-wider mb-3 sm:mb-4">3 Weeks Subscription</p>
+              <div className="w-full bg-[#1A1A24] rounded-2xl p-2 sm:p-3 text-left border border-[#d4af37]/10 flex-1 space-y-1">
+                {renderPackageBtn("Gold: Akatafa/Akatemu", "50,000", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: VIP", "60,000", "VIP", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: VVIP", "70,000", "VVIP", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
+                {renderPackageBtn("Gold: ODD 10", "100,000", "ODD 10", "text-emerald-400", "bg-gradient-to-r from-emerald-400 to-green-600", "text-black font-extrabold", undefined, "border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.3)]", "🎯 HIGH ODDS", "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40")}
+              </div>
+            </motion.div>
+
+            {/* 4. PLATINUM VIP (1 MONTH) */}
+            <motion.div whileHover={{ y: -5 }} variants={itemVariants} className="glass-panel p-3.5 pt-5 sm:p-5 sm:pt-7 rounded-3xl flex flex-col items-center text-center relative overflow-hidden group border border-cyan-400/40 hover:border-cyan-400/80 bg-[#0c1220] backdrop-blur-md transition-all duration-300 shadow-2xl relative z-10">
+              <div className="absolute top-4 -right-12 bg-gradient-to-r from-cyan-500 to-blue-500 text-black text-[9px] font-black tracking-widest py-1 px-12 transform rotate-45 shadow-lg">
                 EXCLUSIVE
               </div>
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#FFF8D6] to-[#d4af37] flex items-center justify-center text-xl sm:text-2xl shadow-lg mb-4 sm:mb-6 text-black">👑</div>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[#d4af37] uppercase mb-1">GOLD VIP</h3>
-              <p className="text-gray-400 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6">Monthly Subscription</p>
-              <div className="w-full bg-[#1A1A24] rounded-2xl p-2.5 sm:p-4 text-left border border-[#d4af37]/10 flex-1 space-y-1">
-                {renderPackageBtn("Gold: Akatafa/Akatemu", "50,000", "Akatafa/Akatemu", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: FAMILY", "80,000", "FAMILY", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: BIG STAKERS", "100,000", "BIG STAKERS", "text-[#d4af37]", "bg-[#d4af37]", "text-black")}
-                {renderPackageBtn("Gold: ALL PACKAGES", "300,000", "ALL PACKAGES", "text-pink-400", "bg-gradient-to-r from-pink-500 to-rose-500", "text-white", undefined, "border-pink-500/60 shadow-[0_0_20px_rgba(236,72,153,0.4)]", "🔥 BEST VALUE", "bg-pink-500/20 text-pink-300 border border-pink-500/40")}
-                {renderPackageBtn("Gold: SK Counter Attack", "350,000", "SK Counter Attack", "text-lime-400", "bg-gradient-to-r from-lime-400 to-emerald-500", "text-black font-extrabold", undefined, "border-lime-400/60 shadow-[0_0_20px_rgba(163,230,53,0.4)]", "⚡ HOT", "bg-lime-500/20 text-lime-300 border border-lime-500/40")}
-                {renderPackageBtn("Gold: Account Management", "500,000", "Account Management", "text-sky-400", "bg-gradient-to-r from-sky-400 to-blue-600", "text-black font-extrabold", undefined, "border-sky-400/60 shadow-[0_0_20px_rgba(56,189,248,0.4)]", "👑 VIP PRO", "bg-sky-500/20 text-sky-300 border border-sky-500/40")}
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-cyan-200 via-sky-400 to-blue-600 flex items-center justify-center text-lg sm:text-xl shadow-lg mb-3 sm:mb-4 text-black">💎</div>
+              <h3 className="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-cyan-300 via-white to-sky-300 bg-clip-text text-transparent uppercase mb-1">PLATINUM VIP</h3>
+              <p className="text-cyan-400 text-[10px] sm:text-xs font-black uppercase tracking-wider mb-3 sm:mb-4">1 Month Subscription</p>
+              <div className="w-full bg-[#11192b] rounded-2xl p-2 sm:p-3 text-left border border-cyan-400/20 flex-1 space-y-1">
+                {renderPackageBtn("Platinum: AKATAMBULA", "50,000", "AKATAMBULA", "text-cyan-300", "bg-cyan-400", "text-black")}
+                {renderPackageBtn("Platinum: FAMILY", "80,000", "FAMILY", "text-cyan-300", "bg-cyan-400", "text-black")}
+                {renderPackageBtn("Platinum: BIG STAKERS", "90,000", "BIG STAKERS", "text-cyan-300", "bg-cyan-400", "text-black")}
+                {renderPackageBtn("Platinum: ODD 20", "100,000", "ODD 20", "text-cyan-300", "bg-cyan-400", "text-black")}
+                {renderPackageBtn("Platinum: ALL PACKAGES", "300,000", "ALL PACKAGES", "text-pink-400", "bg-gradient-to-r from-pink-500 to-rose-500", "text-white", undefined, "border-pink-500/60 shadow-[0_0_20px_rgba(236,72,153,0.4)]", "🔥 BEST VALUE", "bg-pink-500/20 text-pink-300 border border-pink-500/40")}
+                {renderPackageBtn("Platinum: Account Management", "500,000", "Account Management", "text-sky-400", "bg-gradient-to-r from-sky-400 to-blue-600", "text-black font-extrabold", undefined, "border-sky-400/60 shadow-[0_0_20px_rgba(56,189,248,0.4)]", "👑 VIP PRO", "bg-sky-500/20 text-sky-300 border border-sky-500/40")}
               </div>
             </motion.div>
           </motion.div>
@@ -870,8 +881,8 @@ function PackagesSkeleton() {
       </div>
       
       {/* Skeleton Grid */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 px-4 md:px-0 max-w-6xl">
-        {[1, 2, 3].map((i) => (
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 xl:gap-5 mb-16 px-4 md:px-0 max-w-7xl">
+        {[1, 2, 3, 4].map((i) => (
           <div key={i} className="glass-panel p-8 pt-12 rounded-[2rem] flex flex-col items-center text-center relative overflow-hidden border border-white/5">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
             <div className="w-12 h-12 bg-white/5 rounded-full mb-8 animate-pulse"></div>

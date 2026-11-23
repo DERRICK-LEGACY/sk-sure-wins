@@ -23,9 +23,15 @@ export const PRICE_CARD_PAYMENT_LINKS: Record<number, string> = {
   30000: "", // 30,000 UGX Fixed Link
   40000: "", // 40,000 UGX Fixed Link
   50000: "", // 50,000 UGX Fixed Link
+  55000: "", // 55,000 UGX Fixed Link
+  60000: "", // 60,000 UGX Fixed Link
   70000: "", // 70,000 UGX Fixed Link
+  80000: "", // 80,000 UGX Fixed Link
+  90000: "", // 90,000 UGX Fixed Link
   100000: "", // 100,000 UGX Fixed Link
   200000: "", // 200,000 UGX Fixed Link
+  300000: "", // 300,000 UGX Fixed Link
+  500000: "", // 500,000 UGX Fixed Link
 };
 
 /**
