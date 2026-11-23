@@ -110,8 +110,8 @@ export async function initiatePaymentByName(phone: string, packageName: string, 
     }
   }
 
-  const apiKey = 'marz_clTJGirR1HYLFRUt';
-  const apiSecret = 'NoNkshqQ9IkznuUbWb9G0F2nPaM9XETh';
+  const apiKey = (process.env.MARZPAY_API_KEY || 'marz_LhzldtjL8P4vYrio').trim();
+  const apiSecret = (process.env.MARZPAY_API_SECRET || 'DbOv0JwTe5d8ZdAM3F4ZCrV0t24c5JTN').trim();
   
   if (!apiKey || !apiSecret) {
     return { success: false, error: "MarzPay API Keys are missing in environment variables." };
